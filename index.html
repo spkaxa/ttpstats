@@ -352,7 +352,7 @@ footer .sep { margin:8px 0; color:var(--border); }
   </div>
 </div>
 
-<!-- ===== Firebase SDK ===== -->
+<!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -401,12 +401,11 @@ footer .sep { margin:8px 0; color:var(--border); }
   }
 </script>
 
-<!-- ===== Основной скрипт ===== -->
+<!-- Основной скрипт -->
 <script>
 const DATA = {
   cities: {
     balance: {
-      dates: ['2026-09-24 00:23'],
       snapshots: {
         '2026-09-23 05:20': [{ name:'seapure', value:3917.00 }],
         '2026-09-24 00:09': [{ name:'seapure', value:3591.69 }],
@@ -447,6 +446,13 @@ const DATA = {
           { name:'mimika', value:3670.64 }, { name:'seapure', value:3598.79 },
           { name:'florida', value:3588.61 }, { name:'hamburg', value:2734.43 },
         ],
+        '2026-09-24 21:00': [
+          { name:'Рига', value:22982.35 }, { name:'Рим', value:13199.25 },
+          { name:'Иокогама', value:5971.66 }, { name:'Лазурный_Стокгольм', value:5784.96 },
+          { name:'Макондо', value:5137.23 }, { name:'Французская_Империя', value:3773.65 },
+          { name:'mimika', value:3661.88 }, { name:'Florida', value:3603.27 },
+          { name:'Seapure', value:3527.41 }, { name:'Hamburg', value:2731.49 },
+        ],
       },
       note: 'за всё время был восторг с ~100000, но дата от которой идёт отсчёт — сегодня, а не раньше, так что не считается',
     },
@@ -459,16 +465,17 @@ const DATA = {
         { date:'2026-09-24 00:17', value:3591.69 },
         { date:'2026-09-24 00:20', value:3591.69 },
         { date:'2026-09-24 00:23', value:3598.79 },
+        { date:'2026-09-24 21:00', value:3527.41 },
       ],
-      'рига': [{ date:'2026-09-24 00:15', value:22196.82 }, { date:'2026-09-24 00:23', value:22204.90 }],
-      'рим': [{ date:'2026-09-24 00:14', value:13374.32 }, { date:'2026-09-24 00:23', value:13380.03 }],
-      'иокогама': [{ date:'2026-09-24 00:17', value:6034.34 }, { date:'2026-09-24 00:23', value:6034.34 }],
-      'лазурный_стокгольм': [{ date:'2026-09-24 00:19', value:5409.59 }, { date:'2026-09-24 00:23', value:5411.42 }],
-      'макондо': [{ date:'2026-09-24 00:17', value:5143.74 }, { date:'2026-09-24 00:23', value:5143.74 }],
-      'французская_империя': [{ date:'2026-09-24 00:18', value:4107.64 }, { date:'2026-09-24 00:23', value:4111.85 }],
-      'mimika': [{ date:'2026-09-24 00:23', value:3670.64 }],
-      'florida': [{ date:'2026-09-24 00:23', value:3588.61 }],
-      'hamburg': [{ date:'2026-09-24 00:23', value:2734.43 }],
+      'рига': [{ date:'2026-09-24 00:15', value:22196.82 }, { date:'2026-09-24 00:23', value:22204.90 }, { date:'2026-09-24 21:00', value:22982.35 }],
+      'рим': [{ date:'2026-09-24 00:14', value:13374.32 }, { date:'2026-09-24 00:23', value:13380.03 }, { date:'2026-09-24 21:00', value:13199.25 }],
+      'иокогама': [{ date:'2026-09-24 00:17', value:6034.34 }, { date:'2026-09-24 00:23', value:6034.34 }, { date:'2026-09-24 21:00', value:5971.66 }],
+      'лазурный_стокгольм': [{ date:'2026-09-24 00:19', value:5409.59 }, { date:'2026-09-24 00:23', value:5411.42 }, { date:'2026-09-24 21:00', value:5784.96 }],
+      'макондо': [{ date:'2026-09-24 00:17', value:5143.74 }, { date:'2026-09-24 00:23', value:5143.74 }, { date:'2026-09-24 21:00', value:5137.23 }],
+      'французская_империя': [{ date:'2026-09-24 00:18', value:4107.64 }, { date:'2026-09-24 00:23', value:4111.85 }, { date:'2026-09-24 21:00', value:3773.65 }],
+      'mimika': [{ date:'2026-09-24 00:23', value:3670.64 }, { date:'2026-09-24 21:00', value:3661.88 }],
+      'florida': [{ date:'2026-09-24 00:23', value:3588.61 }, { date:'2026-09-24 21:00', value:3603.27 }],
+      'hamburg': [{ date:'2026-09-24 00:23', value:2734.43 }, { date:'2026-09-24 21:00', value:2731.49 }],
     },
     population: {
       '2026-09-24 00:30': [
@@ -477,6 +484,13 @@ const DATA = {
         { name:'Шмаледуйск', value:102 }, { name:'Томская_Империя', value:77 },
         { name:'Лазурный_Стокгольм', value:66 }, { name:'Los_Angeles', value:55 },
         { name:'Ufa', value:54 }, { name:'Германская_Империя', value:52 },
+      ],
+      '2026-09-24 21:00': [
+        { name:'Рим', value:161 }, { name:'Рига', value:142 },
+        { name:'Кавказский_Халифат', value:119 }, { name:'Ульяновск', value:115 },
+        { name:'Шмаледуйск', value:104 }, { name:'Томская_Империя', value:77 },
+        { name:'Лазурный_Стокгольм', value:58 }, { name:'Los_Angeles', value:55 },
+        { name:'Ufa', value:54 }, { name:'Германская_Империя', value:54 },
       ]
     },
     size: {
@@ -486,6 +500,13 @@ const DATA = {
         { name:'Ворона', value:3168 }, { name:'Клан_Китайцев', value:2808 },
         { name:'Seapure', value:2424 }, { name:'Лазурный_Стокгольм', value:2310 },
         { name:'Великие_Нидерланды', value:1800 }, { name:'Французская_Империя', value:1786 },
+      ],
+      '2026-09-24 21:00': [
+        { name:'Рига', value:8927 }, { name:'Рим', value:7961 },
+        { name:'Кавказский_Халифат', value:3899 }, { name:'Иокогама', value:3582 },
+        { name:'Ворона', value:3168 }, { name:'Клан_Китайцев', value:2808 },
+        { name:'Seapure', value:2791 }, { name:'Лазурный_Стокгольм', value:2310 },
+        { name:'Великие_Нидерланды', value:1800 }, { name:'Французская_Империя', value:1787 },
       ]
     }
   },
@@ -497,37 +518,52 @@ const DATA = {
         { name:'ivan3754', value:11681.00 }, { name:'laggez', value:3509.01 },
         { name:'urbosindustries', value:3111.00 }, { name:'makph', value:3065.00 },
         { name:'destr0yer_n1mer', value:2831.75 }, { name:'bryhhht', value:2520.52 },
+      ],
+      '2026-09-24 21:00': [
+        { name:'MerrQQ', value:50182.95 }, { name:'5ekas', value:15755.50 },
+        { name:'Elena3e3', value:15402.99 }, { name:'Deekrush', value:14317.36 },
+        { name:'Ivan3754', value:10691.00 }, { name:'LaGGeZ', value:3509.01 },
+        { name:'UrbosIndustries', value:3111.00 }, { name:'makph', value:3065.00 },
+        { name:'cartez_ru1', value:3045.00 }, { name:'Butterfly', value:2920.86 },
       ]
     },
     active: {
-      dates: ['2026-08-20 07:10', '2026-09-24 00:30'],
-      snapshots: {
-        '2026-08-20 07:10': [
-          { name:'xxspk', value:8*86400 + 9*3600 + 30*60 + 48, display:'8д 9ч 30м 48с' },
-          { name:'timoxa_pistol', value:5*86400 + 17*3600 + 35*60 + 26, display:'5д 17ч 35м 26с' },
-          { name:'gogojojohf', value:5*86400 + 2*3600 + 18*60 + 7, display:'5д 2ч 18м 7с' },
-          { name:'Gotopot753', value:5*86400 + 2*3600 + 7*60 + 35, display:'5д 2ч 7м 35с' },
-          { name:'afarstic', value:4*86400 + 20*3600 + 45*60, display:'4д 20ч 45м' },
-          { name:'qilvin', value:4*86400 + 14*3600 + 14*60 + 23, display:'4д 14ч 14м 23с' },
-          { name:'Vovthik882282', value:4*86400 + 14*3600 + 6*60 + 33, display:'4д 14ч 6м 33с' },
-          { name:'hrhwq', value:4*86400 + 13*3600 + 29*60 + 2, display:'4д 13ч 29м 2с' },
-          { name:'cartez_ru', value:4*86400 + 5*3600 + 51*60 + 1, display:'4д 5ч 51м 1с' },
-          { name:'Ivan3754', value:4*86400 + 1*3600 + 44*60 + 14, display:'4д 1ч 44м 14с' },
-        ],
-        '2026-09-24 00:30': [
-          { name:'timoxa_pistol', value:21*86400 + 20*3600 + 48*60 + 47, display:'21д 20ч 48м 47с' },
-          { name:'afarstic', value:18*86400 + 23*3600 + 23*60 + 31, display:'18д 23ч 23м 31с' },
-          { name:'UznikKrasnBel', sub:'(кастом ник)', value:15*86400 + 15*3600 + 29*60 + 58, display:'15д 15ч 29м 58с' },
-          { name:'Frasie', value:14*86400 + 16*3600 + 4*60 + 31, display:'14д 16ч 4м 31с' },
-          { name:'cartez_ru', value:14*86400 + 11*3600 + 40*60 + 55, display:'14д 11ч 40м 55с' },
-          { name:'shanci', value:13*86400 + 14*3600 + 25*60 + 59, display:'13д 14ч 25м 59с' },
-          { name:'Georg_23', value:13*86400 + 12*3600 + 52*60 + 15, display:'13д 12ч 52м 15с' },
-          { name:'KomiK0', sub:'(кастом ник)', value:12*86400 + 23*3600 + 17*60, display:'12д 23ч 17м' },
-          { name:'Lunari2231', value:12*86400 + 6*3600 + 8*60 + 29, display:'12д 6ч 8м 29с' },
-          { name:'Deekrush', value:12*86400 + 4*3600 + 54*60 + 32, display:'12д 4ч 54м 32с' },
-        ],
-      },
-      note: 'данные за 20.08.2026 7:10 МСК — прошлый срез активности. XXSPK был #1 на тот момент.'
+      '2026-08-20 07:10': [
+        { name:'xxspk', value:8*86400 + 9*3600 + 30*60 + 48, display:'8д 9ч 30м 48с' },
+        { name:'timoxa_pistol', value:5*86400 + 17*3600 + 35*60 + 26, display:'5д 17ч 35м 26с' },
+        { name:'gogojojohf', value:5*86400 + 2*3600 + 18*60 + 7, display:'5д 2ч 18м 7с' },
+        { name:'Gotopot753', value:5*86400 + 2*3600 + 7*60 + 35, display:'5д 2ч 7м 35с' },
+        { name:'afarstic', value:4*86400 + 20*3600 + 45*60, display:'4д 20ч 45м' },
+        { name:'qilvin', value:4*86400 + 14*3600 + 14*60 + 23, display:'4д 14ч 14м 23с' },
+        { name:'Vovthik882282', value:4*86400 + 14*3600 + 6*60 + 33, display:'4д 14ч 6м 33с' },
+        { name:'hrhwq', value:4*86400 + 13*3600 + 29*60 + 2, display:'4д 13ч 29м 2с' },
+        { name:'cartez_ru', value:4*86400 + 5*3600 + 51*60 + 1, display:'4д 5ч 51м 1с' },
+        { name:'Ivan3754', value:4*86400 + 1*3600 + 44*60 + 14, display:'4д 1ч 44м 14с' },
+      ],
+      '2026-09-24 00:30': [
+        { name:'timoxa_pistol', value:21*86400 + 20*3600 + 48*60 + 47, display:'21д 20ч 48м 47с' },
+        { name:'afarstic', value:18*86400 + 23*3600 + 23*60 + 31, display:'18д 23ч 23м 31с' },
+        { name:'UznikKrasnBel', sub:'(кастом ник)', value:15*86400 + 15*3600 + 29*60 + 58, display:'15д 15ч 29м 58с' },
+        { name:'Frasie', value:14*86400 + 16*3600 + 4*60 + 31, display:'14д 16ч 4м 31с' },
+        { name:'cartez_ru', value:14*86400 + 11*3600 + 40*60 + 55, display:'14д 11ч 40м 55с' },
+        { name:'shanci', value:13*86400 + 14*3600 + 25*60 + 59, display:'13д 14ч 25м 59с' },
+        { name:'Georg_23', value:13*86400 + 12*3600 + 52*60 + 15, display:'13д 12ч 52м 15с' },
+        { name:'KomiK0', sub:'(кастом ник)', value:12*86400 + 23*3600 + 17*60, display:'12д 23ч 17м' },
+        { name:'Lunari2231', value:12*86400 + 6*3600 + 8*60 + 29, display:'12д 6ч 8м 29с' },
+        { name:'Deekrush', value:12*86400 + 4*3600 + 54*60 + 32, display:'12д 4ч 54м 32с' },
+      ],
+      '2026-09-24 21:00': [
+        { name:'timoxa_pistol', value:22*86400 + 2*3600 + 38*60 + 25, display:'22д 2ч 38м 25с' },
+        { name:'afarstic', value:19*86400 + 3*3600 + 28*60 + 28, display:'19д 3ч 28м 28с' },
+        { name:'UznikKrasnBel', sub:'(кастом ник)', value:16*86400 + 18*3600 + 15*60 + 42, display:'16д 18ч 15м 42с' },
+        { name:'Frasie', value:14*86400 + 20*3600 + 17*60 + 21, display:'14д 20ч 17м 21с' },
+        { name:'cartez_ru', value:14*86400 + 15*3600 + 57*60 + 37, display:'14д 15ч 57м 37с' },
+        { name:'Georg_23', value:13*86400 + 21*3600 + 19*60 + 15, display:'13д 21ч 19м 15с' },
+        { name:'shanci', value:13*86400 + 18*3600 + 9*60 + 47, display:'13д 18ч 9м 47с' },
+        { name:'KomiK0', sub:'(кастом ник)', value:13*86400 + 4*3600 + 16*60 + 21, display:'13д 4ч 16м 21с' },
+        { name:'Deekrush', value:12*86400 + 8*3600 + 53*60 + 25, display:'12д 8ч 53м 25с' },
+        { name:'Lunari2231', value:12*86400 + 6*3600 + 46*60 + 42, display:'12д 6ч 46м 42с' },
+      ],
     },
     shards: {
       '2026-09-24 00:30': [
@@ -536,6 +572,13 @@ const DATA = {
         { name:'HyperSuper', value:8 }, { name:'Vlad4631', value:3 },
         { name:'Kise156567', value:3 }, { name:'HE_3adrot', value:2 },
         { name:'TASIS', value:1 }, { name:'kqkqha', value:1 },
+      ],
+      '2026-09-24 21:00': [
+        { name:'kaba_day', value:56 }, { name:'FrazerS', value:52 },
+        { name:'shanci', value:22 }, { name:'Streifka', value:13 },
+        { name:'HyperSuper', value:9 }, { name:'Vlad4631', value:3 },
+        { name:'Kise156567', value:3 }, { name:'HE_3adrot', value:2 },
+        { name:'Willyy_Wonkaa', value:1 }, { name:'CelestialLove', value:1 },
       ]
     },
     rubies: {
@@ -546,6 +589,13 @@ const DATA = {
         { name:'thethether', value:95067 }, { name:'myro_okada', value:67920 },
         { name:'toxic22222', value:60953 }, { name:'vk2409', value:48020 },
       ],
+      '2026-09-24 21:00': [
+        { name:'Elena3e3', value:291208 }, { name:'El_Diablo', value:259164 },
+        { name:'chonka221', value:164633 }, { name:'triadamc', value:161456 },
+        { name:'OkoscheiO', value:116505 }, { name:'LaGGeZ', value:106571 },
+        { name:'TheTheTher', value:95067 }, { name:'Myro_Okada', value:67920 },
+        { name:'Toxic22222', value:60955 }, { name:'vk2409', value:48020 },
+      ],
       note: 'за всё время был kaba_day с ~450000, но дата от которой идёт отсчёт — сегодня, а не раньше, так что не считается'
     }
   },
@@ -555,12 +605,22 @@ const DATA = {
         { name:'Octagrama', value:1230.00 }, { name:'SPQR', value:237.00 },
         { name:'Носочки_Ангелкас', value:73.00 }, { name:'Ось', value:19.00 },
         { name:'ChN1', value:15.75 }, { name:'NATO', value:0.50 },
+      ],
+      '2026-09-24 21:00': [
+        { name:'Octagrama', value:1500.00 }, { name:'SPQR', value:391.40 },
+        { name:'Носочки_Ангелкас', value:57.00 }, { name:'ChN1', value:15.75 },
+        { name:'Ось', value:9.00 }, { name:'NATO', value:0.50 },
       ]
     },
     size: {
       '2026-09-24 00:30': [
         { name:'SPQR', value:74 }, { name:'NATO', value:58 },
         { name:'Octagrama', value:46 }, { name:'ChN1', value:26 },
+        { name:'Ось', value:8 }, { name:'Носочки_Ангелкас', value:2 },
+      ],
+      '2026-09-24 21:00': [
+        { name:'SPQR', value:75 }, { name:'NATO', value:59 },
+        { name:'Octagrama', value:47 }, { name:'ChN1', value:25 },
         { name:'Ось', value:8 }, { name:'Носочки_Ангелкас', value:2 },
       ]
     },
@@ -569,6 +629,11 @@ const DATA = {
         { name:'SPQR', value:957 }, { name:'NATO', value:600 },
         { name:'Octagrama', value:481 }, { name:'ChN1', value:296 },
         { name:'Ось', value:137 }, { name:'Носочки_Ангелкас', value:21 },
+      ],
+      '2026-09-24 21:00': [
+        { name:'SPQR', value:957 }, { name:'NATO', value:620 },
+        { name:'Octagrama', value:489 }, { name:'ChN1', value:297 },
+        { name:'Ось', value:138 }, { name:'Носочки_Ангелкас', value:22 },
       ]
     }
   },
@@ -597,30 +662,30 @@ const TAB_ORDER = [
 ];
 
 const sectionState = {
-  'cities.balance':     { date:'2026-09-24 00:23', allTime:false },
-  'cities.population':  { date:'2026-09-24 00:30', allTime:false },
-  'cities.size':        { date:'2026-09-24 00:30', allTime:false },
-  'players.balance':    { date:'2026-09-24 00:30', allTime:false },
-  'players.active':     { date:'2026-09-24 00:30', allTime:false },
-  'players.shards':     { date:'2026-09-24 00:30', allTime:false },
-  'players.rubies':     { date:'2026-09-24 00:30', allTime:false },
-  'nations.balance':    { date:'2026-09-24 00:30', allTime:false },
-  'nations.size':       { date:'2026-09-24 00:30', allTime:false },
-  'nations.citizens':   { date:'2026-09-24 00:30', allTime:false },
+  'cities.balance':     { date:'2026-09-24 21:00', allTime:false },
+  'cities.population':  { date:'2026-09-24 21:00', allTime:false },
+  'cities.size':        { date:'2026-09-24 21:00', allTime:false },
+  'players.balance':    { date:'2026-09-24 21:00', allTime:false },
+  'players.active':     { date:'2026-09-24 21:00', allTime:false },
+  'players.shards':     { date:'2026-09-24 21:00', allTime:false },
+  'players.rubies':     { date:'2026-09-24 21:00', allTime:false },
+  'nations.balance':    { date:'2026-09-24 21:00', allTime:false },
+  'nations.size':       { date:'2026-09-24 21:00', allTime:false },
+  'nations.citizens':   { date:'2026-09-24 21:00', allTime:false },
 };
 
 function getSectionDates(key) {
-  if (key === 'cities.balance')     return ['2026-09-24 00:23'];
-  if (key === 'cities.population')  return ['2026-09-24 00:30'];
-  if (key === 'cities.size')        return ['2026-09-24 00:30'];
-  if (key === 'players.balance')    return ['2026-09-24 00:30'];
-  if (key === 'players.active')     return ['2026-08-20 07:10', '2026-09-24 00:30'];
-  if (key === 'players.shards')     return ['2026-09-24 00:30'];
-  if (key === 'players.rubies')     return ['2026-09-24 00:30'];
-  if (key === 'nations.balance')    return ['2026-09-24 00:30'];
-  if (key === 'nations.size')       return ['2026-09-24 00:30'];
-  if (key === 'nations.citizens')   return ['2026-09-24 00:30'];
-  return ['2026-09-24 00:30'];
+  if (key === 'cities.balance')     return ['2026-09-24 00:23', '2026-09-24 21:00'];
+  if (key === 'cities.population')  return ['2026-09-24 00:30', '2026-09-24 21:00'];
+  if (key === 'cities.size')        return ['2026-09-24 00:30', '2026-09-24 21:00'];
+  if (key === 'players.balance')    return ['2026-09-24 00:30', '2026-09-24 21:00'];
+  if (key === 'players.active')     return ['2026-08-20 07:10', '2026-09-24 00:30', '2026-09-24 21:00'];
+  if (key === 'players.shards')     return ['2026-09-24 00:30', '2026-09-24 21:00'];
+  if (key === 'players.rubies')     return ['2026-09-24 00:30', '2026-09-24 21:00'];
+  if (key === 'nations.balance')    return ['2026-09-24 00:30', '2026-09-24 21:00'];
+  if (key === 'nations.size')       return ['2026-09-24 00:30', '2026-09-24 21:00'];
+  if (key === 'nations.citizens')   return ['2026-09-24 00:30', '2026-09-24 21:00'];
+  return ['2026-09-24 21:00'];
 }
 
 function sectionHasAllTime(key) {
@@ -858,11 +923,11 @@ function renderPlayers() {
   const activeKey = 'players.active';
   const active = DATA.players.active;
   const activeSt = sectionState[activeKey];
-  const activeDates = active.dates;
+  const activeDates = Object.keys(active).sort();
   let activeList, activeHeading, activeBadge = '', activeArrows = null;
   if (activeSt.allTime) {
     const best = {};
-    Object.values(active.snapshots).forEach(snap => {
+    Object.values(active).forEach(snap => {
       snap.forEach(it => {
         const nk = it.name.toLowerCase();
         if (!best[nk] || it.value > best[nk].value) best[nk] = { ...it };
@@ -872,15 +937,14 @@ function renderPlayers() {
     activeHeading = 'за всё время наблюдений — с 24 сентября';
     activeBadge = '<span class="badge-alltime">ЗА ВСЁ ВРЕМЯ</span>';
   } else {
-    activeList = active.snapshots[activeSt.date] || [];
+    activeList = active[activeSt.date] || [];
     const idx = activeDates.indexOf(activeSt.date);
-    if (idx > 0) activeArrows = computeArrow(activeList, active.snapshots[activeDates[idx - 1]]);
+    if (idx > 0) activeArrows = computeArrow(activeList, active[activeDates[idx - 1]]);
     activeHeading = fmtDate(activeSt.date) + ' МСК · по игровому времени';
   }
   html += `<div class="card">
     ${cardHeader(activeKey, '🎮 Топ самых активных игроков', activeHeading, activeBadge)}
     ${renderTopList(activeList, '', activeArrows)}
-    ${active.note ? `<div class="card-note">${active.note}</div>` : ''}
   </div>`;
 
   const shardsKey = 'players.shards';
