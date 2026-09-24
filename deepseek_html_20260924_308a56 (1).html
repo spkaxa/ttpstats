@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Загрузка данных в Firebase</title>
+<style>
+  body {
+    font-family: -apple-system, sans-serif; background: #0d0d10; color: #e8e8ee;
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    margin: 0; padding: 20px;
+  }
+  .box {
+    background: #16161c; border: 1px solid #2a2a36; border-radius: 12px;
+    padding: 40px 50px; max-width: 560px; width: 100%; text-align: center;
+  }
+  h1 { font-size: 22px; margin-bottom: 8px; color: #f5a623; }
+  p { color: #9a9aa8; font-size: 13px; margin-bottom: 24px; line-height: 1.6; }
+  button {
+    background: linear-gradient(135deg, #f5a623, #ffc857); color: #000;
+    border: none; padding: 14px 32px; border-radius: 8px; font-size: 15px;
+    font-weight: 800; cursor: pointer; letter-spacing: 1px;
+    transition: all .2s; font-family: inherit;
+  }
+  button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245,166,35,.4); }
+  button:disabled { opacity: 0.5; cursor: wait; }
+  #log {
+    background: #0d0d10; border: 1px solid #2a2a36; border-radius: 8px;
+    padding: 16px; margin-top: 24px; font-family: monospace; font-size: 12px;
+    text-align: left; max-height: 300px; overflow-y: auto; color: #9a9aa8;
+    display: none;
+  }
+  #log.show { display: block; }
+  #log .ok { color: #4ade80; }
+  #log .err { color: #ef4444; }
+  #log .info { color: #fbbf24; }
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>🔥 Загрузка данных в Firebase</h1>
+  <p>Эта страница зальёт все данные из твоей статистики в Firebase Realtime Database. Запускается один раз — потом просто обновляй нужные разделы через Firebase Console.</p>
+  <button id="upload-btn">▶ НАЧАТЬ ЗАГРУЗКУ</button>
+  <div id="log"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC0rNfKYADXZLjMiXGy9inUzZmw-xYn160",
+  authDomain: "ttpstatsof.firebaseapp.com",
+  projectId: "ttpstatsof",
+  storageBucket: "ttpstatsof.firebasestorage.app",
+  messagingSenderId: "315139227692",
+  appId: "1:315139227692:web:dec167343ae2245ca11189",
+  databaseURL: "https://ttpstatsof-default-rtdb.europe-west1.firebasedatabase.app"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+/* =========================================================
+   ДАННЫЕ (копия из index.html)
+   ========================================================= */
+const DATA = {
+  cities: {
+    balance: {
+      snapshots: {
+        '2026-09-23 05:20': { 'seapure': 3917.00 },
+        '2026-09-24 00:09': { 'seapure': 3591.69 },
+        '2026-09-24 00:14': { 'рим': 13374.32, 'seapure': 3591.69 },
+        '2026-09-24 00:15': { 'рига': 22196.82, 'рим': 13374.32, 'кельн': 2289.55, 'seapure': 3591.69 },
+        '2026-09-24 00:17': { 'рига': 22196.82, 'рим': 13374.32, 'иокогама': 6034.34, 'макондо': 5143.74, 'кельн': 2289.55, 'seapure': 3591.69 },
+        '2026-09-24 00:18': { 'рига': 22196.82, 'рим': 13374.32, 'иокогама': 6034.34, 'макондо': 5143.74, 'французская_империя': 4107.64, 'кельн': 2289.55, 'seapure': 3591.69 },
+        '2026-09-24 00:19': { 'рига': 22196.82, 'рим': 13374.32, 'иокогама': 6034.34, 'лазурный_стокгольм': 5409.59, 'макондо': 5143.74, 'французская_империя': 4107.64, 'seapure': 3591.69, 'великие_нидерланды': 2378.07, 'кельн': 2289.55 },
+        '2026-09-24 00:20': { 'рига': 22196.82, 'рим': 13374.32, 'иокогама': 6034.34, 'лазурный_стокгольм': 5409.59, 'макондо': 5143.74, 'французская_империя': 4107.64, 'seapure': 3591.69, 'великие_нидерланды': 2378.07, 'кельн': 2289.55, 'царство_кемет-ра': 2029.39 },
+        '2026-09-24 00:23': { 'рига': 22204.90, 'рим': 13380.03, 'иокогама': 6034.34, 'лазурный_стокгольм': 5411.42, 'макондо': 5143.74, 'французская_империя': 4111.85, 'mimika': 3670.64, 'seapure': 3598.79, 'florida': 3588.61, 'hamburg': 2734.43 },
+      },
+      histories: {
+        'seapure': [
+          { date:'2026-09-23 05:20', value:3917.00 },
+          { date:'2026-09-24 00:09', value:3591.69 },
+          { date:'2026-09-24 00:14', value:3591.69 },
+          { date:'2026-09-24 00:15', value:3591.69 },
+          { date:'2026-09-24 00:17', value:3591.69 },
+          { date:'2026-09-24 00:20', value:3591.69 },
+          { date:'2026-09-24 00:23', value:3598.79 },
+        ],
+        'рига': [{ date:'2026-09-24 00:15', value:22196.82 }, { date:'2026-09-24 00:23', value:22204.90 }],
+        'рим': [{ date:'2026-09-24 00:14', value:13374.32 }, { date:'2026-09-24 00:23', value:13380.03 }],
+        'иокогама': [{ date:'2026-09-24 00:17', value:6034.34 }, { date:'2026-09-24 00:23', value:6034.34 }],
+        'лазурный_стокгольм': [{ date:'2026-09-24 00:19', value:5409.59 }, { date:'2026-09-24 00:23', value:5411.42 }],
+        'макондо': [{ date:'2026-09-24 00:17', value:5143.74 }, { date:'2026-09-24 00:23', value:5143.74 }],
+        'французская_империя': [{ date:'2026-09-24 00:18', value:4107.64 }, { date:'2026-09-24 00:23', value:4111.85 }],
+        'mimika': [{ date:'2026-09-24 00:23', value:3670.64 }],
+        'florida': [{ date:'2026-09-24 00:23', value:3588.61 }],
+        'hamburg': [{ date:'2026-09-24 00:23', value:2734.43 }],
+      },
+    },
+    population: {
+      '2026-09-24 00:30': {
+        'Рим': 160, 'Рига': 142, 'Кавказский_Халифат': 119, 'Ульяновск': 115,
+        'Шмаледуйск': 102, 'Томская_Империя': 77, 'Лазурный_Стокгольм': 66,
+        'Los_Angeles': 55, 'Ufa': 54, 'Германская_Империя': 52,
+      }
+    },
+    size: {
+      '2026-09-24 00:30': {
+        'Рига': 8927, 'Рим': 7961, 'Кавказский_Халифат': 3899, 'Иокогама': 3582,
+        'Ворона': 3168, 'Клан_Китайцев': 2808, 'Seapure': 2424,
+        'Лазурный_Стокгольм': 2310, 'Великие_Нидерланды': 1800, 'Французская_Империя': 1786,
+      }
+    }
+  },
+
+  players: {
+    balance: {
+      '2026-09-24 00:30': {
+        'merqq': 50203.08, 'elena3e3': 16294.95, '5ekas': 15755.60,
+        'deekrush': 14299.55, 'ivan3754': 11681.00, 'laggez': 3509.01,
+        'urbosindustries': 3111.00, 'makph': 3065.00,
+        'destr0yer_n1mer': 2831.75, 'bryhhht': 2520.52,
+      }
+    },
+    active: {
+      '2026-08-20 07:10': {
+        'xxspk':          { value: 8*86400 + 9*3600 + 30*60 + 48, display:'8д 9ч 30м 48с' },
+        'timoxa_pistol':  { value: 5*86400 + 17*3600 + 35*60 + 26, display:'5д 17ч 35м 26с' },
+        'gogojojohf':     { value: 5*86400 + 2*3600 + 18*60 + 7,   display:'5д 2ч 18м 7с' },
+        'Gotopot753':     { value: 5*86400 + 2*3600 + 7*60 + 35,   display:'5д 2ч 7м 35с' },
+        'afarstic':       { value: 4*86400 + 20*3600 + 45*60,      display:'4д 20ч 45м' },
+        'qilvin':         { value: 4*86400 + 14*3600 + 14*60 + 23, display:'4д 14ч 14м 23с' },
+        'Vovthik882282':  { value: 4*86400 + 14*3600 + 6*60 + 33,  display:'4д 14ч 6м 33с' },
+        'hrhwq':          { value: 4*86400 + 13*3600 + 29*60 + 2,  display:'4д 13ч 29м 2с' },
+        'cartez_ru':      { value: 4*86400 + 5*3600 + 51*60 + 1,   display:'4д 5ч 51м 1с' },
+        'Ivan3754':       { value: 4*86400 + 1*3600 + 44*60 + 14,  display:'4д 1ч 44м 14с' },
+      },
+      '2026-09-24 00:30': {
+        'timoxa_pistol':  { value: 21*86400 + 20*3600 + 48*60 + 47, display:'21д 20ч 48м 47с' },
+        'afarstic':       { value: 18*86400 + 23*3600 + 23*60 + 31, display:'18д 23ч 23м 31с' },
+        'UznikKrasnBel':  { value: 15*86400 + 15*3600 + 29*60 + 58, display:'15д 15ч 29м 58с', sub:'(кастом ник)' },
+        'Frasie':         { value: 14*86400 + 16*3600 + 4*60 + 31,  display:'14д 16ч 4м 31с' },
+        'cartez_ru':      { value: 14*86400 + 11*3600 + 40*60 + 55, display:'14д 11ч 40м 55с' },
+        'shanci':         { value: 13*86400 + 14*3600 + 25*60 + 59, display:'13д 14ч 25м 59с' },
+        'Georg_23':       { value: 13*86400 + 12*3600 + 52*60 + 15, display:'13д 12ч 52м 15с' },
+        'KomiK0':         { value: 12*86400 + 23*3600 + 17*60,      display:'12д 23ч 17м', sub:'(кастом ник)' },
+        'Lunari2231':     { value: 12*86400 + 6*3600 + 8*60 + 29,   display:'12д 6ч 8м 29с' },
+        'Deekrush':       { value: 12*86400 + 4*3600 + 54*60 + 32,  display:'12д 4ч 54м 32с' },
+      },
+    },
+    shards: {
+      '2026-09-24 00:30': {
+        'kaba_day': 56, 'FrazerS': 52, 'shanci': 22, 'Streifka': 13,
+        'HyperSuper': 8, 'Vlad4631': 3, 'Kise156567': 3,
+        'HE_3adrot': 2, 'TASIS': 1, 'kqkqha': 1,
+      }
+    },
+    rubies: {
+      '2026-09-24 00:30': {
+        'elena3e3': 291208, 'el_diablo': 259159, 'chonka221': 164633,
+        'triadamc': 161456, 'okoscheio': 116505, 'laggez': 106571,
+        'thethether': 95067, 'myro_okada': 67920,
+        'toxic22222': 60953, 'vk2409': 48020,
+      }
+    }
+  },
+
+  nations: {
+    balance: {
+      '2026-09-24 00:30': {
+        'Octagrama': 1230.00, 'SPQR': 237.00, 'Носочки_Ангелкас': 73.00,
+        'Ось': 19.00, 'ChN1': 15.75, 'NATO': 0.50,
+      }
+    },
+    size: {
+      '2026-09-24 00:30': {
+        'SPQR': 74, 'NATO': 58, 'Octagrama': 46,
+        'ChN1': 26, 'Ось': 8, 'Носочки_Ангелкас': 2,
+      }
+    },
+    citizens: {
+      '2026-09-24 00:30': {
+        'SPQR': 957, 'NATO': 600, 'Octagrama': 481,
+        'ChN1': 296, 'Ось': 137, 'Носочки_Ангелкас': 21,
+      }
+    }
+  },
+
+  wars: [
+    { date:'12–13 сентября', team1:'Латексные_мальчики', team2:'королевство_брдыщей', winner:2, faction:'kvkz' },
+    { date:'6–7 сентября',   team1:'australia',          team2:'dtkl',               winner:1, faction:null },
+    { date:'6–7 сентября',   team1:'бонхедск',           team2:'ave_eclipse',        winner:1, faction:null },
+    { date:'5–6 сентября',   team1:'ave_изенгард',       team2:'остров_эпштейна',    winner:2, faction:'spqr' },
+    { date:'5–6 сентября',   team1:'кират',              team2:'фарерские_острова',  winner:1, faction:null },
+    { date:'4 сентября',     team1:'ave_изенгард',       team2:'braavos',            winner:1, faction:'kvkz' },
+    { date:'2–3 сентября',   team1:'латексные мальчики', team2:'нью-йорк',           winner:1, faction:'spqr' },
+    { date:'31 августа',     team1:'святая_империя',     team2:'tunibia',            winner:2, faction:null },
+    { date:'25 августа',     team1:'португалия',         team2:'almata',             winner:1, faction:null },
+  ],
+};
+
+/* =========================================================
+   ЛОГИКА ЗАГРУЗКИ
+   ========================================================= */
+const logEl = document.getElementById('log');
+const btn = document.getElementById('upload-btn');
+
+function log(msg, cls = '') {
+  logEl.classList.add('show');
+  const line = document.createElement('div');
+  if (cls) line.className = cls;
+  line.textContent = msg;
+  logEl.appendChild(line);
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+btn.onclick = async () => {
+  btn.disabled = true;
+  btn.textContent = 'ЗАГРУЗКА...';
+  logEl.innerHTML = '';
+  log('▶ Начинаю загрузку данных в Firebase...', 'info');
+
+  try {
+    // Основной объект
+    await set(ref(db, 'stats/cities/balance/snapshots'), DATA.cities.balance.snapshots);
+    log('✓ Города → баланс (snapshots)', 'ok');
+
+    await set(ref(db, 'stats/cities/balance/histories'), DATA.cities.balance.histories);
+    log('✓ Города → баланс (histories)', 'ok');
+
+    await set(ref(db, 'stats/cities/population'), DATA.cities.population);
+    log('✓ Города → население', 'ok');
+
+    await set(ref(db, 'stats/cities/size'), DATA.cities.size);
+    log('✓ Города → размер', 'ok');
+
+    await set(ref(db, 'stats/players/balance'), DATA.players.balance);
+    log('✓ Игроки → баланс', 'ok');
+
+    await set(ref(db, 'stats/players/active'), DATA.players.active);
+    log('✓ Игроки → активные', 'ok');
+
+    await set(ref(db, 'stats/players/shards'), DATA.players.shards);
+    log('✓ Игроки → осколки', 'ok');
+
+    await set(ref(db, 'stats/players/rubies'), DATA.players.rubies);
+    log('✓ Игроки → рубины', 'ok');
+
+    await set(ref(db, 'stats/nations/balance'), DATA.nations.balance);
+    log('✓ Нации → баланс', 'ok');
+
+    await set(ref(db, 'stats/nations/size'), DATA.nations.size);
+    log('✓ Нации → размер', 'ok');
+
+    await set(ref(db, 'stats/nations/citizens'), DATA.nations.citizens);
+    log('✓ Нации → граждане', 'ok');
+
+    await set(ref(db, 'stats/wars'), DATA.wars);
+    log('✓ Войны вайпа', 'ok');
+
+    log('', '');
+    log('🎉 ГОТОВО! Все данные загружены в Firebase.', 'ok');
+    log('Теперь открой свой сайт — кружок в правом верхнем углу должен стать зелёным.', 'info');
+
+    btn.textContent = '✓ ГОТОВО';
+  } catch (e) {
+    log('❌ ОШИБКА: ' + e.message, 'err');
+    log('Проверь правила Firebase (Rules). Должно быть:', 'err');
+    log('{ "rules": { "stats": { ".read": true, ".write": true } } }', 'info');
+    btn.disabled = false;
+    btn.textContent = '↻ ПОПРОБОВАТЬ СНОВА';
+  }
+};
+</script>
+</body>
+</html>
