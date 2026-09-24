@@ -34,7 +34,6 @@ body {
 }
 body.light { background-image: radial-gradient(ellipse at top, rgba(180,83,9,.08), transparent 60%); }
 
-/* VISITS COUNTER */
 #visits-counter {
   position: fixed; top: 18px; left: 22px; z-index: 999;
   font-size: 11px; letter-spacing: 1.5px;
@@ -367,6 +366,7 @@ footer .sep { margin:8px 0; color:var(--border); }
       <li>Приходи и сражайся!</li>
     </ul>
     <div class="ad-highlight">🛒 Скоро тут же откроется магазин</div>
+    <div class="ad-highlight" style="margin-top:10px">⬇️ А также скоро откроется <b>ПВП подвал под ареной</b> — там будет сложно отлиться, и не будет никаких препятствий. Чистая арена для настоящих дуэлей!</div>
   </div>
 </div>
 
@@ -415,14 +415,12 @@ footer .sep { margin:8px 0; color:var(--border); }
       }
     })();
 
-    // === Счётчик посещений ===
     (async () => {
       try {
         const visitsRef = ref(fbDb, 'visits/count');
         const snap = await get(visitsRef);
         let count = snap.exists() ? (snap.val() || 0) : 0;
 
-        // Считаем 1 раз за сессию (не на каждое обновление страницы)
         if (!sessionStorage.getItem('ttp_visit_counted')) {
           count = count + 1;
           try { await set(visitsRef, count); } catch(e) { console.warn('[Visits] не удалось записать:', e.message); }
@@ -431,7 +429,6 @@ footer .sep { margin:8px 0; color:var(--border); }
 
         visitsEl.textContent = '👁 ' + count.toLocaleString('ru-RU');
       } catch (e) {
-        // Firebase недоступен — покажем локальный счётчик из localStorage
         let localCount = parseInt(localStorage.getItem('ttp_visits_local') || '0');
         if (!sessionStorage.getItem('ttp_visit_counted')) {
           localCount++;
@@ -758,9 +755,24 @@ function fmtNumber(v) {
     maximumFractionDigits: 2,
   });
 }
+
+// Алиасы — если игрок пишется по-разному в разных датах
+const NAME_ALIASES = {
+  'merrqq': 'merqq',
+  'merrq': 'merqq',
+  'merq': 'merqq',
+  // cartez_ru1 = cartez_ru (для новой даты)
+  'cartez_ru1': 'cartez_ru',
+  // регистр ников не важен — normalizeKey всё приводит к нижнему
+  // добавляй сюда новые алиасы если найдутся ещё несовпадения
+};
+
 function normalizeKey(name) {
-  return name.toLowerCase().replace('французкая', 'французская').trim();
+  let k = name.toLowerCase().replace('французкая', 'французская').trim();
+  if (NAME_ALIASES[k]) k = NAME_ALIASES[k];
+  return k;
 }
+
 function computeArrow(currentList, prevList) {
   const map = {};
   if (prevList) prevList.forEach((it, i) => { map[normalizeKey(it.name)] = i + 1; });
