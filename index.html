@@ -34,6 +34,21 @@ body {
 }
 body.light { background-image: radial-gradient(ellipse at top, rgba(180,83,9,.08), transparent 60%); }
 
+/* VISITS COUNTER */
+#visits-counter {
+  position: fixed; top: 18px; left: 22px; z-index: 999;
+  font-size: 11px; letter-spacing: 1.5px;
+  color: var(--text3);
+  background: var(--bg2); border: 1px solid var(--border);
+  padding: 6px 12px; border-radius: 12px;
+  font-weight: 600;
+  opacity: 0.4;
+  transition: opacity .3s;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+#visits-counter:hover { opacity: 1; }
+
 .top-controls {
   position:fixed; top:18px; right:18px; z-index:999;
   display:flex; flex-direction:column; gap:8px; align-items:flex-end;
@@ -75,7 +90,7 @@ header {
   padding:36px 24px 22px; border-bottom:1px solid var(--border);
   background: var(--header-bg);
 }
-.header-inner { max-width:1100px; margin:0 auto; padding-right: 130px; }
+.header-inner { max-width:1100px; margin:0 auto; padding: 0 130px 0 130px; }
 h1 {
   font-size:34px; font-weight:800; letter-spacing:-0.6px; margin-bottom:6px;
   background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 100%);
@@ -265,11 +280,12 @@ body.light .war-result .faction { background:#fff; }
   .top-controls { top:12px; right:12px; }
   #theme-toggle { width:38px; height:38px; font-size:16px; }
   #vol-slider { width: 60px; }
-  .header-inner { padding-right: 80px; }
+  .header-inner { padding: 0 80px 0 90px; }
   .ads-row { grid-template-columns: 1fr; }
   .ad-slot { height: 70px; }
   .sec-date-wrap label { display: none; }
   .sec-date { min-width: 110px; font-size: 11px; }
+  #visits-counter { top: 12px; left: 12px; font-size: 10px; padding: 5px 10px; }
 }
 
 footer {
@@ -291,6 +307,8 @@ footer .sep { margin:8px 0; color:var(--border); }
 </head>
 <body>
 
+<div id="visits-counter" title="Просмотры сайта">👁 …</div>
+
 <div class="top-controls">
   <button id="theme-toggle" title="Переключить тему">☀️</button>
   <div class="music-row">
@@ -309,7 +327,7 @@ footer .sep { margin:8px 0; color:var(--border); }
     <h1>timetoplay stats <span class="version-badge">v1.0.0</span></h1>
     <div class="subtitle">статистика timetoplay по датам — ttpstats</div>
     <div class="subtitle-future">⚡ скоро будут обновления — больше функций и топов</div>
-    <div class="creator">создатель <b style="color:var(--text)">xxspk</b> · telegram <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></div>
+    <div class="creator">создатель xxspk - телеграмм <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a>, made in arbuzovsk</div>
   </div>
 </header>
 
@@ -355,7 +373,7 @@ footer .sep { margin:8px 0; color:var(--border); }
 <!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyC0rNfKYADXZLjMiXGy9inUzZmw-xYn160",
@@ -369,12 +387,14 @@ footer .sep { margin:8px 0; color:var(--border); }
 
   let fbApp = null, fbDb = null;
   const statusEl = document.getElementById('db-status');
+  const visitsEl = document.getElementById('visits-counter');
 
   try {
     fbApp = initializeApp(firebaseConfig);
     fbDb = getDatabase(fbApp);
     window.__firebase = { app: fbApp, db: fbDb, ref, get };
     console.log('[Firebase] Инициализация прошла успешно');
+
     (async () => {
       try {
         const testRef = ref(fbDb, 'stats');
@@ -394,10 +414,40 @@ footer .sep { margin:8px 0; color:var(--border); }
         console.warn('[Firebase] Ошибка чтения:', e.message);
       }
     })();
+
+    // === Счётчик посещений ===
+    (async () => {
+      try {
+        const visitsRef = ref(fbDb, 'visits/count');
+        const snap = await get(visitsRef);
+        let count = snap.exists() ? (snap.val() || 0) : 0;
+
+        // Считаем 1 раз за сессию (не на каждое обновление страницы)
+        if (!sessionStorage.getItem('ttp_visit_counted')) {
+          count = count + 1;
+          try { await set(visitsRef, count); } catch(e) { console.warn('[Visits] не удалось записать:', e.message); }
+          sessionStorage.setItem('ttp_visit_counted', '1');
+        }
+
+        visitsEl.textContent = '👁 ' + count.toLocaleString('ru-RU');
+      } catch (e) {
+        // Firebase недоступен — покажем локальный счётчик из localStorage
+        let localCount = parseInt(localStorage.getItem('ttp_visits_local') || '0');
+        if (!sessionStorage.getItem('ttp_visit_counted')) {
+          localCount++;
+          localStorage.setItem('ttp_visits_local', localCount);
+          sessionStorage.setItem('ttp_visit_counted', '1');
+        }
+        visitsEl.textContent = '👁 ' + localCount.toLocaleString('ru-RU') + ' (лок)';
+        console.warn('[Visits] Firebase недоступен, использую локальный:', e.message);
+      }
+    })();
+
   } catch (e) {
     statusEl.className = 'offline';
     statusEl.title = 'Firebase не подключился';
     console.warn('[Firebase] Ошибка инициализации:', e.message);
+    visitsEl.textContent = '👁 —';
   }
 </script>
 
@@ -506,7 +556,7 @@ const DATA = {
         { name:'Кавказский_Халифат', value:3899 }, { name:'Иокогама', value:3582 },
         { name:'Ворона', value:3168 }, { name:'Клан_Китайцев', value:2808 },
         { name:'Seapure', value:2791 }, { name:'Лазурный_Стокгольм', value:2310 },
-        { name:'Великие_Нидерланды', value:1800 }, { name:'Французская_Империя', value:1787 },
+        { name:'Великие_Нидерланды', value:1808 }, { name:'Французская_Империя', value:1787 },
       ]
     }
   },
@@ -874,50 +924,68 @@ function renderLineChart(history) {
 
 function renderCities() {
   let html = '';
+
   const bal = DATA.cities.balance;
   const balKey = 'cities.balance';
   const balSt = sectionState[balKey];
-  let balList, balHeading, balBadge = '';
+  const balDates = getSectionDates(balKey);
+  let balList, balHeading, balBadge = '', balArrows = null;
   if (balSt.allTime) {
     balList = collectAllTime(bal.snapshots).slice(0, 10);
     balHeading = 'за всё время наблюдений — с 24 сентября';
     balBadge = '<span class="badge-alltime">ЗА ВСЁ ВРЕМЯ</span>';
   } else {
     balList = bal.snapshots[balSt.date] || [];
+    const idx = balDates.indexOf(balSt.date);
+    if (idx > 0) balArrows = computeArrow(balList, bal.snapshots[balDates[idx - 1]]);
     balHeading = fmtDate(balSt.date) + ' МСК';
   }
   html += `<div class="card">
     ${cardHeader(balKey, '📊 Топ городов по балансу', balHeading, balBadge)}
-    ${renderTopList(balList, ' ₽', null)}
+    ${renderTopList(balList, ' ₽', balArrows)}
     ${bal.note ? `<div class="card-note">${bal.note}</div>` : ''}
   </div>`;
 
   const popKey = 'cities.population';
   const popDate = sectionState[popKey].date;
+  const popDates = getSectionDates(popKey);
   const popList = DATA.cities.population[popDate] || [];
+  let popArrows = null;
+  const popIdx = popDates.indexOf(popDate);
+  if (popIdx > 0) popArrows = computeArrow(popList, DATA.cities.population[popDates[popIdx - 1]]);
   html += `<div class="card">
     ${cardHeader(popKey, '👥 Топ городов по населению', fmtDate(popDate) + ' МСК')}
-    ${renderTopList(popList, ' 👤', null)}
+    ${renderTopList(popList, ' 👤', popArrows)}
   </div>`;
 
   const sizeKey = 'cities.size';
   const sizeDate = sectionState[sizeKey].date;
+  const sizeDates = getSectionDates(sizeKey);
   const sizeList = DATA.cities.size[sizeDate] || [];
+  let sizeArrows = null;
+  const sizeIdx = sizeDates.indexOf(sizeDate);
+  if (sizeIdx > 0) sizeArrows = computeArrow(sizeList, DATA.cities.size[sizeDates[sizeIdx - 1]]);
   html += `<div class="card">
     ${cardHeader(sizeKey, '📏 Топ городов по размеру', fmtDate(sizeDate) + ' МСК')}
-    ${renderTopList(sizeList, ' ⬛', null)}
+    ${renderTopList(sizeList, ' ⬛', sizeArrows)}
   </div>`;
+
   return html;
 }
 
 function renderPlayers() {
   let html = '';
+
   const balKey = 'players.balance';
   const balDate = sectionState[balKey].date;
+  const balDates = getSectionDates(balKey);
   const balList = DATA.players.balance[balDate] || [];
+  let balArrows = null;
+  const balIdx = balDates.indexOf(balDate);
+  if (balIdx > 0) balArrows = computeArrow(balList, DATA.players.balance[balDates[balIdx - 1]]);
   html += `<div class="card">
     ${cardHeader(balKey, '💰 Топ по балансу игрока', fmtDate(balDate) + ' МСК')}
-    ${renderTopList(balList, ' ₽', null)}
+    ${renderTopList(balList, ' ₽', balArrows)}
   </div>`;
 
   const activeKey = 'players.active';
@@ -949,45 +1017,71 @@ function renderPlayers() {
 
   const shardsKey = 'players.shards';
   const shardsDate = sectionState[shardsKey].date;
+  const shardsDates = getSectionDates(shardsKey);
   const shardsList = DATA.players.shards[shardsDate] || [];
+  let shardsArrows = null;
+  const shardsIdx = shardsDates.indexOf(shardsDate);
+  if (shardsIdx > 0) shardsArrows = computeArrow(shardsList, DATA.players.shards[shardsDates[shardsIdx - 1]]);
   html += `<div class="card">
     ${cardHeader(shardsKey, '◆ Топ по осколкам', fmtDate(shardsDate) + ' МСК')}
-    ${renderTopList(shardsList, ' ◆', null)}
+    ${renderTopList(shardsList, ' ◆', shardsArrows)}
   </div>`;
 
   const rubiesKey = 'players.rubies';
   const rubiesDate = sectionState[rubiesKey].date;
+  const rubiesDates = getSectionDates(rubiesKey);
   const rubiesList = DATA.players.rubies[rubiesDate] || [];
+  let rubiesArrows = null;
+  const rubiesIdx = rubiesDates.indexOf(rubiesDate);
+  if (rubiesIdx > 0) rubiesArrows = computeArrow(rubiesList, DATA.players.rubies[rubiesDates[rubiesIdx - 1]]);
   html += `<div class="card">
     ${cardHeader(rubiesKey, '💎 Топ по рубинам', fmtDate(rubiesDate) + ' МСК')}
-    ${renderTopList(rubiesList, ' 💎', null)}
+    ${renderTopList(rubiesList, ' 💎', rubiesArrows)}
     ${DATA.players.rubies.note ? `<div class="card-note">${DATA.players.rubies.note}</div>` : ''}
   </div>`;
+
   return html;
 }
 
 function renderNations() {
   let html = '';
+
   const balKey = 'nations.balance';
   const balDate = sectionState[balKey].date;
+  const balDates = getSectionDates(balKey);
+  const balList = DATA.nations.balance[balDate] || [];
+  let balArrows = null;
+  const balIdx = balDates.indexOf(balDate);
+  if (balIdx > 0) balArrows = computeArrow(balList, DATA.nations.balance[balDates[balIdx - 1]]);
   html += `<div class="card">
     ${cardHeader(balKey, '💰 Топ наций по балансу', fmtDate(balDate) + ' МСК')}
-    ${renderTopList(DATA.nations.balance[balDate], ' ₽', null)}
+    ${renderTopList(balList, ' ₽', balArrows)}
   </div>`;
 
   const sizeKey = 'nations.size';
   const sizeDate = sectionState[sizeKey].date;
+  const sizeDates = getSectionDates(sizeKey);
+  const sizeList = DATA.nations.size[sizeDate] || [];
+  let sizeArrows = null;
+  const sizeIdx = sizeDates.indexOf(sizeDate);
+  if (sizeIdx > 0) sizeArrows = computeArrow(sizeList, DATA.nations.size[sizeDates[sizeIdx - 1]]);
   html += `<div class="card">
     ${cardHeader(sizeKey, '📏 Топ наций по размеру', fmtDate(sizeDate) + ' МСК')}
-    ${renderTopList(DATA.nations.size[sizeDate], ' ⬛', null)}
+    ${renderTopList(sizeList, ' ⬛', sizeArrows)}
   </div>`;
 
   const citKey = 'nations.citizens';
   const citDate = sectionState[citKey].date;
+  const citDates = getSectionDates(citKey);
+  const citList = DATA.nations.citizens[citDate] || [];
+  let citArrows = null;
+  const citIdx = citDates.indexOf(citDate);
+  if (citIdx > 0) citArrows = computeArrow(citList, DATA.nations.citizens[citDates[citIdx - 1]]);
   html += `<div class="card">
     ${cardHeader(citKey, '👥 Топ наций по гражданам', fmtDate(citDate) + ' МСК')}
-    ${renderTopList(DATA.nations.citizens[citDate], ' 👤', null)}
+    ${renderTopList(citList, ' 👤', citArrows)}
   </div>`;
+
   return html;
 }
 
