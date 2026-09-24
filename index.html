@@ -36,15 +36,11 @@ body.light { background-image: radial-gradient(ellipse at top, rgba(180,83,9,.08
 
 #visits-counter {
   position: fixed; top: 18px; left: 22px; z-index: 999;
-  font-size: 11px; letter-spacing: 1.5px;
-  color: var(--text3);
+  font-size: 11px; letter-spacing: 1.5px; color: var(--text3);
   background: var(--bg2); border: 1px solid var(--border);
-  padding: 6px 12px; border-radius: 12px;
-  font-weight: 600;
-  opacity: 0.4;
-  transition: opacity .3s;
-  font-variant-numeric: tabular-nums;
-  user-select: none;
+  padding: 6px 12px; border-radius: 12px; font-weight: 600;
+  opacity: 0.4; transition: opacity .3s;
+  font-variant-numeric: tabular-nums; user-select: none;
 }
 #visits-counter:hover { opacity: 1; }
 
@@ -52,6 +48,17 @@ body.light { background-image: radial-gradient(ellipse at top, rgba(180,83,9,.08
   position:fixed; top:18px; right:18px; z-index:999;
   display:flex; flex-direction:column; gap:8px; align-items:flex-end;
 }
+#auth-btn {
+  background: var(--bg2); border: 1px solid var(--border);
+  color: var(--text); padding: 9px 16px; border-radius: 20px;
+  font-size: 12px; cursor: pointer; font-family: inherit;
+  font-weight: 700; letter-spacing: .5px;
+  transition: all .2s; box-shadow: 0 2px 10px rgba(0,0,0,.15);
+  display: flex; align-items: center; gap: 6px;
+}
+#auth-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+#auth-btn.logged { color: var(--green); border-color: var(--green); }
+
 #theme-toggle {
   width: 44px; height: 44px; border-radius: 50%;
   background: var(--bg2); border: 1px solid var(--border);
@@ -85,11 +92,66 @@ body.light { background-image: radial-gradient(ellipse at top, rgba(180,83,9,.08
 #db-status.loading { background: #fbbf24; animation: pulse 1s infinite; }
 @keyframes pulse { 0%,100% { opacity:1 } 50% { opacity:0.4 } }
 
+/* AUTH MODAL */
+.auth-modal {
+  position: fixed; inset: 0; z-index: 1100;
+  background: rgba(0,0,0,0.85); backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center; padding: 20px;
+}
+.auth-modal.open { display: flex; animation: fadeIn .25s; }
+.auth-box {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 28px 32px; max-width: 400px; width: 100%;
+  position: relative; animation: slideUp .3s;
+}
+.auth-box h2 { font-size: 20px; margin-bottom: 6px; color: var(--accent); }
+.auth-box .sub { color: var(--text3); font-size: 12px; margin-bottom: 20px; }
+.auth-tabs { display: flex; gap: 4px; margin-bottom: 20px; }
+.auth-tabs button {
+  flex: 1; padding: 10px; border: none; background: var(--bg3);
+  color: var(--text2); font-family: inherit; font-size: 13px;
+  cursor: pointer; border-radius: 6px; font-weight: 700;
+  transition: all .15s;
+}
+.auth-tabs button.active { background: var(--accent); color: #000; }
+.auth-field { margin-bottom: 14px; }
+.auth-field label {
+  display: block; font-size: 11px; color: var(--text3);
+  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px;
+  font-weight: 700;
+}
+.auth-field input {
+  width: 100%; padding: 11px 14px;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text); font-family: inherit; font-size: 14px;
+  border-radius: 6px; transition: all .15s;
+}
+.auth-field input:focus { outline: none; border-color: var(--accent); }
+.auth-submit {
+  width: 100%; padding: 13px; margin-top: 6px;
+  background: linear-gradient(135deg, #f5a623, #ffc857); color: #000;
+  border: none; border-radius: 8px; font-size: 14px; font-weight: 800;
+  letter-spacing: 1px; cursor: pointer; font-family: inherit;
+  transition: all .15s;
+}
+.auth-submit:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(245,166,35,.3); }
+.auth-submit:disabled { opacity: .5; cursor: wait; }
+.auth-msg { font-size: 12px; margin-top: 14px; text-align: center; min-height: 18px; }
+.auth-msg.err { color: var(--red); }
+.auth-msg.ok { color: var(--green); }
+.auth-logout {
+  width: 100%; padding: 10px; margin-top: 18px;
+  background: transparent; border: 1px solid var(--red); color: var(--red);
+  border-radius: 6px; font-size: 12px; font-weight: 700; letter-spacing: 1px;
+  cursor: pointer; font-family: inherit;
+}
+.auth-logout:hover { background: var(--red); color: #fff; }
+
 header {
   padding:36px 24px 22px; border-bottom:1px solid var(--border);
   background: var(--header-bg);
 }
-.header-inner { max-width:1100px; margin:0 auto; padding: 0 130px 0 130px; }
+.header-inner { max-width:1100px; margin:0 auto; padding: 0 200px 0 130px; }
 h1 {
   font-size:34px; font-weight:800; letter-spacing:-0.6px; margin-bottom:6px;
   background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 100%);
@@ -100,11 +162,10 @@ h1 {
   display:inline-block; font-size:11px; font-weight:700;
   background:var(--bg3); color:var(--text2);
   padding:3px 9px; border-radius:10px; border:1px solid var(--border);
-  letter-spacing:.5px;
   -webkit-text-fill-color:var(--text2);
 }
-.subtitle { color:var(--text2); font-size:13px; margin-bottom:4px; letter-spacing:.2px; }
-.subtitle-future { color: var(--accent); font-size:12px; margin-bottom:10px; letter-spacing:.3px; font-weight:600; }
+.subtitle { color:var(--text2); font-size:13px; margin-bottom:4px; }
+.subtitle-future { color: var(--accent); font-size:12px; margin-bottom:10px; font-weight:600; }
 .creator { color:var(--text3); font-size:12px; }
 .creator a { color:var(--accent); text-decoration:none; font-weight:600; }
 .creator a:hover { text-decoration:underline; }
@@ -156,13 +217,13 @@ main { max-width:1100px; margin:0 auto; padding:24px; }
 }
 .ad-modal.open { display: flex; animation: fadeIn .25s; }
 @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
 .ad-modal-inner {
   background: var(--bg2); border: 1px solid var(--ad-border);
   border-radius: 12px; padding: 32px 36px; max-width: 560px; width: 100%;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6); position: relative; animation: slideUp .3s;
+  position: relative; animation: slideUp .3s;
 }
-@keyframes slideUp { from { transform: translateY(20px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
-.ad-modal-inner h2 { font-size: 22px; font-weight: 800; margin-bottom: 16px; color: var(--accent); letter-spacing: -.3px; }
+.ad-modal-inner h2 { font-size: 22px; font-weight: 800; margin-bottom: 16px; color: var(--accent); }
 .ad-modal-inner p { font-size: 14px; line-height: 1.7; color: var(--text); margin-bottom: 14px; }
 .ad-modal-inner ul { list-style: none; margin: 14px 0; }
 .ad-modal-inner li { font-size: 14px; line-height: 1.9; color: var(--text2); padding-left: 22px; position: relative; }
@@ -176,7 +237,7 @@ main { max-width:1100px; margin:0 auto; padding:24px; }
 .ad-close {
   position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%;
   background: var(--bg3); border: 1px solid var(--border); color: var(--text); font-size: 14px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; transition: all .15s; font-family: inherit;
+  display: flex; align-items: center; justify-content: center;
 }
 .ad-close:hover { background: var(--red); color: #fff; border-color: var(--red); }
 
@@ -189,7 +250,7 @@ main { max-width:1100px; margin:0 auto; padding:24px; }
   gap: 16px; margin-bottom: 16px; flex-wrap: wrap;
 }
 .card-head-text { flex: 1; min-width: 200px; }
-.card h2 { font-size:15px; font-weight:700; color:var(--accent); margin-bottom:4px; letter-spacing:.3px; }
+.card h2 { font-size:15px; font-weight:700; color:var(--accent); margin-bottom:4px; }
 .card .card-sub { color:var(--text3); font-size:11px; }
 .card .card-note {
   color:var(--text3); font-size:11px; margin-top:14px; font-style:italic;
@@ -228,7 +289,6 @@ body:not(.light) .top-item.r3 { background:linear-gradient(90deg,rgba(205,127,50
 body.light .top-item.r1 { background:linear-gradient(90deg,rgba(255,215,0,.18),transparent 45%); }
 body.light .top-item.r2 { background:linear-gradient(90deg,rgba(192,192,192,.2),transparent 45%); }
 body.light .top-item.r3 { background:linear-gradient(90deg,rgba(205,127,50,.15),transparent 45%); }
-
 .rank { font-size:15px; font-weight:800; color:var(--text2); text-align:center; font-variant-numeric:tabular-nums; }
 .r1 .rank { color:#e6b800; } .r2 .rank { color:#a0a0a0; } .r3 .rank { color:#cd7f32; }
 body.light .r1 .rank { color:#b45309; }
@@ -253,21 +313,65 @@ body.light .r1 .rank { color:#b45309; }
 .chart-block { margin-bottom:22px; padding-bottom:22px; border-bottom:1px dashed var(--border); }
 .chart-block:last-child { margin-bottom:0; padding-bottom:0; border-bottom:none; }
 .chart-title { font-size:14px; font-weight:700; color:var(--text); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
-.chart-title .chart-pos { background:var(--bg3); color:var(--text3); font-size:10px; font-weight:700; padding:1px 7px; border-radius:3px; letter-spacing:.5px; }
+.chart-title .chart-pos { background:var(--bg3); color:var(--text3); font-size:10px; font-weight:700; padding:1px 7px; border-radius:3px; }
 
-.war-item { background:var(--bg3); border-radius:8px; padding:14px 18px; margin-bottom:10px; border-left:4px solid var(--accent); transition:all .15s; }
+.war-item { background:var(--bg3); border-radius:8px; padding:14px 18px; margin-bottom:10px; border-left:4px solid var(--accent); }
 .war-item:hover { transform:translateX(3px); }
 .war-date { font-size:11px; color:var(--text3); letter-spacing:1px; margin-bottom:8px; text-transform:uppercase; font-weight:700; display:flex; align-items:center; gap:6px; }
 .war-date::before { content:''; display:inline-block; width:6px; height:6px; background:var(--accent); border-radius:50%; }
 .war-teams { display:flex; align-items:center; gap:14px; flex-wrap:wrap; font-size:15px; font-weight:700; margin-bottom:8px; }
-.war-team { color:var(--text); }
 .war-team.winner { color:var(--win); text-shadow:0 0 12px rgba(74,222,128,.35); }
 .war-team.loser { color:var(--text2); opacity:0.7; }
 .war-vs { color:var(--text3); font-size:12px; font-weight:700; letter-spacing:2px; opacity:0.7; }
-.war-result { font-size:12px; color:var(--text3); letter-spacing:.5px; display:flex; align-items:center; gap:8px; }
-.war-result .trophy { color:var(--gold); font-size:13px; }
-.war-result .faction { background:var(--bg2); color:var(--text2); padding:1px 8px; border-radius:3px; font-size:10px; font-weight:700; letter-spacing:.5px; border:1px solid var(--border); }
-body.light .war-result .faction { background:#fff; }
+.war-result { font-size:12px; color:var(--text3); display:flex; align-items:center; gap:8px; }
+.war-result .trophy { color:var(--gold); }
+.war-result .faction { background:var(--bg2); color:var(--text2); padding:1px 8px; border-radius:3px; font-size:10px; font-weight:700; border:1px solid var(--border); }
+
+/* MINIGAME */
+#mg-wrap {
+  position: relative; background: linear-gradient(180deg, #1a1a2e 0%, #0a0a14 100%);
+  border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+#mg-canvas {
+  display: block; width: 100%; height: auto;
+  max-height: 60vh;
+  background: linear-gradient(180deg, #1a1a2e 0%, #0a0a14 100%);
+  touch-action: none;
+}
+#mg-overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
+}
+#mg-overlay.hidden { display: none; }
+#mg-overlay .msg { text-align: center; }
+#mg-overlay h3 { font-size: 28px; color: #f5a623; margin-bottom: 10px; letter-spacing: 2px; }
+#mg-overlay p { color: #9a9aa8; font-size: 13px; margin-bottom: 20px; }
+#mg-overlay button {
+  background: linear-gradient(135deg, #f5a623, #ffc857); color: #000;
+  border: none; padding: 14px 40px; border-radius: 8px;
+  font-size: 15px; font-weight: 800; letter-spacing: 1px; cursor: pointer;
+  font-family: inherit; transition: all .15s;
+}
+#mg-overlay button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245,166,35,.4); }
+.mg-stats {
+  display: flex; gap: 20px; justify-content: center;
+  padding: 12px; background: var(--bg3); border-radius: 8px;
+  font-size: 14px; margin-bottom: 12px;
+}
+.mg-stats b { color: var(--accent); font-size: 16px; }
+.mg-touch {
+  display: none; gap: 12px; margin-top: 12px;
+}
+.mg-touch button {
+  flex: 1; padding: 20px; font-size: 24px;
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text); border-radius: 8px; cursor: pointer;
+  font-family: inherit; user-select: none; touch-action: none;
+}
+.mg-touch button:active { background: var(--accent); color: #000; }
 
 @media (max-width:820px) {
   .top-item { grid-template-columns:32px 1fr auto; }
@@ -279,12 +383,14 @@ body.light .war-result .faction { background:#fff; }
   .top-controls { top:12px; right:12px; }
   #theme-toggle { width:38px; height:38px; font-size:16px; }
   #vol-slider { width: 60px; }
-  .header-inner { padding: 0 80px 0 90px; }
+  #auth-btn { font-size: 10px; padding: 7px 12px; }
+  .header-inner { padding: 0 100px 0 100px; }
   .ads-row { grid-template-columns: 1fr; }
   .ad-slot { height: 70px; }
   .sec-date-wrap label { display: none; }
   .sec-date { min-width: 110px; font-size: 11px; }
   #visits-counter { top: 12px; left: 12px; font-size: 10px; padding: 5px 10px; }
+  .mg-touch { display: flex; }
 }
 
 footer {
@@ -293,9 +399,7 @@ footer {
   text-align:center; line-height:2;
 }
 footer a { color:var(--accent); text-decoration:none; font-weight:600; }
-footer a:hover { text-decoration:underline; }
 footer .sep { margin:8px 0; color:var(--border); }
-
 .empty { text-align:center; padding:50px 20px; color:var(--text3); font-size:13px; font-style:italic; }
 .badge-alltime {
   display:inline-block; font-size:9px; background:linear-gradient(135deg,#d97706,#fbbf24);
@@ -309,6 +413,7 @@ footer .sep { margin:8px 0; color:var(--border); }
 <div id="visits-counter" title="Просмотры сайта">👁 …</div>
 
 <div class="top-controls">
+  <button id="auth-btn" title="Регистрация">🔐 Войти</button>
   <button id="theme-toggle" title="Переключить тему">☀️</button>
   <div class="music-row">
     <div id="db-status" class="loading" title="Статус базы данных"></div>
@@ -323,7 +428,7 @@ footer .sep { margin:8px 0; color:var(--border); }
 
 <header>
   <div class="header-inner">
-    <h1>timetoplay stats <span class="version-badge">v1.0.0</span></h1>
+    <h1>timetoplay stats <span class="version-badge">v1.1.0</span></h1>
     <div class="subtitle">статистика timetoplay по датам — ttpstats</div>
     <div class="subtitle-future">⚡ скоро будут обновления — больше функций и топов</div>
     <div class="creator">создатель xxspk - телеграмм <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a>, made in arbuzovsk</div>
@@ -370,7 +475,29 @@ footer .sep { margin:8px 0; color:var(--border); }
   </div>
 </div>
 
-<!-- Firebase SDK -->
+<div id="auth-modal" class="auth-modal">
+  <div class="auth-box">
+    <button class="ad-close" onclick="closeAuth()">✕</button>
+    <h2 id="auth-title">Регистрация</h2>
+    <div class="sub" id="auth-sub">придумай ник и пароль — просто по приколу, вдруг пригодится</div>
+    <div class="auth-tabs">
+      <button id="tab-reg" class="active" onclick="authSwitch('reg')">Регистрация</button>
+      <button id="tab-login" onclick="authSwitch('login')">Вход</button>
+    </div>
+    <div class="auth-field">
+      <label>Ник</label>
+      <input type="text" id="auth-nick" maxlength="20" autocomplete="off" placeholder="твой ник">
+    </div>
+    <div class="auth-field">
+      <label>Пароль</label>
+      <input type="password" id="auth-pass" maxlength="40" placeholder="пароль">
+    </div>
+    <button class="auth-submit" id="auth-submit" onclick="authSubmit()">СОЗДАТЬ АККАУНТ</button>
+    <div class="auth-msg" id="auth-msg"></div>
+    <button class="auth-logout" id="auth-logout-btn" onclick="authLogout()" style="display:none">ВЫЙТИ ИЗ АККАУНТА</button>
+  </div>
+</div>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -392,27 +519,22 @@ footer .sep { margin:8px 0; color:var(--border); }
   try {
     fbApp = initializeApp(firebaseConfig);
     fbDb = getDatabase(fbApp);
-    window.__firebase = { app: fbApp, db: fbDb, ref, get };
-    console.log('[Firebase] Инициализация прошла успешно');
+    window.__fb = { app: fbApp, db: fbDb, ref, get, set };
+    console.log('[Firebase] OK');
 
     (async () => {
       try {
-        const testRef = ref(fbDb, 'stats');
-        const snap = await get(testRef);
+        const snap = await get(ref(fbDb, 'stats'));
         if (snap.exists()) {
           statusEl.className = 'online';
-          statusEl.title = 'Firebase: подключено, данные есть';
-          window.__firebaseHasData = true;
+          statusEl.title = 'Firebase: подключено';
+          window.__fbHasData = true;
           if (window.__rerender) window.__rerender();
         } else {
           statusEl.className = 'offline';
-          statusEl.title = 'Firebase подключен, но база пуста';
+          statusEl.title = 'Firebase: база пуста';
         }
-      } catch (e) {
-        statusEl.className = 'offline';
-        statusEl.title = 'Firebase: нет доступа к данным';
-        console.warn('[Firebase] Ошибка чтения:', e.message);
-      }
+      } catch (e) { statusEl.className = 'offline'; statusEl.title = 'Firebase: нет доступа'; }
     })();
 
     (async () => {
@@ -420,36 +542,31 @@ footer .sep { margin:8px 0; color:var(--border); }
         const visitsRef = ref(fbDb, 'visits/count');
         const snap = await get(visitsRef);
         let count = snap.exists() ? (snap.val() || 0) : 0;
-
         if (!sessionStorage.getItem('ttp_visit_counted')) {
-          count = count + 1;
-          try { await set(visitsRef, count); } catch(e) { console.warn('[Visits] не удалось записать:', e.message); }
+          count++;
+          try { await set(visitsRef, count); } catch(e) {}
           sessionStorage.setItem('ttp_visit_counted', '1');
         }
-
         visitsEl.textContent = '👁 ' + count.toLocaleString('ru-RU');
       } catch (e) {
-        let localCount = parseInt(localStorage.getItem('ttp_visits_local') || '0');
+        let lc = parseInt(localStorage.getItem('ttp_visits_local') || '0');
         if (!sessionStorage.getItem('ttp_visit_counted')) {
-          localCount++;
-          localStorage.setItem('ttp_visits_local', localCount);
+          lc++; localStorage.setItem('ttp_visits_local', lc);
           sessionStorage.setItem('ttp_visit_counted', '1');
         }
-        visitsEl.textContent = '👁 ' + localCount.toLocaleString('ru-RU') + ' (лок)';
-        console.warn('[Visits] Firebase недоступен, использую локальный:', e.message);
+        visitsEl.textContent = '👁 ' + lc.toLocaleString('ru-RU') + ' (лок)';
       }
     })();
-
   } catch (e) {
     statusEl.className = 'offline';
-    statusEl.title = 'Firebase не подключился';
-    console.warn('[Firebase] Ошибка инициализации:', e.message);
     visitsEl.textContent = '👁 —';
   }
 </script>
 
-<!-- Основной скрипт -->
 <script>
+/* =========================================================
+   ДАННЫЕ
+   ========================================================= */
 const DATA = {
   cities: {
     balance: {
@@ -498,10 +615,11 @@ const DATA = {
           { name:'Иокогама', value:5971.66 }, { name:'Лазурный_Стокгольм', value:5784.96 },
           { name:'Макондо', value:5137.23 }, { name:'Французская_Империя', value:3773.65 },
           { name:'mimika', value:3661.88 }, { name:'Florida', value:3603.27 },
-          { name:'Seapure', value:3527.41 }, { name:'Hamburg', value:2731.49 },
+          { name:'Seapure', value:7334.76, sub:'(данные за 0:30 — обновлены отдельно)' },
+          { name:'Hamburg', value:2731.49 },
         ],
       },
-      note: 'за всё время был восторг с ~100000, но дата от которой идёт отсчёт — сегодня, а не раньше, так что не считается',
+      note: '⚠️ У Seapure данные за 0:30 (обновлены отдельно от остальных за 21:00). За всё время был восторг с ~100000, но дата отсчёта — сегодня, так что не считается.',
     },
     histories: {
       'seapure': [
@@ -513,6 +631,7 @@ const DATA = {
         { date:'2026-09-24 00:20', value:3591.69 },
         { date:'2026-09-24 00:23', value:3598.79 },
         { date:'2026-09-24 21:00', value:3527.41 },
+        { date:'2026-09-25 00:30', value:7334.76 },
       ],
       'рига': [{ date:'2026-09-24 00:15', value:22196.82 }, { date:'2026-09-24 00:23', value:22204.90 }, { date:'2026-09-24 21:00', value:22982.35 }],
       'рим': [{ date:'2026-09-24 00:14', value:13374.32 }, { date:'2026-09-24 00:23', value:13380.03 }, { date:'2026-09-24 21:00', value:13199.25 }],
@@ -526,32 +645,28 @@ const DATA = {
     },
     population: {
       '2026-09-24 00:30': [
-        { name:'Рим', value:160 }, { name:'Рига', value:142 },
-        { name:'Кавказский_Халифат', value:119 }, { name:'Ульяновск', value:115 },
-        { name:'Шмаледуйск', value:102 }, { name:'Томская_Империя', value:77 },
-        { name:'Лазурный_Стокгольм', value:66 }, { name:'Los_Angeles', value:55 },
-        { name:'Ufa', value:54 }, { name:'Германская_Империя', value:52 },
+        { name:'Рим', value:160 }, { name:'Рига', value:142 }, { name:'Кавказский_Халифат', value:119 },
+        { name:'Ульяновск', value:115 }, { name:'Шмаледуйск', value:102 }, { name:'Томская_Империя', value:77 },
+        { name:'Лазурный_Стокгольм', value:66 }, { name:'Los_Angeles', value:55 }, { name:'Ufa', value:54 },
+        { name:'Германская_Империя', value:52 },
       ],
       '2026-09-24 21:00': [
-        { name:'Рим', value:161 }, { name:'Рига', value:142 },
-        { name:'Кавказский_Халифат', value:119 }, { name:'Ульяновск', value:115 },
-        { name:'Шмаледуйск', value:104 }, { name:'Томская_Империя', value:77 },
-        { name:'Лазурный_Стокгольм', value:58 }, { name:'Los_Angeles', value:55 },
-        { name:'Ufa', value:54 }, { name:'Германская_Империя', value:54 },
+        { name:'Рим', value:161 }, { name:'Рига', value:142 }, { name:'Кавказский_Халифат', value:119 },
+        { name:'Ульяновск', value:115 }, { name:'Шмаледуйск', value:104 }, { name:'Томская_Империя', value:77 },
+        { name:'Лазурный_Стокгольм', value:58 }, { name:'Los_Angeles', value:55 }, { name:'Ufa', value:54 },
+        { name:'Германская_Империя', value:54 },
       ]
     },
     size: {
       '2026-09-24 00:30': [
-        { name:'Рига', value:8927 }, { name:'Рим', value:7961 },
-        { name:'Кавказский_Халифат', value:3899 }, { name:'Иокогама', value:3582 },
-        { name:'Ворона', value:3168 }, { name:'Клан_Китайцев', value:2808 },
+        { name:'Рига', value:8927 }, { name:'Рим', value:7961 }, { name:'Кавказский_Халифат', value:3899 },
+        { name:'Иокогама', value:3582 }, { name:'Ворона', value:3168 }, { name:'Клан_Китайцев', value:2808 },
         { name:'Seapure', value:2424 }, { name:'Лазурный_Стокгольм', value:2310 },
         { name:'Великие_Нидерланды', value:1800 }, { name:'Французская_Империя', value:1786 },
       ],
       '2026-09-24 21:00': [
-        { name:'Рига', value:8927 }, { name:'Рим', value:7961 },
-        { name:'Кавказский_Халифат', value:3899 }, { name:'Иокогама', value:3582 },
-        { name:'Ворона', value:3168 }, { name:'Клан_Китайцев', value:2808 },
+        { name:'Рига', value:8927 }, { name:'Рим', value:7961 }, { name:'Кавказский_Халифат', value:3899 },
+        { name:'Иокогама', value:3582 }, { name:'Ворона', value:3168 }, { name:'Клан_Китайцев', value:2808 },
         { name:'Seapure', value:2791 }, { name:'Лазурный_Стокгольм', value:2310 },
         { name:'Великие_Нидерланды', value:1808 }, { name:'Французская_Империя', value:1787 },
       ]
@@ -614,73 +729,59 @@ const DATA = {
     },
     shards: {
       '2026-09-24 00:30': [
-        { name:'kaba_day', value:56 }, { name:'FrazerS', value:52 },
-        { name:'shanci', value:22 }, { name:'Streifka', value:13 },
-        { name:'HyperSuper', value:8 }, { name:'Vlad4631', value:3 },
-        { name:'Kise156567', value:3 }, { name:'HE_3adrot', value:2 },
-        { name:'TASIS', value:1 }, { name:'kqkqha', value:1 },
+        { name:'kaba_day', value:56 }, { name:'FrazerS', value:52 }, { name:'shanci', value:22 },
+        { name:'Streifka', value:13 }, { name:'HyperSuper', value:8 }, { name:'Vlad4631', value:3 },
+        { name:'Kise156567', value:3 }, { name:'HE_3adrot', value:2 }, { name:'TASIS', value:1 }, { name:'kqkqha', value:1 },
       ],
       '2026-09-24 21:00': [
-        { name:'kaba_day', value:56 }, { name:'FrazerS', value:52 },
-        { name:'shanci', value:22 }, { name:'Streifka', value:13 },
-        { name:'HyperSuper', value:9 }, { name:'Vlad4631', value:3 },
-        { name:'Kise156567', value:3 }, { name:'HE_3adrot', value:2 },
-        { name:'Willyy_Wonkaa', value:1 }, { name:'CelestialLove', value:1 },
+        { name:'kaba_day', value:56 }, { name:'FrazerS', value:52 }, { name:'shanci', value:22 },
+        { name:'Streifka', value:13 }, { name:'HyperSuper', value:9 }, { name:'Vlad4631', value:3 },
+        { name:'Kise156567', value:3 }, { name:'HE_3adrot', value:2 }, { name:'Willyy_Wonkaa', value:1 }, { name:'CelestialLove', value:1 },
       ]
     },
     rubies: {
       '2026-09-24 00:30': [
-        { name:'elena3e3', value:291208 }, { name:'el_diablo', value:259159 },
-        { name:'chonka221', value:164633 }, { name:'triadamc', value:161456 },
-        { name:'okoscheio', value:116505 }, { name:'laggez', value:106571 },
-        { name:'thethether', value:95067 }, { name:'myro_okada', value:67920 },
-        { name:'toxic22222', value:60953 }, { name:'vk2409', value:48020 },
+        { name:'elena3e3', value:291208 }, { name:'el_diablo', value:259159 }, { name:'chonka221', value:164633 },
+        { name:'triadamc', value:161456 }, { name:'okoscheio', value:116505 }, { name:'laggez', value:106571 },
+        { name:'thethether', value:95067 }, { name:'myro_okada', value:67920 }, { name:'toxic22222', value:60953 }, { name:'vk2409', value:48020 },
       ],
       '2026-09-24 21:00': [
-        { name:'Elena3e3', value:291208 }, { name:'El_Diablo', value:259164 },
-        { name:'chonka221', value:164633 }, { name:'triadamc', value:161456 },
-        { name:'OkoscheiO', value:116505 }, { name:'LaGGeZ', value:106571 },
-        { name:'TheTheTher', value:95067 }, { name:'Myro_Okada', value:67920 },
-        { name:'Toxic22222', value:60955 }, { name:'vk2409', value:48020 },
+        { name:'Elena3e3', value:291208 }, { name:'El_Diablo', value:259164 }, { name:'chonka221', value:164633 },
+        { name:'triadamc', value:161456 }, { name:'OkoscheiO', value:116505 }, { name:'LaGGeZ', value:106571 },
+        { name:'TheTheTher', value:95067 }, { name:'Myro_Okada', value:67920 }, { name:'Toxic22222', value:60955 }, { name:'vk2409', value:48020 },
       ],
-      note: 'за всё время был kaba_day с ~450000, но дата от которой идёт отсчёт — сегодня, а не раньше, так что не считается'
+      note: 'за всё время был kaba_day с ~450000, но дата отсчёта — сегодня, так что не считается'
     }
   },
   nations: {
     balance: {
       '2026-09-24 00:30': [
-        { name:'Octagrama', value:1230.00 }, { name:'SPQR', value:237.00 },
-        { name:'Носочки_Ангелкас', value:73.00 }, { name:'Ось', value:19.00 },
-        { name:'ChN1', value:15.75 }, { name:'NATO', value:0.50 },
+        { name:'Octagrama', value:1230.00 }, { name:'SPQR', value:237.00 }, { name:'Носочки_Ангелкас', value:73.00 },
+        { name:'Ось', value:19.00 }, { name:'ChN1', value:15.75 }, { name:'NATO', value:0.50 },
       ],
       '2026-09-24 21:00': [
-        { name:'Octagrama', value:1500.00 }, { name:'SPQR', value:391.40 },
-        { name:'Носочки_Ангелкас', value:57.00 }, { name:'ChN1', value:15.75 },
-        { name:'Ось', value:9.00 }, { name:'NATO', value:0.50 },
+        { name:'Octagrama', value:1500.00 }, { name:'SPQR', value:391.40 }, { name:'Носочки_Ангелкас', value:57.00 },
+        { name:'ChN1', value:15.75 }, { name:'Ось', value:9.00 }, { name:'NATO', value:0.50 },
       ]
     },
     size: {
       '2026-09-24 00:30': [
-        { name:'SPQR', value:74 }, { name:'NATO', value:58 },
-        { name:'Octagrama', value:46 }, { name:'ChN1', value:26 },
-        { name:'Ось', value:8 }, { name:'Носочки_Ангелкас', value:2 },
+        { name:'SPQR', value:74 }, { name:'NATO', value:58 }, { name:'Octagrama', value:46 },
+        { name:'ChN1', value:26 }, { name:'Ось', value:8 }, { name:'Носочки_Ангелкас', value:2 },
       ],
       '2026-09-24 21:00': [
-        { name:'SPQR', value:75 }, { name:'NATO', value:59 },
-        { name:'Octagrama', value:47 }, { name:'ChN1', value:25 },
-        { name:'Ось', value:8 }, { name:'Носочки_Ангелкас', value:2 },
+        { name:'SPQR', value:75 }, { name:'NATO', value:59 }, { name:'Octagrama', value:47 },
+        { name:'ChN1', value:25 }, { name:'Ось', value:8 }, { name:'Носочки_Ангелкас', value:2 },
       ]
     },
     citizens: {
       '2026-09-24 00:30': [
-        { name:'SPQR', value:957 }, { name:'NATO', value:600 },
-        { name:'Octagrama', value:481 }, { name:'ChN1', value:296 },
-        { name:'Ось', value:137 }, { name:'Носочки_Ангелкас', value:21 },
+        { name:'SPQR', value:957 }, { name:'NATO', value:600 }, { name:'Octagrama', value:481 },
+        { name:'ChN1', value:296 }, { name:'Ось', value:137 }, { name:'Носочки_Ангелкас', value:21 },
       ],
       '2026-09-24 21:00': [
-        { name:'SPQR', value:957 }, { name:'NATO', value:620 },
-        { name:'Octagrama', value:489 }, { name:'ChN1', value:297 },
-        { name:'Ось', value:138 }, { name:'Носочки_Ангелкас', value:22 },
+        { name:'SPQR', value:957 }, { name:'NATO', value:620 }, { name:'Octagrama', value:489 },
+        { name:'ChN1', value:297 }, { name:'Ось', value:138 }, { name:'Носочки_Ангелкас', value:22 },
       ]
     }
   },
@@ -705,6 +806,7 @@ const TAB_ORDER = [
   { id:'players', icon:'🎮', label:'Игроки' },
   { id:'nations', icon:'🏛️', label:'Нации' },
   { id:'wars',    icon:'⚔️', label:'Войны вайпа' },
+  { id:'minigame',icon:'🪑', label:'Мини-игра' },
   { id:'other',   icon:'📦', label:'Остальное' },
 ];
 
@@ -740,52 +842,46 @@ function sectionHasAllTime(key) {
 }
 
 let state = { tab:'cities' };
+let currentUser = null;
+try { currentUser = JSON.parse(localStorage.getItem('ttp_user') || 'null'); } catch(e) {}
 
+/* ============ ХЕЛПЕРЫ ============ */
 function fmtDate(d) {
-  const [datePart, timePart] = d.split(' ');
-  const [y, m, day] = datePart.split('-');
-  const [hh, mm] = timePart.split(':');
+  const [dp, tp] = d.split(' ');
+  const [y, m, day] = dp.split('-');
+  const [hh, mm] = tp.split(':');
   return `${day}.${m}.${y} ${parseInt(hh)}:${mm}`;
 }
 function fmtNumber(v) {
   if (typeof v !== 'number') return String(v);
-  const hasDecimals = v % 1 !== 0;
+  const hasDec = v % 1 !== 0;
   return v.toLocaleString('ru-RU', {
-    minimumFractionDigits: hasDecimals ? 2 : 0,
+    minimumFractionDigits: hasDec ? 2 : 0,
     maximumFractionDigits: 2,
   });
 }
-
-// Алиасы — если игрок пишется по-разному в разных датах
 const NAME_ALIASES = {
-  'merrqq': 'merqq',
-  'merrq': 'merqq',
-  'merq': 'merqq',
-  // cartez_ru1 = cartez_ru (для новой даты)
+  'merrqq': 'merqq', 'merrq': 'merqq', 'merq': 'merqq',
   'cartez_ru1': 'cartez_ru',
-  // регистр ников не важен — normalizeKey всё приводит к нижнему
-  // добавляй сюда новые алиасы если найдутся ещё несовпадения
 };
-
 function normalizeKey(name) {
   let k = name.toLowerCase().replace('французкая', 'французская').trim();
   if (NAME_ALIASES[k]) k = NAME_ALIASES[k];
   return k;
 }
-
-function computeArrow(currentList, prevList) {
+function computeArrow(cur, prev) {
   const map = {};
-  if (prevList) prevList.forEach((it, i) => { map[normalizeKey(it.name)] = i + 1; });
-  const result = {};
-  currentList.forEach((it, i) => {
-    const curRank = i + 1;
-    const prevRank = map[normalizeKey(it.name)];
-    if (prevRank === undefined) result[it.name] = { type:'new', text:'NEW' };
-    else if (prevRank > curRank) result[it.name] = { type:'up', text:'▲ ' + (prevRank - curRank) };
-    else if (prevRank < curRank) result[it.name] = { type:'down', text:'▼ ' + (curRank - prevRank) };
-    else result[it.name] = { type:'same', text:'—' };
+  if (prev) prev.forEach((it, i) => { map[normalizeKey(it.name)] = i + 1; });
+  const res = {};
+  cur.forEach((it, i) => {
+    const cr = i + 1;
+    const pr = map[normalizeKey(it.name)];
+    if (pr === undefined) res[it.name] = { type:'new', text:'NEW' };
+    else if (pr > cr) res[it.name] = { type:'up', text:'▲ ' + (pr - cr) };
+    else if (pr < cr) res[it.name] = { type:'down', text:'▼ ' + (cr - pr) };
+    else res[it.name] = { type:'same', text:'—' };
   });
-  return result;
+  return res;
 }
 function collectAllTime(snapshots) {
   const best = {};
@@ -797,7 +893,6 @@ function collectAllTime(snapshots) {
   });
   return Object.values(best).sort((a, b) => b.value - a.value);
 }
-
 function sectionPickerHTML(key) {
   const dates = getSectionDates(key);
   const hasAll = sectionHasAllTime(key);
@@ -806,30 +901,22 @@ function sectionPickerHTML(key) {
   const opts = dates.map(d =>
     `<option value="${d}" ${(!st.allTime && curDate === d) ? 'selected' : ''}>${fmtDate(d)}</option>`
   ).join('');
-  const allOpt = hasAll
-    ? `<option value="__ALL__" ${st.allTime ? 'selected' : ''}>🏆 За всё время</option>`
-    : '';
+  const allOpt = hasAll ? `<option value="__ALL__" ${st.allTime ? 'selected' : ''}>🏆 За всё время</option>` : '';
   return `<div class="sec-date-wrap">
     <label>📅 Дата</label>
     <select class="sec-date" data-section="${key}">${opts}${allOpt}</select>
   </div>`;
 }
-
 function attachSectionPickers() {
   document.querySelectorAll('.sec-date').forEach(sel => {
     sel.onchange = (e) => {
       const key = e.target.dataset.section;
-      if (e.target.value === '__ALL__') {
-        sectionState[key].allTime = true;
-      } else {
-        sectionState[key].allTime = false;
-        sectionState[key].date = e.target.value;
-      }
+      if (e.target.value === '__ALL__') sectionState[key].allTime = true;
+      else { sectionState[key].allTime = false; sectionState[key].date = e.target.value; }
       render();
     };
   });
 }
-
 function renderTabs() {
   const tabsEl = document.getElementById('tabs');
   tabsEl.innerHTML = '';
@@ -841,26 +928,23 @@ function renderTabs() {
     tabsEl.appendChild(btn);
   });
 }
-
 function makeListItem(rank, item, unit, arrowInfo) {
   const rClass = rank <= 3 ? ' r' + rank : '';
-  let arrowHTML = '';
-  if (arrowInfo) arrowHTML = `<span class="arrow ${arrowInfo.type}">${arrowInfo.text}</span>`;
-  else arrowHTML = `<span class="arrow dash"></span>`;
+  let arrowHTML = arrowInfo
+    ? `<span class="arrow ${arrowInfo.type}">${arrowInfo.text}</span>`
+    : `<span class="arrow dash"></span>`;
   const nameHTML = item.sub
     ? `${item.name}<span class="sub-note"> ${item.sub}</span>`
     : item.name;
   let valueHTML;
   if (typeof item.display === 'string') valueHTML = item.display;
   else valueHTML = fmtNumber(item.value) + `<span class="unit">${unit || ''}</span>`;
-  return `
-    <div class="top-item${rClass}">
-      <span class="rank">#${rank}</span>
-      <span class="name">${nameHTML}</span>
-      <span class="value">${valueHTML}</span>
-      ${arrowHTML}
-    </div>
-  `;
+  return `<div class="top-item${rClass}">
+    <span class="rank">#${rank}</span>
+    <span class="name">${nameHTML}</span>
+    <span class="value">${valueHTML}</span>
+    ${arrowHTML}
+  </div>`;
 }
 function renderTopList(list, unit, arrowsMap) {
   if (!list || list.length === 0) return '<div class="empty">Нет данных</div>';
@@ -868,7 +952,6 @@ function renderTopList(list, unit, arrowsMap) {
     list.map((it, i) => makeListItem(i + 1, it, unit || '', arrowsMap ? arrowsMap[it.name] : null)).join('') +
     '</div>';
 }
-
 function cardHeader(key, title, subText, badgeHTML = '') {
   return `<div class="card-head">
     <div class="card-head-text">
@@ -878,17 +961,14 @@ function cardHeader(key, title, subText, badgeHTML = '') {
     ${sectionPickerHTML(key)}
   </div>`;
 }
-
 function renderLineChart(history) {
   if (!history || history.length === 0) return '<div class="empty">Нет данных</div>';
   if (history.length === 1) {
-    return `
-      <div class="chart-single">
-        <div class="val">${fmtNumber(history[0].value)} ₽</div>
-        <div class="date">${fmtDate(history[0].date)} МСК</div>
-        <div class="wait">⚡ ожидание следующих обновлений</div>
-      </div>
-    `;
+    return `<div class="chart-single">
+      <div class="val">${fmtNumber(history[0].value)} ₽</div>
+      <div class="date">${fmtDate(history[0].date)} МСК</div>
+      <div class="wait">⚡ ожидание следующих обновлений</div>
+    </div>`;
   }
   const W = 800, H = 180, PAD = 30;
   const values = history.map(h => h.value);
@@ -912,31 +992,27 @@ function renderLineChart(history) {
     if (history.length > 4 && i !== 0 && i !== points.length - 1 && i % 2 !== 0) return '';
     return `<text x="${p.x}" y="${p.y - 10}" fill="var(--gold)" font-size="10" text-anchor="middle" font-weight="700">${fmtNumber(p.value)}</text>`;
   }).join('');
-  const xLabels = points.map(p => `
-    <text x="${p.x}" y="${H - 8}" fill="var(--text3)" font-size="9" text-anchor="middle">${fmtDate(p.date).split(' ')[0]}</text>
-  `).join('');
-  return `
-    <div class="chart-wrap">
-      <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
-        ${grid}
-        <path d="${areaD}" fill="rgba(245,166,35,0.15)"/>
-        <path d="${pathD}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>
-        ${dots}
-        ${labels}
-        ${xLabels}
-      </svg>
-      <div class="chart-labels">
-        <span>мин: ${fmtNumber(minV)}</span>
-        <span>макс: ${fmtNumber(maxV)}</span>
-        <span>Δ: ${fmtNumber(values[values.length-1] - values[0])}</span>
-      </div>
+  const xLabels = points.map(p =>
+    `<text x="${p.x}" y="${H - 8}" fill="var(--text3)" font-size="9" text-anchor="middle">${fmtDate(p.date).split(' ')[0]}</text>`
+  ).join('');
+  return `<div class="chart-wrap">
+    <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+      ${grid}
+      <path d="${areaD}" fill="rgba(245,166,35,0.15)"/>
+      <path d="${pathD}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>
+      ${dots}${labels}${xLabels}
+    </svg>
+    <div class="chart-labels">
+      <span>мин: ${fmtNumber(minV)}</span>
+      <span>макс: ${fmtNumber(maxV)}</span>
+      <span>Δ: ${fmtNumber(values[values.length-1] - values[0])}</span>
     </div>
-  `;
+  </div>`;
 }
 
+/* ============ РЕНДЕРЫ ТАБОВ ============ */
 function renderCities() {
   let html = '';
-
   const bal = DATA.cities.balance;
   const balKey = 'cities.balance';
   const balSt = sectionState[balKey];
@@ -944,7 +1020,7 @@ function renderCities() {
   let balList, balHeading, balBadge = '', balArrows = null;
   if (balSt.allTime) {
     balList = collectAllTime(bal.snapshots).slice(0, 10);
-    balHeading = 'за всё время наблюдений — с 24 сентября';
+    balHeading = 'за всё время наблюдений';
     balBadge = '<span class="badge-alltime">ЗА ВСЁ ВРЕМЯ</span>';
   } else {
     balList = bal.snapshots[balSt.date] || [];
@@ -981,13 +1057,11 @@ function renderCities() {
     ${cardHeader(sizeKey, '📏 Топ городов по размеру', fmtDate(sizeDate) + ' МСК')}
     ${renderTopList(sizeList, ' ⬛', sizeArrows)}
   </div>`;
-
   return html;
 }
 
 function renderPlayers() {
   let html = '';
-
   const balKey = 'players.balance';
   const balDate = sectionState[balKey].date;
   const balDates = getSectionDates(balKey);
@@ -1014,7 +1088,7 @@ function renderPlayers() {
       });
     });
     activeList = Object.values(best).sort((a, b) => b.value - a.value).slice(0, 10);
-    activeHeading = 'за всё время наблюдений — с 24 сентября';
+    activeHeading = 'за всё время наблюдений';
     activeBadge = '<span class="badge-alltime">ЗА ВСЁ ВРЕМЯ</span>';
   } else {
     activeList = active[activeSt.date] || [];
@@ -1051,13 +1125,11 @@ function renderPlayers() {
     ${renderTopList(rubiesList, ' 💎', rubiesArrows)}
     ${DATA.players.rubies.note ? `<div class="card-note">${DATA.players.rubies.note}</div>` : ''}
   </div>`;
-
   return html;
 }
 
 function renderNations() {
   let html = '';
-
   const balKey = 'nations.balance';
   const balDate = sectionState[balKey].date;
   const balDates = getSectionDates(balKey);
@@ -1093,7 +1165,6 @@ function renderNations() {
     ${cardHeader(citKey, '👥 Топ наций по гражданам', fmtDate(citDate) + ' МСК')}
     ${renderTopList(citList, ' 👤', citArrows)}
   </div>`;
-
   return html;
 }
 
@@ -1107,40 +1178,88 @@ function renderWars() {
       </div>
     </div>`;
   wars.forEach(w => {
-    const t1Winner = w.winner === 1;
-    const t2Winner = w.winner === 2;
-    html += `
-      <div class="war-item">
-        <div class="war-date">${w.date}</div>
-        <div class="war-teams">
-          <span class="war-team ${t1Winner ? 'winner' : 'loser'}">${w.team1}</span>
-          <span class="war-vs">VS</span>
-          <span class="war-team ${t2Winner ? 'winner' : 'loser'}">${w.team2}</span>
-        </div>
-        <div class="war-result">
-          <span class="trophy">🏆</span>
-          <span>Победа: <b style="color:var(--win)">${w.winner === 1 ? w.team1 : w.team2}</b></span>
-          ${w.faction ? `<span class="faction">${w.faction}</span>` : ''}
-        </div>
+    const t1W = w.winner === 1, t2W = w.winner === 2;
+    html += `<div class="war-item">
+      <div class="war-date">${w.date}</div>
+      <div class="war-teams">
+        <span class="war-team ${t1W ? 'winner' : 'loser'}">${w.team1}</span>
+        <span class="war-vs">VS</span>
+        <span class="war-team ${t2W ? 'winner' : 'loser'}">${w.team2}</span>
       </div>
-    `;
+      <div class="war-result">
+        <span class="trophy">🏆</span>
+        <span>Победа: <b style="color:var(--win)">${w.winner === 1 ? w.team1 : w.team2}</b></span>
+        ${w.faction ? `<span class="faction">${w.faction}</span>` : ''}
+      </div>
+    </div>`;
   });
   html += `</div>`;
   return html;
 }
 
+function renderMinigame() {
+  return `
+    <div class="card">
+      <div class="card-head">
+        <div class="card-head-text">
+          <h2>🪑 Стул Моролса</h2>
+          <div class="card-sub">уворачивайся от преград, собирай сапфиры. Скорость растёт каждую секунду</div>
+        </div>
+      </div>
+      <div id="mg-wrap">
+        <canvas id="mg-canvas" width="900" height="500"></canvas>
+        <div id="mg-overlay">
+          <div class="msg">
+            <h3 id="mg-ov-title">ГОТОВ?</h3>
+            <p id="mg-ov-sub">← → или A D — движение · собирай 💎 · избегай ⬛</p>
+            <button id="mg-start-btn">▶ ИГРАТЬ</button>
+          </div>
+        </div>
+      </div>
+      <div class="mg-stats">
+        <div>⏱ Время: <b id="mg-time">0.0</b>с</div>
+        <div>💎 Сапфиры: <b id="mg-sapphires">0</b></div>
+        <div>⚡ Скорость: <b id="mg-speed">1.0</b>×</div>
+      </div>
+      <div class="mg-touch">
+        <button id="mg-left">←</button>
+        <button id="mg-right">→</button>
+      </div>
+    </div>
+
+    <div class="sections">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-head-text">
+            <h2>💎 Топ по сапфирам</h2>
+            <div class="card-sub">лучшие забеги по собранным сапфирам</div>
+          </div>
+        </div>
+        <div id="mg-lb-sap" class="top-list"><div class="empty">Загрузка…</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div class="card-head-text">
+            <h2>⏱ Топ по времени</h2>
+            <div class="card-sub">кто дольше всех продержался</div>
+          </div>
+        </div>
+        <div id="mg-lb-time" class="top-list"><div class="empty">Загрузка…</div></div>
+      </div>
+    </div>
+  `;
+}
+
 function renderOther() {
-  let html = '';
-  html += `<div class="card">
+  let html = `<div class="card">
     <div class="card-head">
       <div class="card-head-text">
         <h2>📈 Графики городов</h2>
         <div class="card-sub">изменение экономики за время наблюдений · всего ${Object.keys(DATA.cities.histories).length} городов</div>
       </div>
     </div>`;
-  const historyEntries = Object.entries(DATA.cities.histories);
-  historyEntries.sort((a, b) => b[1].length - a[1].length);
-  historyEntries.forEach(([name, history]) => {
+  const entries = Object.entries(DATA.cities.histories).sort((a, b) => b[1].length - a[1].length);
+  entries.forEach(([name, history]) => {
     html += `<div class="chart-block">
       <div class="chart-title">
         <span>📌 ${name}</span>
@@ -1150,15 +1269,6 @@ function renderOther() {
     </div>`;
   });
   html += `</div>`;
-  html += `<div class="card">
-    <div class="card-head">
-      <div class="card-head-text">
-        <h2>📦 Здесь пока пусто</h2>
-        <div class="card-sub">скоро будут обновления — больше функций и топов</div>
-      </div>
-    </div>
-    <div class="empty" style="padding:30px 20px">⚡ новые разделы появятся в следующих версиях</div>
-  </div>`;
   return html;
 }
 
@@ -1167,6 +1277,7 @@ const RENDERERS = {
   players: renderPlayers,
   nations: renderNations,
   wars: renderWars,
+  minigame: renderMinigame,
   other: renderOther,
 };
 
@@ -1175,9 +1286,506 @@ function render() {
   const contentEl = document.getElementById('content');
   contentEl.innerHTML = RENDERERS[state.tab] ? RENDERERS[state.tab]() : '<div class="empty">В разработке</div>';
   attachSectionPickers();
+  if (state.tab === 'minigame') initMinigame();
+  else destroyMinigame();
+  updateAuthBtn();
 }
 window.__rerender = render;
 
+/* =========================================================
+   АВТОРИЗАЦИЯ (просто по приколу)
+   ========================================================= */
+let authMode = 'reg';
+
+function updateAuthBtn() {
+  const btn = document.getElementById('auth-btn');
+  if (currentUser) {
+    btn.textContent = '👤 ' + currentUser.nick;
+    btn.classList.add('logged');
+    document.getElementById('auth-logout-btn').style.display = 'block';
+    document.getElementById('auth-title').textContent = 'Профиль';
+    document.getElementById('auth-sub').textContent = 'ты вошёл как ' + currentUser.nick;
+    document.getElementById('auth-nick').value = currentUser.nick;
+    document.getElementById('auth-nick').disabled = true;
+    document.getElementById('auth-pass').style.display = 'none';
+    document.getElementById('auth-submit').style.display = 'none';
+  } else {
+    btn.textContent = '🔐 Войти';
+    btn.classList.remove('logged');
+    document.getElementById('auth-logout-btn').style.display = 'none';
+    document.getElementById('auth-nick').disabled = false;
+    document.getElementById('auth-pass').style.display = 'block';
+    document.getElementById('auth-submit').style.display = 'block';
+  }
+}
+
+window.openAuth = function() {
+  document.getElementById('auth-modal').classList.add('open');
+};
+window.closeAuth = function() {
+  document.getElementById('auth-modal').classList.remove('open');
+  document.getElementById('auth-msg').textContent = '';
+};
+window.authSwitch = function(mode) {
+  authMode = mode;
+  document.getElementById('tab-reg').classList.toggle('active', mode === 'reg');
+  document.getElementById('tab-login').classList.toggle('active', mode === 'login');
+  document.getElementById('auth-submit').textContent = mode === 'reg' ? 'СОЗДАТЬ АККАУНТ' : 'ВОЙТИ';
+  document.getElementById('auth-title').textContent = mode === 'reg' ? 'Регистрация' : 'Вход';
+  document.getElementById('auth-msg').textContent = '';
+};
+
+window.authSubmit = async function() {
+  if (currentUser) return;
+  const nick = document.getElementById('auth-nick').value.trim();
+  const pass = document.getElementById('auth-pass').value;
+  const msg = document.getElementById('auth-msg');
+  const btn = document.getElementById('auth-submit');
+
+  if (!nick || nick.length < 2) { msg.className = 'auth-msg err'; msg.textContent = 'Ник минимум 2 символа'; return; }
+  if (!pass || pass.length < 3) { msg.className = 'auth-msg err'; msg.textContent = 'Пароль минимум 3 символа'; return; }
+
+  const fb = window.__fb;
+  if (!fb) { msg.className = 'auth-msg err'; msg.textContent = 'Firebase недоступен'; return; }
+
+  const key = nick.toLowerCase().replace(/[^a-z0-9_\-]/g, '');
+  if (key.length < 2) { msg.className = 'auth-msg err'; msg.textContent = 'Ник должен содержать буквы/цифры'; return; }
+
+  btn.disabled = true;
+  btn.textContent = '...';
+
+  try {
+    const userRef = fb.ref(fb.db, 'users/' + key);
+    const snap = await fb.get(userRef);
+
+    if (authMode === 'reg') {
+      if (snap.exists()) {
+        msg.className = 'auth-msg err';
+        msg.textContent = 'Этот ник уже занят';
+        btn.disabled = false; btn.textContent = 'СОЗДАТЬ АККАУНТ';
+        return;
+      }
+      await fb.set(userRef, { nick, pass, created: Date.now() });
+      currentUser = { nick, key };
+      localStorage.setItem('ttp_user', JSON.stringify(currentUser));
+      msg.className = 'auth-msg ok';
+      msg.textContent = '✓ Аккаунт создан!';
+    } else {
+      if (!snap.exists() || snap.val().pass !== pass) {
+        msg.className = 'auth-msg err';
+        msg.textContent = 'Неверный ник или пароль';
+        btn.disabled = false; btn.textContent = 'ВОЙТИ';
+        return;
+      }
+      currentUser = { nick: snap.val().nick, key };
+      localStorage.setItem('ttp_user', JSON.stringify(currentUser));
+      msg.className = 'auth-msg ok';
+      msg.textContent = '✓ Ты вошёл!';
+    }
+
+    setTimeout(() => {
+      closeAuth();
+      updateAuthBtn();
+      if (state.tab === 'minigame') loadMinigameLeaderboards();
+    }, 800);
+  } catch (e) {
+    msg.className = 'auth-msg err';
+    msg.textContent = 'Ошибка: ' + e.message;
+    btn.disabled = false;
+    btn.textContent = authMode === 'reg' ? 'СОЗДАТЬ АККАУНТ' : 'ВОЙТИ';
+  }
+};
+
+window.authLogout = function() {
+  currentUser = null;
+  localStorage.removeItem('ttp_user');
+  closeAuth();
+  updateAuthBtn();
+  if (state.tab === 'minigame') loadMinigameLeaderboards();
+};
+
+document.getElementById('auth-btn').onclick = window.openAuth;
+document.getElementById('auth-modal').addEventListener('click', e => {
+  if (e.target.id === 'auth-modal') window.closeAuth();
+});
+
+/* =========================================================
+   МИНИ-ИГРА «Стул Моролса»
+   ========================================================= */
+const MG = {
+  canvas: null, ctx: null,
+  running: false,
+  player: { x: 450, y: 440, w: 50, h: 50 },
+  obstacles: [],
+  sapphires: [],
+  keys: { left: false, right: false },
+  time: 0,
+  sapphiresCollected: 0,
+  spawnTimer: 0,
+  lastFrame: 0,
+  rafId: 0,
+  spawnCounter: 0,
+};
+
+function initMinigame() {
+  MG.canvas = document.getElementById('mg-canvas');
+  if (!MG.canvas) return;
+  MG.ctx = MG.canvas.getContext('2d');
+  MG.running = false;
+  MG.player = { x: 450, y: 440, w: 50, h: 50 };
+  MG.obstacles = [];
+  MG.sapphires = [];
+  MG.time = 0;
+  MG.sapphiresCollected = 0;
+  MG.spawnTimer = 0;
+  MG.spawnCounter = 0;
+  mgDraw();
+
+  document.getElementById('mg-start-btn').onclick = mgStart;
+  document.getElementById('mg-left').addEventListener('touchstart', e => { e.preventDefault(); MG.keys.left = true; });
+  document.getElementById('mg-left').addEventListener('touchend', e => { e.preventDefault(); MG.keys.left = false; });
+  document.getElementById('mg-right').addEventListener('touchstart', e => { e.preventDefault(); MG.keys.right = true; });
+  document.getElementById('mg-right').addEventListener('touchend', e => { e.preventDefault(); MG.keys.right = false; });
+
+  loadMinigameLeaderboards();
+}
+
+function destroyMinigame() {
+  if (MG.rafId) { cancelAnimationFrame(MG.rafId); MG.rafId = 0; }
+  MG.running = false;
+  MG.keys.left = MG.keys.right = false;
+}
+
+function mgStart() {
+  MG.running = true;
+  MG.time = 0;
+  MG.sapphiresCollected = 0;
+  MG.obstacles = [];
+  MG.sapphires = [];
+  MG.spawnTimer = 0.3;
+  MG.spawnCounter = 0;
+  MG.player.x = 450;
+  MG.player.y = 440;
+  document.getElementById('mg-overlay').classList.add('hidden');
+  MG.lastFrame = performance.now();
+  MG.rafId = requestAnimationFrame(mgLoop);
+}
+
+function mgSpeedMult() {
+  return 1 + MG.time * 0.18;
+}
+
+function mgSpawn() {
+  MG.spawnCounter++;
+  // 25% шанс сапфира, 75% преграда
+  if (Math.random() < 0.3) {
+    MG.sapphires.push({
+      x: 40 + Math.random() * 820,
+      y: -20,
+      size: 22,
+      rot: 0,
+    });
+  } else {
+    const types = ['block', 'spike', 'tall'];
+    const type = types[Math.floor(Math.random() * types.length)];
+    let w = 40, h = 40;
+    if (type === 'tall') { w = 26; h = 70; }
+    if (type === 'spike') { w = 40; h = 40; }
+    MG.obstacles.push({
+      x: w/2 + 20 + Math.random() * (860 - w),
+      y: -h - 10,
+      w, h, type,
+    });
+  }
+}
+
+function mgRectOverlap(p, o) {
+  // player center vs obstacle top-left with w/h
+  const px1 = p.x - p.w/2, py1 = p.y - p.h/2;
+  const px2 = p.x + p.w/2, py2 = p.y + p.h/2;
+  const ox1 = o.x - (o.w||0)/2, oy1 = o.y;
+  const ox2 = o.x + (o.w||0)/2, oy2 = o.y + (o.h||o.size||0);
+  return px2 > ox1 && px1 < ox2 && py2 > oy1 && py1 < oy2;
+}
+
+function mgDraw() {
+  const ctx = MG.ctx;
+  if (!ctx) return;
+  const W = 900, H = 500;
+
+  // Background gradient
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, '#1a1a2e');
+  g.addColorStop(1, '#0a0a14');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid lines
+  ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += 60) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+  }
+  for (let y = 0; y < H; y += 60) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+  }
+
+  // Obstacles
+  MG.obstacles.forEach(o => {
+    if (o.type === 'spike') {
+      ctx.fillStyle = '#ff4455';
+      ctx.beginPath();
+      ctx.moveTo(o.x - o.w/2, o.y + o.h);
+      ctx.lineTo(o.x + o.w/2, o.y + o.h);
+      ctx.lineTo(o.x, o.y);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#aa2233';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    } else {
+      ctx.fillStyle = o.type === 'tall' ? '#e04040' : '#d03030';
+      ctx.fillRect(o.x - o.w/2, o.y, o.w, o.h);
+      ctx.strokeStyle = '#801010';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(o.x - o.w/2, o.y, o.w, o.h);
+      // Inner detail
+      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      ctx.beginPath();
+      ctx.moveTo(o.x - o.w/2 + 4, o.y + 4);
+      ctx.lineTo(o.x + o.w/2 - 4, o.y + o.h - 4);
+      ctx.stroke();
+    }
+  });
+
+  // Sapphires
+  MG.sapphires.forEach(s => {
+    ctx.save();
+    ctx.translate(s.x, s.y);
+    ctx.rotate(s.rot);
+    ctx.fillStyle = '#40a0ff';
+    ctx.beginPath();
+    ctx.moveTo(0, -s.size);
+    ctx.lineTo(s.size, 0);
+    ctx.lineTo(0, s.size);
+    ctx.lineTo(-s.size, 0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#a0d0ff';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    // Inner shine
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.beginPath();
+    ctx.moveTo(0, -s.size/2);
+    ctx.lineTo(s.size/2, 0);
+    ctx.lineTo(0, 0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  });
+
+  // Player (стул Моролса — рисуем человечка на стуле)
+  const px = MG.player.x, py = MG.player.y;
+  ctx.save();
+  ctx.translate(px, py);
+
+  // Стул
+  ctx.fillStyle = '#8a5a2a';
+  ctx.fillRect(-20, 8, 40, 6);   // сиденье
+  ctx.fillRect(-20, -20, 6, 30);  // спинка левая
+  ctx.fillRect(14, -20, 6, 30);   // спинка правая
+  ctx.fillRect(-20, -22, 40, 6);  // верх спинки
+  // Ножки
+  ctx.fillRect(-18, 14, 4, 12);
+  ctx.fillRect(14, 14, 4, 12);
+
+  // Персонаж (Моролса)
+  ctx.fillStyle = '#f0c090';  // лицо
+  ctx.beginPath();
+  ctx.arc(0, -28, 12, 0, Math.PI*2);
+  ctx.fill();
+  // Глаза
+  ctx.fillStyle = '#000';
+  ctx.beginPath(); ctx.arc(-4, -30, 1.8, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(4, -30, 1.8, 0, Math.PI*2); ctx.fill();
+  // Улыбка
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.arc(0, -24, 5, 0.1*Math.PI, 0.9*Math.PI);
+  ctx.stroke();
+  // Тело
+  ctx.fillStyle = '#3a6ea5';
+  ctx.fillRect(-10, -18, 20, 24);
+  // Руки
+  ctx.fillStyle = '#f0c090';
+  ctx.fillRect(-16, -16, 6, 14);
+  ctx.fillRect(10, -16, 6, 14);
+
+  ctx.restore();
+
+  // Top bar info
+  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  ctx.font = 'bold 16px monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('⏱ ' + MG.time.toFixed(1) + 'с', 20, 30);
+  ctx.textAlign = 'right';
+  ctx.fillText('💎 ' + MG.sapphiresCollected, 880, 30);
+  ctx.textAlign = 'center';
+  ctx.fillStyle = 'rgba(245,166,35,0.7)';
+  ctx.fillText('×' + mgSpeedMult().toFixed(2), 450, 30);
+}
+
+function mgLoop(now) {
+  if (!MG.running) return;
+  const dt = Math.min((now - MG.lastFrame) / 1000, 0.05);
+  MG.lastFrame = now;
+
+  MG.time += dt;
+
+  // Move player
+  const speed = 480;
+  if (MG.keys.left) MG.player.x -= speed * dt;
+  if (MG.keys.right) MG.player.x += speed * dt;
+  MG.player.x = Math.max(30, Math.min(870, MG.player.x));
+
+  // Spawn
+  MG.spawnTimer -= dt;
+  if (MG.spawnTimer <= 0) {
+    mgSpawn();
+    const base = 0.65;
+    MG.spawnTimer = Math.max(0.15, base / (0.9 + MG.time * 0.12));
+  }
+
+  // Update obstacles
+  const obsSpeed = 240 * (1 + MG.time * 0.16);
+  for (let i = MG.obstacles.length - 1; i >= 0; i--) {
+    const o = MG.obstacles[i];
+    o.y += obsSpeed * dt;
+    if (o.y > 520) MG.obstacles.splice(i, 1);
+  }
+  // Update sapphires
+  for (let i = MG.sapphires.length - 1; i >= 0; i--) {
+    const s = MG.sapphires[i];
+    s.y += obsSpeed * 0.85 * dt;
+    s.rot += dt * 2;
+    if (mgRectOverlap(MG.player, { x: s.x, y: s.y - s.size, w: s.size*2, h: s.size*2 })) {
+      MG.sapphiresCollected++;
+      MG.sapphires.splice(i, 1);
+    } else if (s.y > 520) {
+      MG.sapphires.splice(i, 1);
+    }
+  }
+  // Check obstacle collision
+  for (const o of MG.obstacles) {
+    if (mgRectOverlap(MG.player, o)) {
+      mgCrash();
+      return;
+    }
+  }
+
+  // Update stats
+  document.getElementById('mg-time').textContent = MG.time.toFixed(1);
+  document.getElementById('mg-sapphires').textContent = MG.sapphiresCollected;
+  document.getElementById('mg-speed').textContent = mgSpeedMult().toFixed(2);
+
+  mgDraw();
+  MG.rafId = requestAnimationFrame(mgLoop);
+}
+
+function mgCrash() {
+  MG.running = false;
+  if (MG.rafId) { cancelAnimationFrame(MG.rafId); MG.rafId = 0; }
+  mgDraw();
+
+  const ov = document.getElementById('mg-overlay');
+  ov.classList.remove('hidden');
+  document.getElementById('mg-ov-title').textContent = '💥 РАЗБИЛСЯ!';
+  document.getElementById('mg-ov-sub').innerHTML =
+    `Продержался <b>${MG.time.toFixed(1)}с</b> · собрал <b>${MG.sapphiresCollected}</b> сапфиров` +
+    (currentUser ? '<br><span style="color:var(--green)">Сохранение в топы...</span>' : '<br><span style="color:var(--text3)">Войди в аккаунт, чтобы попасть в топы</span>');
+  document.getElementById('mg-start-btn').textContent = '↻ ЕЩЁ РАЗ';
+
+  saveMinigameScore(MG.sapphiresCollected, MG.time);
+}
+
+async function saveMinigameScore(sapphires, time) {
+  if (!currentUser) return;
+  const fb = window.__fb;
+  if (!fb) return;
+  try {
+    const nick = currentUser.nick;
+    const key = currentUser.key;
+
+    // Sapphires top
+    const sapRef = fb.ref(fb.db, 'minigame/sapphires/' + key);
+    const sapSnap = await fb.get(sapRef);
+    if (!sapSnap.exists() || sapphires > sapSnap.val().value) {
+      await fb.set(sapRef, { nick, value: sapphires, date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
+    }
+    // Time top
+    const timeRef = fb.ref(fb.db, 'minigame/time/' + key);
+    const timeSnap = await fb.get(timeRef);
+    if (!timeSnap.exists() || time > timeSnap.val().value) {
+      await fb.set(timeRef, { nick, value: time, date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
+    }
+
+    loadMinigameLeaderboards();
+    const sub = document.getElementById('mg-ov-sub');
+    if (sub) sub.innerHTML = `Продержался <b>${time.toFixed(1)}с</b> · собрал <b>${sapphires}</b> сапфиров<br><span style="color:var(--green)">✓ Результат сохранён в топы</span>`;
+  } catch (e) {
+    console.warn('[Minigame] save error:', e.message);
+  }
+}
+
+async function loadMinigameLeaderboards() {
+  const sapEl = document.getElementById('mg-lb-sap');
+  const timeEl = document.getElementById('mg-lb-time');
+  if (!sapEl || !timeEl) return;
+  const fb = window.__fb;
+  if (!fb) {
+    sapEl.innerHTML = '<div class="empty">Firebase недоступен</div>';
+    timeEl.innerHTML = '<div class="empty">Firebase недоступен</div>';
+    return;
+  }
+  try {
+    const [sapSnap, timeSnap] = await Promise.all([
+      fb.get(fb.ref(fb.db, 'minigame/sapphires')),
+      fb.get(fb.ref(fb.db, 'minigame/time')),
+    ]);
+    const sapList = sapSnap.exists() ? Object.values(sapSnap.val()) : [];
+    const timeList = timeSnap.exists() ? Object.values(timeSnap.val()) : [];
+    sapList.sort((a, b) => b.value - a.value);
+    timeList.sort((a, b) => b.value - a.value);
+
+    sapEl.innerHTML = sapList.length
+      ? renderTopList(sapList.slice(0, 10).map(x => ({ name: x.nick, value: x.value })), ' 💎', null)
+      : '<div class="empty">Пока никто не играл</div>';
+
+    timeEl.innerHTML = timeList.length
+      ? renderTopList(timeList.slice(0, 10).map(x => ({ name: x.nick, value: +x.value.toFixed(1) })), ' сек', null)
+      : '<div class="empty">Пока никто не играл</div>';
+  } catch (e) {
+    sapEl.innerHTML = '<div class="empty">Ошибка загрузки</div>';
+    timeEl.innerHTML = '<div class="empty">Ошибка загрузки</div>';
+  }
+}
+
+// Keyboard input
+document.addEventListener('keydown', e => {
+  if (state.tab !== 'minigame' || !MG.running) return;
+  if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A' || e.key === 'ф') { e.preventDefault(); MG.keys.left = true; }
+  if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D' || e.key === 'в') { e.preventDefault(); MG.keys.right = true; }
+});
+document.addEventListener('keyup', e => {
+  if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A' || e.key === 'ф') MG.keys.left = false;
+  if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D' || e.key === 'в') MG.keys.right = false;
+});
+
+/* =========================================================
+   РЕКЛАМА / ТЕМА / МУЗЫКА
+   ========================================================= */
 window.openAd = function() { document.getElementById('ad-modal').classList.add('open'); };
 window.closeAd = function() { document.getElementById('ad-modal').classList.remove('open'); };
 document.getElementById('ad-modal').addEventListener('click', e => {
@@ -1188,7 +1796,6 @@ const themeBtn = document.getElementById('theme-toggle');
 function applyTheme(theme) {
   document.body.classList.toggle('light', theme === 'light');
   themeBtn.textContent = theme === 'light' ? '🌙' : '☀️';
-  themeBtn.title = theme === 'light' ? 'Тёмная тема' : 'Светлая тема';
 }
 let currentTheme = localStorage.getItem('ttp_theme') || 'dark';
 applyTheme(currentTheme);
@@ -1207,19 +1814,13 @@ music.volume = savedVol;
 let musicPlaying = false, musicStarted = false;
 function tryStartMusic() {
   if (musicStarted) return;
-  music.play().then(() => {
-    musicPlaying = true; musicStarted = true; musicBtn.textContent = '🔊';
-  }).catch(() => { musicBtn.textContent = '🔇'; });
+  music.play().then(() => { musicPlaying = true; musicStarted = true; musicBtn.textContent = '🔊'; }).catch(() => { musicBtn.textContent = '🔇'; });
 }
 tryStartMusic();
 document.addEventListener('click', () => { if (!musicStarted) tryStartMusic(); }, { once: false });
-document.addEventListener('keydown', () => { if (!musicStarted) tryStartMusic(); }, { once: false });
 musicBtn.onclick = () => {
-  if (musicPlaying) {
-    music.pause(); musicPlaying = false; musicBtn.textContent = '🔇';
-  } else {
-    music.play().then(() => { musicPlaying = true; musicStarted = true; musicBtn.textContent = '🔊'; }).catch(() => {});
-  }
+  if (musicPlaying) { music.pause(); musicPlaying = false; musicBtn.textContent = '🔇'; }
+  else { music.play().then(() => { musicPlaying = true; musicStarted = true; musicBtn.textContent = '🔊'; }).catch(() => {}); }
 };
 volSlider.oninput = () => {
   const v = parseFloat(volSlider.value);
@@ -1227,6 +1828,9 @@ volSlider.oninput = () => {
   localStorage.setItem('ttp_vol', v);
 };
 
+/* =========================================================
+   СТАРТ
+   ========================================================= */
 render();
 </script>
 </body>
