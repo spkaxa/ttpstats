@@ -34,7 +34,6 @@ body {
 }
 body.light { background-image: radial-gradient(ellipse at top, rgba(180,83,9,.08), transparent 60%); }
 
-/* TOP CONTROLS */
 .top-controls {
   position:fixed; top:18px; right:18px; z-index:999;
   display:flex; flex-direction:column; gap:8px; align-items:flex-end;
@@ -63,8 +62,6 @@ body.light { background-image: radial-gradient(ellipse at top, rgba(180,83,9,.08
 }
 #music-btn:hover { color: var(--accent); }
 #vol-slider { width: 80px; accent-color: var(--accent); }
-
-/* STATUS DOT */
 #db-status {
   width: 10px; height: 10px; border-radius: 50%;
   background: #666; transition: background .3s;
@@ -93,10 +90,7 @@ h1 {
   -webkit-text-fill-color:var(--text2);
 }
 .subtitle { color:var(--text2); font-size:13px; margin-bottom:4px; letter-spacing:.2px; }
-.subtitle-future {
-  color: var(--accent); font-size:12px; margin-bottom:10px; letter-spacing:.3px;
-  font-weight:600;
-}
+.subtitle-future { color: var(--accent); font-size:12px; margin-bottom:10px; letter-spacing:.3px; font-weight:600; }
 .creator { color:var(--text3); font-size:12px; }
 .creator a { color:var(--accent); text-decoration:none; font-weight:600; }
 .creator a:hover { text-decoration:underline; }
@@ -115,21 +109,16 @@ h1 {
 
 main { max-width:1100px; margin:0 auto; padding:24px; }
 
-.ads-row {
-  display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:20px;
-}
+.ads-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:20px; }
 .ad-slot {
   height: 82px; border-radius: 10px; padding: 12px 16px;
   display:flex; align-items:center; gap:12px; overflow:hidden;
-  position: relative;
-  border: 1px dashed var(--border);
-  background: var(--bg2);
+  position: relative; border: 1px dashed var(--border); background: var(--bg2);
 }
 .ad-slot.empty { opacity: 0.55; }
 .ad-slot.empty::before {
   content: '📢 Реклама'; position:absolute; top:50%; left:50%;
-  transform: translate(-50%, -50%);
-  font-size: 11px; color: var(--text3); letter-spacing: 2px;
+  transform: translate(-50%, -50%); font-size: 11px; color: var(--text3); letter-spacing: 2px;
 }
 .ad-slot.filled {
   background: var(--ad-bg); border: 1px solid var(--ad-border);
@@ -138,10 +127,8 @@ main { max-width:1100px; margin:0 auto; padding:24px; }
 }
 .ad-slot.filled:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(245,166,35,.3); }
 .ad-badge {
-  position:absolute; top:6px; right:8px;
-  font-size: 9px; font-weight: 800; letter-spacing: 1px;
-  background: var(--accent); color: #000;
-  padding: 1px 6px; border-radius: 3px;
+  position:absolute; top:6px; right:8px; font-size: 9px; font-weight: 800; letter-spacing: 1px;
+  background: var(--accent); color: #000; padding: 1px 6px; border-radius: 3px;
 }
 .ad-body { flex: 1; }
 .ad-title { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 3px; }
@@ -151,48 +138,31 @@ main { max-width:1100px; margin:0 auto; padding:24px; }
 .ad-modal {
   position: fixed; inset: 0; z-index: 1000;
   background: rgba(0,0,0,0.85); backdrop-filter: blur(6px);
-  display: none; align-items: center; justify-content: center;
-  padding: 24px;
+  display: none; align-items: center; justify-content: center; padding: 24px;
 }
 .ad-modal.open { display: flex; animation: fadeIn .25s; }
 @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
 .ad-modal-inner {
   background: var(--bg2); border: 1px solid var(--ad-border);
-  border-radius: 12px; padding: 32px 36px;
-  max-width: 560px; width: 100%;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-  position: relative;
-  animation: slideUp .3s;
+  border-radius: 12px; padding: 32px 36px; max-width: 560px; width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6); position: relative; animation: slideUp .3s;
 }
 @keyframes slideUp { from { transform: translateY(20px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
-.ad-modal-inner h2 {
-  font-size: 22px; font-weight: 800; margin-bottom: 16px;
-  color: var(--accent); letter-spacing: -.3px;
-}
+.ad-modal-inner h2 { font-size: 22px; font-weight: 800; margin-bottom: 16px; color: var(--accent); letter-spacing: -.3px; }
 .ad-modal-inner p { font-size: 14px; line-height: 1.7; color: var(--text); margin-bottom: 14px; }
 .ad-modal-inner ul { list-style: none; margin: 14px 0; }
-.ad-modal-inner li {
-  font-size: 14px; line-height: 1.9; color: var(--text2);
-  padding-left: 22px; position: relative;
-}
-.ad-modal-inner li::before {
-  content: '✓'; position: absolute; left: 0;
-  color: var(--green); font-weight: 800;
-}
+.ad-modal-inner li { font-size: 14px; line-height: 1.9; color: var(--text2); padding-left: 22px; position: relative; }
+.ad-modal-inner li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 800; }
 .ad-highlight {
   background: linear-gradient(135deg, rgba(245,166,35,.15), rgba(245,166,35,.05));
   border-left: 3px solid var(--accent);
   padding: 12px 16px; border-radius: 6px;
-  font-weight: 700; color: var(--accent); font-size: 14px;
-  margin-top: 16px;
+  font-weight: 700; color: var(--accent); font-size: 14px; margin-top: 16px;
 }
 .ad-close {
-  position: absolute; top: 14px; right: 14px;
-  width: 32px; height: 32px; border-radius: 50%;
-  background: var(--bg3); border: 1px solid var(--border);
-  color: var(--text); font-size: 14px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all .15s; font-family: inherit;
+  position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%;
+  background: var(--bg3); border: 1px solid var(--border); color: var(--text); font-size: 14px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: all .15s; font-family: inherit;
 }
 .ad-close:hover { background: var(--red); color: #fff; border-color: var(--red); }
 
@@ -205,9 +175,7 @@ main { max-width:1100px; margin:0 auto; padding:24px; }
   gap: 16px; margin-bottom: 16px; flex-wrap: wrap;
 }
 .card-head-text { flex: 1; min-width: 200px; }
-.card h2 {
-  font-size:15px; font-weight:700; color:var(--accent); margin-bottom:4px; letter-spacing:.3px;
-}
+.card h2 { font-size:15px; font-weight:700; color:var(--accent); margin-bottom:4px; letter-spacing:.3px; }
 .card .card-sub { color:var(--text3); font-size:11px; }
 .card .card-note {
   color:var(--text3); font-size:11px; margin-top:14px; font-style:italic;
@@ -216,17 +184,14 @@ main { max-width:1100px; margin:0 auto; padding:24px; }
 .sec-date-wrap {
   display: flex; align-items: center; gap: 6px;
   background: var(--bg3); border: 1px solid var(--border);
-  border-radius: 6px; padding: 4px 8px;
+  border-radius: 6px; padding: 4px 8px; flex-shrink: 0;
 }
 .sec-date-wrap label {
-  font-size: 10px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase;
-  font-weight: 700;
+  font-size: 10px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; font-weight: 700;
 }
 .sec-date {
-  background: transparent; color: var(--text);
-  border: none; font-family: inherit; font-size: 12px;
-  cursor: pointer; padding: 4px 4px;
-  min-width: 130px;
+  background: transparent; color: var(--text); border: none; font-family: inherit;
+  font-size: 12px; cursor: pointer; padding: 4px 4px; min-width: 130px;
 }
 .sec-date:focus { outline: none; }
 .sec-date option { background: var(--bg3); color: var(--text); }
@@ -267,54 +232,27 @@ body.light .r1 .rank { color:#b45309; }
 .chart-wrap { background:var(--bg3); border-radius:6px; padding:16px; margin-top:8px; }
 .chart-wrap svg { width:100%; height:180px; display:block; overflow:visible; }
 .chart-labels { display:flex; justify-content:space-between; margin-top:8px; font-size:10px; color:var(--text3); font-variant-numeric:tabular-nums; }
-.chart-single {
-  background:var(--bg3); border-radius:6px; padding:28px 16px; text-align:center;
-  border:1px dashed var(--border);
-}
+.chart-single { background:var(--bg3); border-radius:6px; padding:28px 16px; text-align:center; border:1px dashed var(--border); }
 .chart-single .val { font-size:32px; font-weight:900; color:var(--accent); margin-bottom:4px; }
 .chart-single .date { font-size:11px; color:var(--text3); letter-spacing:1px; text-transform:uppercase; }
 .chart-single .wait { font-size:11px; color:var(--text3); margin-top:10px; font-style:italic; }
 .chart-block { margin-bottom:22px; padding-bottom:22px; border-bottom:1px dashed var(--border); }
 .chart-block:last-child { margin-bottom:0; padding-bottom:0; border-bottom:none; }
-.chart-title {
-  font-size:14px; font-weight:700; color:var(--text); margin-bottom:10px;
-  display:flex; align-items:center; gap:8px;
-}
-.chart-title .chart-pos {
-  background:var(--bg3); color:var(--text3); font-size:10px; font-weight:700;
-  padding:1px 7px; border-radius:3px; letter-spacing:.5px;
-}
+.chart-title { font-size:14px; font-weight:700; color:var(--text); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.chart-title .chart-pos { background:var(--bg3); color:var(--text3); font-size:10px; font-weight:700; padding:1px 7px; border-radius:3px; letter-spacing:.5px; }
 
-.war-item {
-  background:var(--bg3); border-radius:8px; padding:14px 18px;
-  margin-bottom:10px; border-left:4px solid var(--accent);
-  transition:all .15s;
-}
+.war-item { background:var(--bg3); border-radius:8px; padding:14px 18px; margin-bottom:10px; border-left:4px solid var(--accent); transition:all .15s; }
 .war-item:hover { transform:translateX(3px); }
-.war-date {
-  font-size:11px; color:var(--text3); letter-spacing:1px; margin-bottom:8px;
-  text-transform:uppercase; font-weight:700;
-  display:flex; align-items:center; gap:6px;
-}
-.war-date::before {
-  content:''; display:inline-block; width:6px; height:6px;
-  background:var(--accent); border-radius:50%;
-}
-.war-teams {
-  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
-  font-size:15px; font-weight:700; margin-bottom:8px;
-}
+.war-date { font-size:11px; color:var(--text3); letter-spacing:1px; margin-bottom:8px; text-transform:uppercase; font-weight:700; display:flex; align-items:center; gap:6px; }
+.war-date::before { content:''; display:inline-block; width:6px; height:6px; background:var(--accent); border-radius:50%; }
+.war-teams { display:flex; align-items:center; gap:14px; flex-wrap:wrap; font-size:15px; font-weight:700; margin-bottom:8px; }
 .war-team { color:var(--text); }
 .war-team.winner { color:var(--win); text-shadow:0 0 12px rgba(74,222,128,.35); }
 .war-team.loser { color:var(--text2); opacity:0.7; }
 .war-vs { color:var(--text3); font-size:12px; font-weight:700; letter-spacing:2px; opacity:0.7; }
 .war-result { font-size:12px; color:var(--text3); letter-spacing:.5px; display:flex; align-items:center; gap:8px; }
 .war-result .trophy { color:var(--gold); font-size:13px; }
-.war-result .faction {
-  background:var(--bg2); color:var(--text2);
-  padding:1px 8px; border-radius:3px; font-size:10px;
-  font-weight:700; letter-spacing:.5px; border:1px solid var(--border);
-}
+.war-result .faction { background:var(--bg2); color:var(--text2); padding:1px 8px; border-radius:3px; font-size:10px; font-weight:700; letter-spacing:.5px; border:1px solid var(--border); }
 body.light .war-result .faction { background:#fff; }
 
 @media (max-width:820px) {
@@ -330,6 +268,8 @@ body.light .war-result .faction { background:#fff; }
   .header-inner { padding-right: 80px; }
   .ads-row { grid-template-columns: 1fr; }
   .ad-slot { height: 70px; }
+  .sec-date-wrap label { display: none; }
+  .sec-date { min-width: 110px; font-size: 11px; }
 }
 
 footer {
@@ -412,7 +352,7 @@ footer .sep { margin:8px 0; color:var(--border); }
   </div>
 </div>
 
-<!-- ===== Firebase SDK (модульно) ===== -->
+<!-- ===== Firebase SDK ===== -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -435,7 +375,6 @@ footer .sep { margin:8px 0; color:var(--border); }
     fbDb = getDatabase(fbApp);
     window.__firebase = { app: fbApp, db: fbDb, ref, get };
     console.log('[Firebase] Инициализация прошла успешно');
-    // Проверим, есть ли что в базе (быстрый тест)
     (async () => {
       try {
         const testRef = ref(fbDb, 'stats');
@@ -443,14 +382,11 @@ footer .sep { margin:8px 0; color:var(--border); }
         if (snap.exists()) {
           statusEl.className = 'online';
           statusEl.title = 'Firebase: подключено, данные есть';
-          console.log('[Firebase] Данные в базе найдены — используется Firebase');
           window.__firebaseHasData = true;
-          // Если данные появились — перерендерим
           if (window.__rerender) window.__rerender();
         } else {
           statusEl.className = 'offline';
           statusEl.title = 'Firebase подключен, но база пуста';
-          console.log('[Firebase] База пуста — используются встроенные данные');
         }
       } catch (e) {
         statusEl.className = 'offline';
@@ -463,40 +399,10 @@ footer .sep { margin:8px 0; color:var(--border); }
     statusEl.title = 'Firebase не подключился';
     console.warn('[Firebase] Ошибка инициализации:', e.message);
   }
-
-  // Функция загрузки данных из Firebase
-  window.fetchFromFirebase = async function(path, dateKey) {
-    if (!window.__firebaseHasData || !fbDb) return null;
-    try {
-      const dbRef = ref(fbDb, `stats/${path}/${dateKey}`);
-      const snap = await get(dbRef);
-      if (snap.exists()) return snap.val();
-      return null;
-    } catch (e) {
-      console.warn('[Firebase] fetch error:', e.message);
-      return null;
-    }
-  };
-
-  // Функция загрузки всех дат для пути
-  window.fetchAllDatesFirebase = async function(path) {
-    if (!window.__firebaseHasData || !fbDb) return null;
-    try {
-      const dbRef = ref(fbDb, `stats/${path}`);
-      const snap = await get(dbRef);
-      if (!snap.exists()) return null;
-      return Object.keys(snap.val()).sort();
-    } catch (e) {
-      return null;
-    }
-  };
 </script>
 
-<!-- ===== Основной скрипт (fallback + вся логика) ===== -->
+<!-- ===== Основной скрипт ===== -->
 <script>
-/* =========================================================
-   DATA — встроенная резервная копия
-   ========================================================= */
 const DATA = {
   cities: {
     balance: {
@@ -583,7 +489,6 @@ const DATA = {
       ]
     }
   },
-
   players: {
     balance: {
       '2026-09-24 00:30': [
@@ -644,7 +549,6 @@ const DATA = {
       note: 'за всё время был kaba_day с ~450000, но дата от которой идёт отсчёт — сегодня, а не раньше, так что не считается'
     }
   },
-
   nations: {
     balance: {
       '2026-09-24 00:30': [
@@ -668,7 +572,6 @@ const DATA = {
       ]
     }
   },
-
   wars: {
     list: [
       { date:'12–13 сентября', team1:'Латексные_мальчики', team2:'королевство_брдыщей', winner:2, faction:'kvkz' },
@@ -682,7 +585,6 @@ const DATA = {
       { date:'25 августа',     team1:'португалия',         team2:'almata',             winner:1, faction:null },
     ]
   },
-
   other: {}
 };
 
@@ -708,19 +610,25 @@ const sectionState = {
 };
 
 function getSectionDates(key) {
-  if (key === 'cities.balance') return ['2026-09-24 00:23'];
-  if (key === 'players.active') return ['2026-08-20 07:10', '2026-09-24 00:30'];
+  if (key === 'cities.balance')     return ['2026-09-24 00:23'];
+  if (key === 'cities.population')  return ['2026-09-24 00:30'];
+  if (key === 'cities.size')        return ['2026-09-24 00:30'];
+  if (key === 'players.balance')    return ['2026-09-24 00:30'];
+  if (key === 'players.active')     return ['2026-08-20 07:10', '2026-09-24 00:30'];
+  if (key === 'players.shards')     return ['2026-09-24 00:30'];
+  if (key === 'players.rubies')     return ['2026-09-24 00:30'];
+  if (key === 'nations.balance')    return ['2026-09-24 00:30'];
+  if (key === 'nations.size')       return ['2026-09-24 00:30'];
+  if (key === 'nations.citizens')   return ['2026-09-24 00:30'];
   return ['2026-09-24 00:30'];
 }
+
 function sectionHasAllTime(key) {
   return key === 'cities.balance' || key === 'players.active';
 }
 
 let state = { tab:'cities' };
 
-/* =========================================================
-   HELPERS
-   ========================================================= */
 function fmtDate(d) {
   const [datePart, timePart] = d.split(' ');
   const [y, m, day] = datePart.split('-');
@@ -763,13 +671,9 @@ function collectAllTime(snapshots) {
   return Object.values(best).sort((a, b) => b.value - a.value);
 }
 
-/* =========================================================
-   SECTION DATE PICKER
-   ========================================================= */
 function sectionPickerHTML(key) {
   const dates = getSectionDates(key);
   const hasAll = sectionHasAllTime(key);
-  if (dates.length === 1 && !hasAll) return '';
   const st = sectionState[key];
   const curDate = st.date || dates[dates.length - 1];
   const opts = dates.map(d =>
@@ -799,9 +703,6 @@ function attachSectionPickers() {
   });
 }
 
-/* =========================================================
-   TABS
-   ========================================================= */
 function renderTabs() {
   const tabsEl = document.getElementById('tabs');
   tabsEl.innerHTML = '';
@@ -814,9 +715,6 @@ function renderTabs() {
   });
 }
 
-/* =========================================================
-   RENDER HELPERS
-   ========================================================= */
 function makeListItem(rank, item, unit, arrowInfo) {
   const rClass = rank <= 3 ? ' r' + rank : '';
   let arrowHTML = '';
@@ -909,9 +807,6 @@ function renderLineChart(history) {
   `;
 }
 
-/* =========================================================
-   TAB RENDERERS
-   ========================================================= */
 function renderCities() {
   let html = '';
   const bal = DATA.cities.balance;
@@ -1113,22 +1008,12 @@ function render() {
 }
 window.__rerender = render;
 
-/* =========================================================
-   ADS
-   ========================================================= */
-window.openAd = function() {
-  document.getElementById('ad-modal').classList.add('open');
-};
-window.closeAd = function() {
-  document.getElementById('ad-modal').classList.remove('open');
-};
+window.openAd = function() { document.getElementById('ad-modal').classList.add('open'); };
+window.closeAd = function() { document.getElementById('ad-modal').classList.remove('open'); };
 document.getElementById('ad-modal').addEventListener('click', e => {
   if (e.target.id === 'ad-modal') window.closeAd();
 });
 
-/* =========================================================
-   THEME
-   ========================================================= */
 const themeBtn = document.getElementById('theme-toggle');
 function applyTheme(theme) {
   document.body.classList.toggle('light', theme === 'light');
@@ -1143,45 +1028,27 @@ themeBtn.onclick = () => {
   applyTheme(currentTheme);
 };
 
-/* =========================================================
-   MUSIC
-   ========================================================= */
 const music = document.getElementById('bg-music');
 const musicBtn = document.getElementById('music-btn');
 const volSlider = document.getElementById('vol-slider');
-
 let savedVol = parseFloat(localStorage.getItem('ttp_vol') || '0.35');
 volSlider.value = savedVol;
 music.volume = savedVol;
-
-let musicPlaying = false;
-let musicStarted = false;
-
+let musicPlaying = false, musicStarted = false;
 function tryStartMusic() {
   if (musicStarted) return;
   music.play().then(() => {
-    musicPlaying = true;
-    musicStarted = true;
-    musicBtn.textContent = '🔊';
-  }).catch(() => {
-    musicBtn.textContent = '🔇';
-  });
+    musicPlaying = true; musicStarted = true; musicBtn.textContent = '🔊';
+  }).catch(() => { musicBtn.textContent = '🔇'; });
 }
 tryStartMusic();
 document.addEventListener('click', () => { if (!musicStarted) tryStartMusic(); }, { once: false });
 document.addEventListener('keydown', () => { if (!musicStarted) tryStartMusic(); }, { once: false });
-
 musicBtn.onclick = () => {
   if (musicPlaying) {
-    music.pause();
-    musicPlaying = false;
-    musicBtn.textContent = '🔇';
+    music.pause(); musicPlaying = false; musicBtn.textContent = '🔇';
   } else {
-    music.play().then(() => {
-      musicPlaying = true;
-      musicStarted = true;
-      musicBtn.textContent = '🔊';
-    }).catch(() => {});
+    music.play().then(() => { musicPlaying = true; musicStarted = true; musicBtn.textContent = '🔊'; }).catch(() => {});
   }
 };
 volSlider.oninput = () => {
@@ -1190,9 +1057,6 @@ volSlider.oninput = () => {
   localStorage.setItem('ttp_vol', v);
 };
 
-/* =========================================================
-   BOOT
-   ========================================================= */
 render();
 </script>
 </body>
