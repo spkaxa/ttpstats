@@ -441,7 +441,6 @@ body.light .r1 .rank { color:#15803d; }
 .war-result .trophy { color:var(--gold); font-size:13px; }
 .war-result .faction { background:var(--bg2); color:var(--accent2); padding:2px 10px; border-radius:4px; font-size:10px; font-weight:700; border:1px solid var(--border2); }
 
-/* MINIGAME */
 #mg-wrap { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--border2); margin-bottom: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
 #mg-canvas { display: block; width: 100%; height: auto; max-height: 60vh; background: #080c09; touch-action: none; }
 #mg-overlay {
@@ -544,7 +543,7 @@ footer .sep { margin:10px 0; color:var(--border); }
 
 <header>
   <div class="header-inner">
-    <h1>timetoplay stats <span class="version-badge">v1.0 release</span></h1>
+    <h1>timetoplay stats <span class="version-badge">v1.0.2</span></h1>
     <div class="subtitle">статистика timetoplay с помощью просмотра прошлого с помощью разных дат и других разных интересных функций — ttpstats</div>
     <div class="telegram-line">📢 телеграм канал — <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></div>
     <div class="creator">создатель xxspk · made in arbuzovsk</div>
@@ -910,8 +909,8 @@ const DATA = {
       ],
       '2026-09-25 18:30': [
         { name:'timoxa_pistol', value:22*86400 + 13*3600 + 7*60 + 18, display:'22д 13ч 7м 18с' },
-        { name:'afarsic', value:19*86400 + 10*3600 + 59*60 + 27, display:'19д 10ч 59м 27с' },
-        { name:'Kimpit', value:16*86400 + 22*3600 + 36*60 + 28, display:'16д 22ч 36м 28с' },
+        { name:'afarsic', sub:'(кастом ник)', value:19*86400 + 10*3600 + 59*60 + 27, display:'19д 10ч 59м 27с' },
+        { name:'Kimpi', value:16*86400 + 22*3600 + 36*60 + 28, display:'16д 22ч 36м 28с' },
         { name:'cartez_ru', value:15*86400 + 3*3600 + 4*60 + 9, display:'15д 3ч 4м 9с' },
         { name:'Frasie', value:15*86400 + 1*3600 + 34*60 + 44, display:'15д 1ч 34м 44с' },
         { name:'Georg_23', value:14*86400 + 2*3600 + 42*60 + 49, display:'14д 2ч 42м 49с' },
@@ -1219,12 +1218,6 @@ function renderLineChart(history) {
   return `<div class="chart-wrap">
     <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
       ${grid}
-      <defs>
-        <linearGradient id="lg-${history.length}-${Math.random().toString(36).slice(2,6)}" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.35"/>
-          <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
-        </linearGradient>
-      </defs>
       <path d="${areaD}" fill="rgba(34,197,94,0.12)"/>
       <path d="${pathD}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>
       ${dots}${labels}${xLabels}
@@ -1288,6 +1281,8 @@ function renderCities() {
 
 function renderPlayers() {
   let html = '';
+
+  // === 1. Баланс игрока ===
   const balKey = 'players.balance';
   const balDate = sectionState[balKey].date;
   const balDates = getSectionDates(balKey);
@@ -1300,6 +1295,7 @@ function renderPlayers() {
     ${renderTopList(balList, ' ₽', balArrows)}
   </div>`;
 
+  // === 2. Активные (онлайн) ===
   const activeKey = 'players.active';
   const active = DATA.players.active;
   const activeSt = sectionState[activeKey];
@@ -1327,18 +1323,7 @@ function renderPlayers() {
     ${renderTopList(activeList, '', activeArrows)}
   </div>`;
 
-  const shardsKey = 'players.shards';
-  const shardsDate = sectionState[shardsKey].date;
-  const shardsDates = getSectionDates(shardsKey);
-  const shardsList = sortByValue(DATA.players.shards[shardsDate] || []).slice(0, 10);
-  let shardsArrows = null;
-  const shardsIdx = shardsDates.indexOf(shardsDate);
-  if (shardsIdx > 0) shardsArrows = computeArrow(shardsList, sortByValue(DATA.players.shards[shardsDates[shardsIdx - 1]] || []));
-  html += `<div class="card">
-    ${cardHeader(shardsKey, '◆ Топ по осколкам', fmtDate(shardsDate) + ' МСК')}
-    ${renderTopList(shardsList, ' ◆', shardsArrows)}
-  </div>`;
-
+  // === 3. Рубины ===
   const rubiesKey = 'players.rubies';
   const rubiesDate = sectionState[rubiesKey].date;
   const rubiesDates = getSectionDates(rubiesKey);
@@ -1351,23 +1336,27 @@ function renderPlayers() {
     ${renderTopList(rubiesList, ' 💎', rubiesArrows)}
     ${DATA.players.rubies.note ? `<div class="card-note">${DATA.players.rubies.note}</div>` : ''}
   </div>`;
+
+  // === 4. Осколки ===
+  const shardsKey = 'players.shards';
+  const shardsDate = sectionState[shardsKey].date;
+  const shardsDates = getSectionDates(shardsKey);
+  const shardsList = sortByValue(DATA.players.shards[shardsDate] || []).slice(0, 10);
+  let shardsArrows = null;
+  const shardsIdx = shardsDates.indexOf(shardsDate);
+  if (shardsIdx > 0) shardsArrows = computeArrow(shardsList, sortByValue(DATA.players.shards[shardsDates[shardsIdx - 1]] || []));
+  html += `<div class="card">
+    ${cardHeader(shardsKey, '◆ Топ по осколкам', fmtDate(shardsDate) + ' МСК')}
+    ${renderTopList(shardsList, ' ◆', shardsArrows)}
+  </div>`;
+
   return html;
 }
 
 function renderNations() {
   let html = '';
-  const balKey = 'nations.balance';
-  const balDate = sectionState[balKey].date;
-  const balDates = getSectionDates(balKey);
-  const balList = sortByValue(DATA.nations.balance[balDate] || []).slice(0, 10);
-  let balArrows = null;
-  const balIdx = balDates.indexOf(balDate);
-  if (balIdx > 0) balArrows = computeArrow(balList, sortByValue(DATA.nations.balance[balDates[balIdx - 1]] || []));
-  html += `<div class="card">
-    ${cardHeader(balKey, '💰 Топ наций по балансу', fmtDate(balDate) + ' МСК')}
-    ${renderTopList(balList, ' ₽', balArrows)}
-  </div>`;
 
+  // === 1. Размер ===
   const sizeKey = 'nations.size';
   const sizeDate = sectionState[sizeKey].date;
   const sizeDates = getSectionDates(sizeKey);
@@ -1380,6 +1369,20 @@ function renderNations() {
     ${renderTopList(sizeList, ' ⬛', sizeArrows)}
   </div>`;
 
+  // === 2. Баланс (деньги) ===
+  const balKey = 'nations.balance';
+  const balDate = sectionState[balKey].date;
+  const balDates = getSectionDates(balKey);
+  const balList = sortByValue(DATA.nations.balance[balDate] || []).slice(0, 10);
+  let balArrows = null;
+  const balIdx = balDates.indexOf(balDate);
+  if (balIdx > 0) balArrows = computeArrow(balList, sortByValue(DATA.nations.balance[balDates[balIdx - 1]] || []));
+  html += `<div class="card">
+    ${cardHeader(balKey, '💰 Топ наций по балансу', fmtDate(balDate) + ' МСК')}
+    ${renderTopList(balList, ' ₽', balArrows)}
+  </div>`;
+
+  // === 3. Граждане ===
   const citKey = 'nations.citizens';
   const citDate = sectionState[citKey].date;
   const citDates = getSectionDates(citKey);
@@ -1391,6 +1394,7 @@ function renderNations() {
     ${cardHeader(citKey, '👥 Топ наций по гражданам', fmtDate(citDate) + ' МСК')}
     ${renderTopList(citList, ' 👤', citArrows)}
   </div>`;
+
   return html;
 }
 
