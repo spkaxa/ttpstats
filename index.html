@@ -1844,19 +1844,30 @@ async function saveMinigameScore(sapphires, time) {
   try {
     const nick = currentUser.nick;
     const key = currentUser.key;
+
+    // Сапфиры — КОПЯТСЯ за всё время
     const sapRef = fb.ref(fb.db, 'minigame/sapphires/' + key);
     const sapSnap = await fb.get(sapRef);
-    if (!sapSnap.exists() || sapphires > sapSnap.val().value) {
-      await fb.set(sapRef, { nick, value: sapphires, date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
-    }
+    const prevSapphires = sapSnap.exists() ? (sapSnap.val().value || 0) : 0;
+    const totalSapphires = prevSapphires + sapphires;
+    await fb.set(sapRef, {
+      nick,
+      value: totalSapphires,
+      date: new Date().toISOString().slice(0, 16).replace('T', ' ')
+    });
+
+    // Время — личный рекорд за одну игру
     const timeRef = fb.ref(fb.db, 'minigame/time/' + key);
     const timeSnap = await fb.get(timeRef);
     if (!timeSnap.exists() || time > timeSnap.val().value) {
       await fb.set(timeRef, { nick, value: time, date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
     }
+
     loadMinigameLeaderboards();
     const sub = document.getElementById('mg-ov-sub');
-    if (sub) sub.innerHTML = `Продержался <b>${time.toFixed(1)}с</b> · собрал <b>${sapphires}</b> сапфиров<br><span style="color:var(--accent2)">✓ Результат сохранён в топы</span>`;
+    if (sub) sub.innerHTML =
+      `Продержался <b>${time.toFixed(1)}с</b> · собрал <b>${sapphires}</b> сапфиров за игру<br>` +
+      `<span style="color:var(--accent2)">💎 Всего за всё время: ${totalSapphires}</span>`;
   } catch (e) {
     console.warn('[Minigame] save error:', e.message);
   }
