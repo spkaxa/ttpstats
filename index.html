@@ -6,23 +6,12 @@
 <title>timetoplay stats — ttpstats</title>
 <style>
 :root {
-  --bg:#080c09;
-  --bg2:#0f1611;
-  --bg3:#182019;
-  --bg4:#1f2a20;
-  --accent:#22c55e;
-  --accent2:#4ade80;
-  --accent3:#16a34a;
+  --bg:#080c09; --bg2:#0f1611; --bg3:#182019; --bg4:#1f2a20;
+  --accent:#22c55e; --accent2:#4ade80; --accent3:#16a34a;
   --accent-glow:rgba(34,197,94,0.25);
-  --text:#e6f2e8;
-  --text2:#8fa892;
-  --text3:#566a59;
-  --border:#223328;
-  --border2:#2e4433;
-  --green:#22c55e;
-  --red:#ef4444;
-  --gold:#fbbf24;
-  --purple:#a78bfa;
+  --text:#e6f2e8; --text2:#8fa892; --text3:#566a59;
+  --border:#223328; --border2:#2e4433;
+  --green:#22c55e; --red:#ef4444; --gold:#fbbf24; --purple:#a78bfa;
   --gridline:rgba(80,120,90,0.15);
   --header-bg:linear-gradient(135deg, #0a140c 0%, #0f1c14 50%, #0a140c 100%);
   --win:#22c55e;
@@ -30,22 +19,11 @@
   --ad-border:#22c55e;
 }
 body.light {
-  --bg:#f0f5f1;
-  --bg2:#ffffff;
-  --bg3:#e6ede8;
-  --bg4:#d8e3db;
-  --accent:#16a34a;
-  --accent2:#22c55e;
-  --accent3:#15803d;
-  --text:#0f1c14;
-  --text2:#4a5a4e;
-  --text3:#7a8a7e;
-  --border:#c8d5cc;
-  --border2:#b0c0b4;
-  --green:#16a34a;
-  --red:#dc2626;
-  --gold:#b45309;
-  --purple:#7c3aed;
+  --bg:#f0f5f1; --bg2:#ffffff; --bg3:#e6ede8; --bg4:#d8e3db;
+  --accent:#16a34a; --accent2:#22c55e; --accent3:#15803d;
+  --text:#0f1c14; --text2:#4a5a4e; --text3:#7a8a7e;
+  --border:#c8d5cc; --border2:#b0c0b4;
+  --green:#16a34a; --red:#dc2626; --gold:#b45309; --purple:#7c3aed;
   --gridline:rgba(0,0,0,0.08);
   --header-bg:linear-gradient(135deg, #ffffff 0%, #eef6f0 100%);
   --win:#16a34a;
@@ -84,8 +62,7 @@ body.light {
 }
 #auth-btn {
   background: linear-gradient(135deg, var(--accent3) 0%, var(--accent) 100%);
-  border: none;
-  color: #fff; padding: 14px 28px; border-radius: 24px;
+  border: none; color: #fff; padding: 14px 28px; border-radius: 24px;
   font-size: 15px; cursor: pointer; font-family: inherit;
   font-weight: 800; letter-spacing: .5px;
   transition: all .2s;
@@ -93,15 +70,8 @@ body.light {
   display: flex; align-items: center; gap: 8px;
   min-width: 140px; justify-content: center;
 }
-#auth-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px var(--accent-glow), 0 0 0 1px rgba(74,222,128,0.5);
-  filter: brightness(1.1);
-}
-#auth-btn.logged {
-  background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
-  box-shadow: 0 4px 20px rgba(6,182,212,.3);
-}
+#auth-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); filter: brightness(1.1); }
+#auth-btn.logged { background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%); box-shadow: 0 4px 20px rgba(6,182,212,.3); }
 
 #theme-toggle {
   width: 44px; height: 44px; border-radius: 50%;
@@ -152,23 +122,20 @@ body.light {
 .auth-box h2 {
   font-size: 22px; margin-bottom: 6px;
   background: linear-gradient(135deg, var(--accent2), var(--accent3));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .auth-box .sub { color: var(--text3); font-size: 12px; margin-bottom: 22px; line-height: 1.6; }
 .auth-tabs { display: flex; gap: 4px; margin-bottom: 22px; background: var(--bg3); padding: 4px; border-radius: 8px; }
 .auth-tabs button {
   flex: 1; padding: 11px; border: none; background: transparent;
   color: var(--text2); font-family: inherit; font-size: 13px;
-  cursor: pointer; border-radius: 6px; font-weight: 700;
-  transition: all .15s;
+  cursor: pointer; border-radius: 6px; font-weight: 700; transition: all .15s;
 }
 .auth-tabs button.active { background: linear-gradient(135deg, var(--accent3), var(--accent)); color: #fff; }
 .auth-field { margin-bottom: 16px; }
 .auth-field label {
   display: block; font-size: 11px; color: var(--text3);
-  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px;
-  font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; font-weight: 700;
 }
 .auth-field input {
   width: 100%; padding: 13px 16px;
@@ -176,17 +143,12 @@ body.light {
   color: var(--text); font-family: inherit; font-size: 14px;
   border-radius: 8px; transition: all .15s;
 }
-.auth-field input:focus {
-  outline: none; border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-glow);
-}
+.auth-field input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
 .auth-submit {
   width: 100%; padding: 14px; margin-top: 8px;
   background: linear-gradient(135deg, var(--accent3), var(--accent));
-  color: #fff;
-  border: none; border-radius: 8px; font-size: 14px; font-weight: 800;
-  letter-spacing: 1px; cursor: pointer; font-family: inherit;
-  transition: all .15s;
+  color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 800;
+  letter-spacing: 1px; cursor: pointer; font-family: inherit; transition: all .15s;
 }
 .auth-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 24px var(--accent-glow); filter: brightness(1.1); }
 .auth-submit:disabled { opacity: .5; cursor: wait; }
@@ -203,12 +165,10 @@ body.light {
 
 header {
   padding:44px 24px 26px; border-bottom:1px solid var(--border);
-  background: var(--header-bg);
-  position: relative;
+  background: var(--header-bg); position: relative;
 }
 header::after {
-  content: '';
-  position: absolute; bottom: -1px; left: 0; right: 0; height: 1px;
+  content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 1px;
   background: linear-gradient(90deg, transparent 0%, var(--accent) 50%, transparent 100%);
   opacity: 0.5;
 }
@@ -223,20 +183,16 @@ h1 {
 .version-badge {
   display:inline-block; font-size:12px; font-weight:800;
   background: linear-gradient(135deg, var(--accent3), var(--accent));
-  color: #000;
-  padding:4px 12px; border-radius:12px;
-  letter-spacing:.5px;
-  -webkit-text-fill-color:#000;
+  color: #000; padding:4px 12px; border-radius:12px;
+  letter-spacing:.5px; -webkit-text-fill-color:#000;
   box-shadow: 0 0 15px var(--accent-glow);
 }
 .subtitle { color:var(--text2); font-size:13px; margin-bottom:10px; line-height:1.6; max-width: 780px; }
-.telegram-line {
-  color: var(--accent2); font-size: 13px; margin-bottom: 10px; font-weight: 600;
-  letter-spacing: .3px;
-}
+.telegram-line { color: var(--accent2); font-size: 13px; margin-bottom: 10px; font-weight: 600; letter-spacing: .3px; }
 .telegram-line a { color: var(--accent2); text-decoration: none; border-bottom: 1px dashed var(--accent2); }
 .telegram-line a:hover { color: var(--accent); border-color: var(--accent); }
 .creator { color:var(--text3); font-size:12px; }
+.creator .hint-tip { color: var(--accent2); font-size: 11px; margin-left: 6px; opacity: 0.85; }
 
 .tabs {
   max-width:1100px; margin:0 auto; padding:24px 24px 0;
@@ -245,14 +201,13 @@ h1 {
 .tabs button {
   background:transparent; border:none; color:var(--text2); padding:13px 18px;
   font-size:14px; font-weight:700; cursor:pointer;
-  border-bottom:2px solid transparent;
-  margin-bottom:-1px; transition:all .15s; font-family:inherit; white-space:nowrap;
+  border-bottom:2px solid transparent; margin-bottom:-1px;
+  transition:all .15s; font-family:inherit; white-space:nowrap;
   border-radius: 6px 6px 0 0;
 }
 .tabs button:hover { color:var(--text); background: rgba(34,197,94,0.05); }
 .tabs button.active {
-  color:var(--accent2);
-  border-bottom-color:var(--accent);
+  color:var(--accent2); border-bottom-color:var(--accent);
   background: linear-gradient(180deg, transparent 0%, rgba(34,197,94,0.08) 100%);
   text-shadow: 0 0 20px var(--accent-glow);
 }
@@ -271,15 +226,11 @@ main { max-width:1100px; margin:0 auto; padding:24px; }
   transform: translate(-50%, -50%); font-size: 11px; color: var(--text3); letter-spacing: 2px;
 }
 .ad-slot.filled {
-  background: var(--ad-bg);
-  border: 1px solid var(--accent);
+  background: var(--ad-bg); border: 1px solid var(--accent);
   cursor: pointer; transition: all .2s;
   box-shadow: 0 4px 20px var(--accent-glow);
 }
-.ad-slot.filled:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px var(--accent-glow), 0 0 0 1px var(--accent);
-}
+.ad-slot.filled:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow), 0 0 0 1px var(--accent); }
 .ad-badge {
   position:absolute; top:6px; right:8px; font-size: 9px; font-weight: 800; letter-spacing: 1px;
   background: linear-gradient(135deg, var(--accent3), var(--accent));
@@ -303,12 +254,12 @@ main { max-width:1100px; margin:0 auto; padding:24px; }
   border-radius: 14px; padding: 32px 36px; max-width: 580px; width: 100%;
   position: relative; animation: slideUp .3s;
   box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px var(--accent-glow);
+  max-height: 90vh; overflow-y: auto;
 }
 .ad-modal-inner h2 {
   font-size: 22px; font-weight: 800; margin-bottom: 16px;
   background: linear-gradient(135deg, var(--accent2), var(--accent3));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .ad-modal-inner p { font-size: 14px; line-height: 1.7; color: var(--text); margin-bottom: 14px; }
 .ad-modal-inner ul { list-style: none; margin: 14px 0; }
@@ -323,8 +274,7 @@ main { max-width:1100px; margin:0 auto; padding:24px; }
 .ad-close {
   position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%;
   background: var(--bg3); border: 1px solid var(--border2); color: var(--text); font-size: 14px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all .15s;
+  display: flex; align-items: center; justify-content: center; transition: all .15s;
 }
 .ad-close:hover { background: var(--red); color: #fff; border-color: var(--red); }
 
@@ -343,8 +293,7 @@ main { max-width:1100px; margin:0 auto; padding:24px; }
 .card h2 {
   font-size:16px; font-weight:800; margin-bottom:5px;
   background: linear-gradient(135deg, var(--accent2), var(--accent3));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .card .card-sub { color:var(--text3); font-size:11px; }
 .card .card-note {
@@ -358,9 +307,7 @@ main { max-width:1100px; margin:0 auto; padding:24px; }
   transition: border-color .15s;
 }
 .sec-date-wrap:hover { border-color: var(--accent); }
-.sec-date-wrap label {
-  font-size: 10px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; font-weight: 700;
-}
+.sec-date-wrap label { font-size: 10px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; font-weight: 700; }
 .sec-date {
   background: transparent; color: var(--text); border: none; font-family: inherit;
   font-size: 12px; cursor: pointer; padding: 4px 4px; min-width: 130px;
@@ -375,19 +322,15 @@ main { max-width:1100px; margin:0 auto; padding:24px; }
   transition:all .15s; border-left:3px solid transparent;
 }
 .top-item:hover { transform:translateX(3px); border-color: var(--accent); }
+.top-item.clickable { cursor: pointer; }
+.top-item.clickable:hover { background: var(--bg4); box-shadow: 0 0 20px rgba(34,197,94,0.15); }
 .top-item.r1 {
   border-left-color: #22c55e;
   background: linear-gradient(90deg, rgba(34,197,94,.14), transparent 55%);
   box-shadow: inset 0 0 20px rgba(34,197,94,.05);
 }
-.top-item.r2 {
-  border-left-color: #86efac;
-  background: linear-gradient(90deg, rgba(134,239,172,.09), transparent 55%);
-}
-.top-item.r3 {
-  border-left-color: #16a34a;
-  background: linear-gradient(90deg, rgba(22,163,74,.08), transparent 55%);
-}
+.top-item.r2 { border-left-color: #86efac; background: linear-gradient(90deg, rgba(134,239,172,.09), transparent 55%); }
+.top-item.r3 { border-left-color: #16a34a; background: linear-gradient(90deg, rgba(22,163,74,.08), transparent 55%); }
 body.light .top-item.r1 { background: linear-gradient(90deg, rgba(34,197,94,.18), transparent 55%); }
 body.light .top-item.r2 { background: linear-gradient(90deg, rgba(134,239,172,.22), transparent 55%); }
 body.light .top-item.r3 { background: linear-gradient(90deg, rgba(22,163,74,.14), transparent 55%); }
@@ -398,8 +341,11 @@ body.light .top-item.r3 { background: linear-gradient(90deg, rgba(22,163,74,.14)
 .r3 .rank { color:#16a34a; }
 body.light .r1 .rank { color:#15803d; }
 
+.name-wrap { display:flex; flex-direction:column; gap:1px; min-width: 0; }
 .name { font-size:14px; font-weight:600; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .name .sub-note { color:var(--text3); font-size:10px; font-weight:400; margin-left:4px; font-style:italic; }
+.mayor-line { font-size:10px; color:var(--text3); font-weight: 500; letter-spacing: 0.2px; }
+.mayor-line b { color: var(--accent2); font-weight: 600; }
 .value { font-size:14px; font-weight:800; color:var(--accent2); font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap; }
 .value .unit { color:var(--text3); font-weight:400; font-size:11px; margin-left:3px; }
 .arrow { font-size:12px; font-weight:700; padding:2px 8px; border-radius:5px; min-width:46px; text-align:center; font-variant-numeric:tabular-nums; }
@@ -416,30 +362,33 @@ body.light .r1 .rank { color:#15803d; }
 .chart-single .val { font-size:32px; font-weight:900; color:var(--accent2); margin-bottom:4px; }
 .chart-single .date { font-size:11px; color:var(--text3); letter-spacing:1px; text-transform:uppercase; }
 .chart-single .wait { font-size:11px; color:var(--text3); margin-top:10px; font-style:italic; }
-.chart-block { margin-bottom:24px; padding-bottom:24px; border-bottom:1px dashed var(--border); }
-.chart-block:last-child { margin-bottom:0; padding-bottom:0; border-bottom:none; }
-.chart-title { font-size:14px; font-weight:800; color:var(--text); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
-.chart-title .chart-pos { background:var(--bg3); color:var(--accent2); font-size:10px; font-weight:700; padding:2px 8px; border-radius:4px; border: 1px solid var(--border2); }
 
 .war-item {
   background:var(--bg3); border-radius:10px; padding:16px 20px; margin-bottom:10px;
   border-left:4px solid var(--accent); transition:all .15s;
 }
 .war-item:hover { transform:translateX(4px); border-left-color: var(--accent2); box-shadow: -4px 0 20px var(--accent-glow); }
+.war-item.ongoing { border-left-color: var(--gold); }
+.war-item.cancelled { border-left-color: var(--text3); opacity: 0.75; }
 .war-date {
   font-size:11px; color:var(--text3); letter-spacing:1px; margin-bottom:10px;
   text-transform:uppercase; font-weight:700;
   display:flex; align-items:center; gap:6px;
 }
 .war-date::before { content:''; display:inline-block; width:6px; height:6px; background:var(--accent); border-radius:50%; box-shadow: 0 0 8px var(--accent); }
+.war-item.ongoing .war-date::before { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+.war-item.cancelled .war-date::before { background: var(--text3); box-shadow: none; }
 .war-teams { display:flex; align-items:center; gap:14px; flex-wrap:wrap; font-size:15px; font-weight:700; margin-bottom:8px; }
 .war-team { color:var(--text); }
 .war-team.winner { color:var(--win); text-shadow:0 0 14px rgba(34,197,94,.4); }
 .war-team.loser { color:var(--text2); opacity:0.7; }
 .war-vs { color:var(--text3); font-size:12px; font-weight:700; letter-spacing:2px; opacity:0.7; }
-.war-result { font-size:12px; color:var(--text3); display:flex; align-items:center; gap:8px; }
+.war-result { font-size:12px; color:var(--text3); display:flex; align-items:center; gap:8px; flex-wrap: wrap; }
 .war-result .trophy { color:var(--gold); font-size:13px; }
 .war-result .faction { background:var(--bg2); color:var(--accent2); padding:2px 10px; border-radius:4px; font-size:10px; font-weight:700; border:1px solid var(--border2); }
+.war-result .status { padding:2px 10px; border-radius:4px; font-size:10px; font-weight:800; letter-spacing: 0.5px; }
+.war-result .status.ongoing { background: rgba(251,191,36,.15); color: var(--gold); border: 1px solid var(--gold); }
+.war-result .status.cancelled { background: rgba(92,92,106,.2); color: var(--text3); border: 1px solid var(--border2); }
 
 #mg-wrap { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--border2); margin-bottom: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
 #mg-canvas { display: block; width: 100%; height: auto; max-height: 60vh; background: #080c09; touch-action: none; }
@@ -483,7 +432,6 @@ body.light .r1 .rank { color:#15803d; }
 
 .sections { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .sections .card { margin-bottom: 0; }
-.sections.full { grid-template-columns: 1fr; }
 @media (max-width:820px) { .sections { grid-template-columns:1fr; } }
 
 @media (max-width:820px) {
@@ -543,10 +491,10 @@ footer .sep { margin:10px 0; color:var(--border); }
 
 <header>
   <div class="header-inner">
-    <h1>timetoplay stats <span class="version-badge">v1.0.2</span></h1>
+    <h1>timetoplay stats <span class="version-badge">v1.0.3</span></h1>
     <div class="subtitle">статистика timetoplay с помощью просмотра прошлого с помощью разных дат и других разных интересных функций — ttpstats</div>
     <div class="telegram-line">📢 телеграм канал — <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></div>
-    <div class="creator">создатель xxspk · made in arbuzovsk</div>
+    <div class="creator">создатель xxspk · made in arbuzovsk <span class="hint-tip">💡 кликни на любой город — увидишь его график</span></div>
   </div>
 </header>
 
@@ -587,6 +535,14 @@ footer .sep { margin:10px 0; color:var(--border); }
     </ul>
     <div class="ad-highlight">🛒 Скоро тут же откроется магазин</div>
     <div class="ad-highlight" style="margin-top:10px">⬇️ А также скоро откроется <b>ПВП подвал под ареной</b> — там будет сложно отлиться, и не будет никаких препятствий. Чистая арена для настоящих дуэлей!</div>
+  </div>
+</div>
+
+<div id="chart-modal" class="ad-modal">
+  <div class="ad-modal-inner" style="max-width: 900px">
+    <button class="ad-close" onclick="closeChart()">✕</button>
+    <h2 id="chart-title">📈 График</h2>
+    <div id="chart-content"></div>
   </div>
 </div>
 
@@ -754,54 +710,39 @@ const DATA = {
         { date:'2026-09-25 18:30', value:4149.08 },
       ],
       'рига': [
-        { date:'2026-09-24 00:15', value:22196.82 },
-        { date:'2026-09-24 00:23', value:22204.90 },
-        { date:'2026-09-24 21:00', value:22982.35 },
-        { date:'2026-09-25 18:30', value:23842.05 },
+        { date:'2026-09-24 00:15', value:22196.82 }, { date:'2026-09-24 00:23', value:22204.90 },
+        { date:'2026-09-24 21:00', value:22982.35 }, { date:'2026-09-25 18:30', value:23842.05 },
       ],
       'рим': [
-        { date:'2026-09-24 00:14', value:13374.32 },
-        { date:'2026-09-24 00:23', value:13380.03 },
-        { date:'2026-09-24 21:00', value:13199.25 },
-        { date:'2026-09-25 18:30', value:14037.75 },
+        { date:'2026-09-24 00:14', value:13374.32 }, { date:'2026-09-24 00:23', value:13380.03 },
+        { date:'2026-09-24 21:00', value:13199.25 }, { date:'2026-09-25 18:30', value:14037.75 },
       ],
       'иокогама': [
-        { date:'2026-09-24 00:17', value:6034.34 },
-        { date:'2026-09-24 00:23', value:6034.34 },
-        { date:'2026-09-24 21:00', value:5971.66 },
-        { date:'2026-09-25 18:30', value:5790.62 },
+        { date:'2026-09-24 00:17', value:6034.34 }, { date:'2026-09-24 00:23', value:6034.34 },
+        { date:'2026-09-24 21:00', value:5971.66 }, { date:'2026-09-25 18:30', value:5790.62 },
       ],
       'лазурный_стокгольм': [
-        { date:'2026-09-24 00:19', value:5409.59 },
-        { date:'2026-09-24 00:23', value:5411.42 },
-        { date:'2026-09-24 21:00', value:5784.96 },
-        { date:'2026-09-25 18:30', value:6123.89 },
+        { date:'2026-09-24 00:19', value:5409.59 }, { date:'2026-09-24 00:23', value:5411.42 },
+        { date:'2026-09-24 21:00', value:5784.96 }, { date:'2026-09-25 18:30', value:6123.89 },
       ],
       'макондо': [
-        { date:'2026-09-24 00:17', value:5143.74 },
-        { date:'2026-09-24 00:23', value:5143.74 },
-        { date:'2026-09-24 21:00', value:5137.23 },
-        { date:'2026-09-25 18:30', value:5198.85 },
+        { date:'2026-09-24 00:17', value:5143.74 }, { date:'2026-09-24 00:23', value:5143.74 },
+        { date:'2026-09-24 21:00', value:5137.23 }, { date:'2026-09-25 18:30', value:5198.85 },
       ],
       'французская_империя': [
-        { date:'2026-09-24 00:18', value:4107.64 },
-        { date:'2026-09-24 00:23', value:4111.85 },
-        { date:'2026-09-24 21:00', value:3773.65 },
-        { date:'2026-09-25 18:30', value:3958.03 },
+        { date:'2026-09-24 00:18', value:4107.64 }, { date:'2026-09-24 00:23', value:4111.85 },
+        { date:'2026-09-24 21:00', value:3773.65 }, { date:'2026-09-25 18:30', value:3958.03 },
       ],
       'mimika': [
-        { date:'2026-09-24 00:23', value:3670.64 },
-        { date:'2026-09-24 21:00', value:3661.88 },
+        { date:'2026-09-24 00:23', value:3670.64 }, { date:'2026-09-24 21:00', value:3661.88 },
         { date:'2026-09-25 18:30', value:3664.22 },
       ],
       'florida': [
-        { date:'2026-09-24 00:23', value:3588.61 },
-        { date:'2026-09-24 21:00', value:3603.27 },
+        { date:'2026-09-24 00:23', value:3588.61 }, { date:'2026-09-24 21:00', value:3603.27 },
         { date:'2026-09-25 18:30', value:3623.21 },
       ],
       'hamburg': [
-        { date:'2026-09-24 00:23', value:2734.43 },
-        { date:'2026-09-24 21:00', value:2731.49 },
+        { date:'2026-09-24 00:23', value:2734.43 }, { date:'2026-09-24 21:00', value:2731.49 },
         { date:'2026-09-25 18:30', value:2720.81 },
       ],
     },
@@ -823,7 +764,7 @@ const DATA = {
         { name:'Ульяновск', value:115 }, { name:'Шмаледуйск', value:106 }, { name:'Томская_Империя', value:76 },
         { name:'Лазурный_Стокгольм', value:57 }, { name:'Ufa', value:54 }, { name:'Los_Angeles', value:54 },
         { name:'Германская_Империя', value:54 },
-      ]
+      ],
     },
     size: {
       '2026-09-24 00:30': [
@@ -843,7 +784,7 @@ const DATA = {
         { name:'Иокогама', value:3582 }, { name:'Ворона', value:3160 }, { name:'Seapure', value:2895 },
         { name:'Клан_Китайцев', value:2808 }, { name:'Лазурный_Стокгольм', value:2310 },
         { name:'Великие_Нидерланды', value:1808 }, { name:'Французкая_Империя', value:1787 },
-      ]
+      ],
     }
   },
   players: {
@@ -872,52 +813,52 @@ const DATA = {
     },
     active: {
       '2026-08-20 07:10': [
-        { name:'xxspk', value:8*86400 + 9*3600 + 30*60 + 48, display:'8д 9ч 30м 48с' },
-        { name:'timoxa_pistol', value:5*86400 + 17*3600 + 35*60 + 26, display:'5д 17ч 35м 26с' },
-        { name:'gogojojohf', value:5*86400 + 2*3600 + 18*60 + 7, display:'5д 2ч 18м 7с' },
-        { name:'Gotopot753', value:5*86400 + 2*3600 + 7*60 + 35, display:'5д 2ч 7м 35с' },
-        { name:'afarstic', value:4*86400 + 20*3600 + 45*60, display:'4д 20ч 45м' },
-        { name:'qilvin', value:4*86400 + 14*3600 + 14*60 + 23, display:'4д 14ч 14м 23с' },
-        { name:'Vovthik882282', value:4*86400 + 14*3600 + 6*60 + 33, display:'4д 14ч 6м 33с' },
-        { name:'hrhwq', value:4*86400 + 13*3600 + 29*60 + 2, display:'4д 13ч 29м 2с' },
-        { name:'cartez_ru', value:4*86400 + 5*3600 + 51*60 + 1, display:'4д 5ч 51м 1с' },
-        { name:'Ivan3754', value:4*86400 + 1*3600 + 44*60 + 14, display:'4д 1ч 44м 14с' },
+        { name:'xxspk', value:722988, display:'8д 9ч 30м 48с' },
+        { name:'timoxa_pistol', value:496526, display:'5д 17ч 35м 26с' },
+        { name:'gogojojohf', value:440287, display:'5д 2ч 18м 7с' },
+        { name:'Gotopot753', value:440055, display:'5д 2ч 7м 35с' },
+        { name:'afarstic', value:419100, display:'4д 20ч 45м' },
+        { name:'qilvin', value:395663, display:'4д 14ч 14м 23с' },
+        { name:'Vovthik882282', value:395193, display:'4д 14ч 6м 33с' },
+        { name:'hrhwq', value:393542, display:'4д 13ч 29м 2с' },
+        { name:'cartez_ru', value:364261, display:'4д 5ч 51м 1с' },
+        { name:'Ivan3754', value:351854, display:'4д 1ч 44м 14с' },
       ],
       '2026-09-24 00:30': [
-        { name:'timoxa_pistol', value:21*86400 + 20*3600 + 48*60 + 47, display:'21д 20ч 48м 47с' },
-        { name:'afarstic', value:18*86400 + 23*3600 + 23*60 + 31, display:'18д 23ч 23м 31с' },
-        { name:'UznikKrasnBel', sub:'(кастом ник)', value:15*86400 + 15*3600 + 29*60 + 58, display:'15д 15ч 29м 58с' },
-        { name:'Frasie', value:14*86400 + 16*3600 + 4*60 + 31, display:'14д 16ч 4м 31с' },
-        { name:'cartez_ru', value:14*86400 + 11*3600 + 40*60 + 55, display:'14д 11ч 40м 55с' },
-        { name:'shanci', value:13*86400 + 14*3600 + 25*60 + 59, display:'13д 14ч 25м 59с' },
-        { name:'Georg_23', value:13*86400 + 12*3600 + 52*60 + 15, display:'13д 12ч 52м 15с' },
-        { name:'KomiK0', sub:'(кастом ник)', value:12*86400 + 23*3600 + 17*60, display:'12д 23ч 17м' },
-        { name:'Lunari2231', value:12*86400 + 6*3600 + 8*60 + 29, display:'12д 6ч 8м 29с' },
-        { name:'Deekrush', value:12*86400 + 4*3600 + 54*60 + 32, display:'12д 4ч 54м 32с' },
+        { name:'timoxa_pistol', value:1884527, display:'21д 20ч 48м 47с' },
+        { name:'afarstic', value:1634611, display:'18д 23ч 23м 31с' },
+        { name:'UznikKrasnBel', sub:'(кастом ник)', value:1350598, display:'15д 15ч 29м 58с' },
+        { name:'Frasie', value:1271071, display:'14д 16ч 4м 31с' },
+        { name:'cartez_ru', value:1259455, display:'14д 11ч 40м 55с' },
+        { name:'shanci', value:1177559, display:'13д 14ч 25м 59с' },
+        { name:'Georg_23', value:1167135, display:'13д 12ч 52м 15с' },
+        { name:'KomiK0', sub:'(кастом ник)', value:1114605, display:'12д 23ч 17м' },
+        { name:'Lunari2231', value:1062889, display:'12д 6ч 8м 29с' },
+        { name:'Deekrush', value:1059272, display:'12д 4ч 54м 32с' },
       ],
       '2026-09-24 21:00': [
-        { name:'timoxa_pistol', value:22*86400 + 2*3600 + 38*60 + 25, display:'22д 2ч 38м 25с' },
-        { name:'afarstic', value:19*86400 + 3*3600 + 28*60 + 28, display:'19д 3ч 28м 28с' },
-        { name:'UznikKrasnBel', sub:'(кастом ник)', value:16*86400 + 18*3600 + 15*60 + 42, display:'16д 18ч 15м 42с' },
-        { name:'Frasie', value:14*86400 + 20*3600 + 17*60 + 21, display:'14д 20ч 17м 21с' },
-        { name:'cartez_ru', value:14*86400 + 15*3600 + 57*60 + 37, display:'14д 15ч 57м 37с' },
-        { name:'Georg_23', value:13*86400 + 21*3600 + 19*60 + 15, display:'13д 21ч 19м 15с' },
-        { name:'shanci', value:13*86400 + 18*3600 + 9*60 + 47, display:'13д 18ч 9м 47с' },
-        { name:'KomiK0', sub:'(кастом ник)', value:13*86400 + 4*3600 + 16*60 + 21, display:'13д 4ч 16м 21с' },
-        { name:'Deekrush', value:12*86400 + 8*3600 + 53*60 + 25, display:'12д 8ч 53м 25с' },
-        { name:'Lunari2231', value:12*86400 + 6*3600 + 46*60 + 42, display:'12д 6ч 46м 42с' },
+        { name:'timoxa_pistol', value:1902705, display:'22д 2ч 38м 25с' },
+        { name:'afarstic', value:1658708, display:'19д 3ч 28м 28с' },
+        { name:'UznikKrasnBel', sub:'(кастом ник)', value:1449342, display:'16д 18ч 15м 42с' },
+        { name:'Frasie', value:1287421, display:'14д 20ч 17м 21с' },
+        { name:'cartez_ru', value:1274207, display:'14д 15ч 57м 37с' },
+        { name:'Georg_23', value:1193955, display:'13д 21ч 19м 15с' },
+        { name:'shanci', value:1186487, display:'13д 18ч 9м 47с' },
+        { name:'KomiK0', sub:'(кастом ник)', value:1162359, display:'13д 4ч 16м 21с' },
+        { name:'Deekrush', value:1107655, display:'12д 8ч 53м 25с' },
+        { name:'Lunari2231', value:1066162, display:'12д 6ч 46м 42с' },
       ],
       '2026-09-25 18:30': [
-        { name:'timoxa_pistol', value:22*86400 + 13*3600 + 7*60 + 18, display:'22д 13ч 7м 18с' },
-        { name:'afarsic', sub:'(кастом ник)', value:19*86400 + 10*3600 + 59*60 + 27, display:'19д 10ч 59м 27с' },
-        { name:'Kimpit', value:16*86400 + 22*3600 + 36*60 + 28, display:'16д 22ч 36м 28с' },
-        { name:'cartez_ru', value:15*86400 + 3*3600 + 4*60 + 9, display:'15д 3ч 4м 9с' },
-        { name:'Frasie', value:15*86400 + 1*3600 + 34*60 + 44, display:'15д 1ч 34м 44с' },
-        { name:'Georg_23', value:14*86400 + 2*3600 + 42*60 + 49, display:'14д 2ч 42м 49с' },
-        { name:'shanci', value:14*86400 + 0*3600 + 8*60 + 31, display:'14д 0ч 8м 31с' },
-        { name:'KomiK0', sub:'(кастом ник)', value:13*86400 + 10*3600 + 11*60 + 19, display:'13д 10ч 11м 19с' },
-        { name:'Deekrush', value:12*86400 + 16*3600 + 4*60 + 7, display:'12д 16ч 4м 7с' },
-        { name:'Lunari2231', value:12*86400 + 8*3600 + 40*60 + 38, display:'12д 8ч 40м 38с' },
+        { name:'timoxa_pistol', value:1952838, display:'22д 13ч 7м 18с' },
+        { name:'afarsic', sub:'(кастом ник)', value:1697367, display:'19д 10ч 59м 27с' },
+        { name:'Kimpit', value:1462588, display:'16д 22ч 36м 28с' },
+        { name:'cartez_ru', value:1305849, display:'15д 3ч 4м 9с' },
+        { name:'Frasie', value:1304084, display:'15д 1ч 34м 44с' },
+        { name:'Georg_23', value:1216969, display:'14д 2ч 42м 49с' },
+        { name:'shanci', value:1210111, display:'14д 0ч 8м 31с' },
+        { name:'KomiK0', sub:'(кастом ник)', value:1167479, display:'13д 10ч 11м 19с' },
+        { name:'Deekrush', value:1104247, display:'12д 16ч 4м 7с' },
+        { name:'Lunari2231', value:1074838, display:'12д 8ч 40м 38с' },
       ],
     },
     shards: {
@@ -1003,6 +944,8 @@ const DATA = {
   },
   wars: {
     list: [
+      { date:'25 августа', team1:'военная_спецоперация', team2:'лагалище', winner:0, status:'ongoing' },
+      { date:'25 августа', team1:'tunibia', team2:'минск-мир', winner:0, status:'cancelled' },
       { date:'12–13 сентября', team1:'Латексные_мальчики', team2:'королевство_брдыщей', winner:2, faction:'kvkz' },
       { date:'6–7 сентября',   team1:'australia',          team2:'dtkl',               winner:1, faction:null },
       { date:'6–7 сентября',   team1:'бонхедск',           team2:'ave_eclipse',        winner:1, faction:null },
@@ -1011,18 +954,44 @@ const DATA = {
       { date:'4 сентября',     team1:'ave_изенгард',       team2:'braavos',            winner:1, faction:'kvkz' },
       { date:'2–3 сентября',   team1:'латексные мальчики', team2:'нью-йорк',           winner:1, faction:'spqr' },
       { date:'31 августа',     team1:'святая_империя',     team2:'tunibia',            winner:2, faction:null },
-      { date:'25 августа',     team1:'португалия',         team2:'almata',             winner:1, faction:null },
     ]
   },
   other: {}
 };
+
+/* Мэры городов */
+const MAYORS = {
+  'рига': 'Frasie',
+  'рим': 'MrRatix',
+  'лазурный_стокгольм': 'lepepesha228',
+  'иокогама': 'Dotamamamuiui',
+  'макондо': 'El_diablo',
+  'seapure': 'N1zzxyx',
+  'французкая_империя': 'Nikita2010',
+  'французская_империя': 'Nikita2010',
+  'mimika': 'shanci',
+  'florida': 'zoni_11',
+  'hamburg': 'sreda323232',
+  'кавказский_халифат': 'ivan_3754',
+  'ульяновск': 'piaf',
+  'шмаледуйск': 'h9nje',
+  'томская_империя': 'gverti',
+  'ufa': 'jek3482',
+  'los_angeles': 'celestiallove',
+  'германская_империя': 'gordon_12356',
+  'ворона': 'toxic22222',
+  'клан_китайцев': 'kaba_day',
+  'великие_нидерланды': 'bechenok',
+};
+function getMayor(name) {
+  return MAYORS[name.toLowerCase().trim()] || null;
+}
 
 const TAB_ORDER = [
   { id:'cities',  icon:'🏙️', label:'Города' },
   { id:'players', icon:'🎮', label:'Игроки' },
   { id:'nations', icon:'🏛️', label:'Нации' },
   { id:'wars',    icon:'⚔️', label:'Войны вайпа' },
-  { id:'other',   icon:'📦', label:'Остальное' },
   { id:'minigame',icon:'🪑', label:'Мини-игра' },
 ];
 
@@ -1148,28 +1117,33 @@ function renderTabs() {
     tabsEl.appendChild(btn);
   });
 }
-function makeListItem(rank, item, unit, arrowInfo) {
+function makeListItem(rank, item, unit, arrowInfo, isCity) {
   const rClass = rank <= 3 ? ' r' + rank : '';
+  const clickClass = isCity ? ' clickable' : '';
   let arrowHTML = arrowInfo
     ? `<span class="arrow ${arrowInfo.type}">${arrowInfo.text}</span>`
     : `<span class="arrow dash"></span>`;
-  const nameHTML = item.sub
-    ? `${item.name}<span class="sub-note"> ${item.sub}</span>`
-    : item.name;
+  const subNote = item.sub ? `<span class="sub-note"> ${item.sub}</span>` : '';
+  const mayor = isCity ? getMayor(item.name) : null;
+  const mayorHTML = mayor ? `<div class="mayor-line">👑 мэр: <b>${mayor}</b></div>` : '';
   let valueHTML;
   if (typeof item.display === 'string') valueHTML = item.display;
   else valueHTML = fmtNumber(item.value) + `<span class="unit">${unit || ''}</span>`;
-  return `<div class="top-item${rClass}">
+  const onClickAttr = isCity ? ` onclick="openCityChart('${item.name.replace(/'/g, "\\'")}')"` : '';
+  return `<div class="top-item${rClass}${clickClass}"${onClickAttr}>
     <span class="rank">#${rank}</span>
-    <span class="name">${nameHTML}</span>
+    <div class="name-wrap">
+      <span class="name">${item.name}${subNote}</span>
+      ${mayorHTML}
+    </div>
     <span class="value">${valueHTML}</span>
     ${arrowHTML}
   </div>`;
 }
-function renderTopList(list, unit, arrowsMap) {
+function renderTopList(list, unit, arrowsMap, isCity) {
   if (!list || list.length === 0) return '<div class="empty">Нет данных</div>';
   return '<div class="top-list">' +
-    list.map((it, i) => makeListItem(i + 1, it, unit || '', arrowsMap ? arrowsMap[it.name] : null)).join('') +
+    list.map((it, i) => makeListItem(i + 1, it, unit || '', arrowsMap ? arrowsMap[it.name] : null, isCity)).join('') +
     '</div>';
 }
 function cardHeader(key, title, subText, badgeHTML = '') {
@@ -1190,7 +1164,7 @@ function renderLineChart(history) {
       <div class="wait">⚡ ожидание следующих обновлений</div>
     </div>`;
   }
-  const W = 800, H = 180, PAD = 30;
+  const W = 800, H = 220, PAD = 30;
   const values = history.map(h => h.value);
   const minV = Math.min(...values), maxV = Math.max(...values);
   const rangeV = maxV - minV || 1;
@@ -1209,7 +1183,7 @@ function renderLineChart(history) {
   }
   const dots = points.map(p => `<circle cx="${p.x}" cy="${p.y}" r="4" fill="var(--accent)" stroke="var(--bg2)" stroke-width="2"/>`).join('');
   const labels = points.map((p, i) => {
-    if (history.length > 4 && i !== 0 && i !== points.length - 1 && i % 2 !== 0) return '';
+    if (history.length > 5 && i !== 0 && i !== points.length - 1 && i % 2 !== 0) return '';
     return `<text x="${p.x}" y="${p.y - 10}" fill="var(--accent2)" font-size="10" text-anchor="middle" font-weight="700">${fmtNumber(p.value)}</text>`;
   }).join('');
   const xLabels = points.map(p =>
@@ -1230,6 +1204,28 @@ function renderLineChart(history) {
   </div>`;
 }
 
+/* Открыть график города в модалке */
+window.openCityChart = function(cityName) {
+  const key = normalizeKey(cityName);
+  const history = DATA.cities.histories[key];
+  const modal = document.getElementById('chart-modal');
+  const title = document.getElementById('chart-title');
+  const content = document.getElementById('chart-content');
+  title.innerHTML = `📈 ${cityName} — история баланса`;
+  if (!history || history.length === 0) {
+    content.innerHTML = '<div class="empty">Для этого города пока нет графика</div>';
+  } else {
+    content.innerHTML = renderLineChart(history);
+  }
+  modal.classList.add('open');
+};
+window.closeChart = function() {
+  document.getElementById('chart-modal').classList.remove('open');
+};
+document.getElementById('chart-modal').addEventListener('click', e => {
+  if (e.target.id === 'chart-modal') window.closeChart();
+});
+
 function renderCities() {
   let html = '';
   const bal = DATA.cities.balance;
@@ -1245,11 +1241,11 @@ function renderCities() {
     balList = sortByValue(bal.snapshots[balSt.date] || []).slice(0, 10);
     const idx = balDates.indexOf(balSt.date);
     if (idx > 0) balArrows = computeArrow(balList, sortByValue(bal.snapshots[balDates[idx - 1]] || []));
-    balHeading = fmtDate(balSt.date) + ' МСК';
+    balHeading = fmtDate(balSt.date) + ' МСК · 💡 кликни на город чтобы увидеть график';
   }
   html += `<div class="card">
     ${cardHeader(balKey, '📊 Топ городов по балансу', balHeading, balBadge)}
-    ${renderTopList(balList, ' ₽', balArrows)}
+    ${renderTopList(balList, ' ₽', balArrows, true)}
     ${bal.note ? `<div class="card-note">${bal.note}</div>` : ''}
   </div>`;
 
@@ -1262,7 +1258,7 @@ function renderCities() {
   if (popIdx > 0) popArrows = computeArrow(popList, sortByValue(DATA.cities.population[popDates[popIdx - 1]] || []));
   html += `<div class="card">
     ${cardHeader(popKey, '👥 Топ городов по населению', fmtDate(popDate) + ' МСК')}
-    ${renderTopList(popList, ' 👤', popArrows)}
+    ${renderTopList(popList, ' 👤', popArrows, true)}
   </div>`;
 
   const sizeKey = 'cities.size';
@@ -1274,7 +1270,7 @@ function renderCities() {
   if (sizeIdx > 0) sizeArrows = computeArrow(sizeList, sortByValue(DATA.cities.size[sizeDates[sizeIdx - 1]] || []));
   html += `<div class="card">
     ${cardHeader(sizeKey, '📏 Топ городов по размеру', fmtDate(sizeDate) + ' МСК')}
-    ${renderTopList(sizeList, ' ⬛', sizeArrows)}
+    ${renderTopList(sizeList, ' ⬛', sizeArrows, true)}
   </div>`;
   return html;
 }
@@ -1282,7 +1278,7 @@ function renderCities() {
 function renderPlayers() {
   let html = '';
 
-  // === 1. Баланс игрока ===
+  // 1. Баланс игрока
   const balKey = 'players.balance';
   const balDate = sectionState[balKey].date;
   const balDates = getSectionDates(balKey);
@@ -1292,10 +1288,10 @@ function renderPlayers() {
   if (balIdx > 0) balArrows = computeArrow(balList, sortByValue(DATA.players.balance[balDates[balIdx - 1]] || []));
   html += `<div class="card">
     ${cardHeader(balKey, '💰 Топ по балансу игрока', fmtDate(balDate) + ' МСК')}
-    ${renderTopList(balList, ' ₽', balArrows)}
+    ${renderTopList(balList, ' ₽', balArrows, false)}
   </div>`;
 
-  // === 2. Активные (онлайн) ===
+  // 2. Активные
   const activeKey = 'players.active';
   const active = DATA.players.active;
   const activeSt = sectionState[activeKey];
@@ -1320,10 +1316,10 @@ function renderPlayers() {
   }
   html += `<div class="card">
     ${cardHeader(activeKey, '🎮 Топ самых активных игроков', activeHeading, activeBadge)}
-    ${renderTopList(activeList, '', activeArrows)}
+    ${renderTopList(activeList, '', activeArrows, false)}
   </div>`;
 
-  // === 3. Рубины ===
+  // 3. Рубины
   const rubiesKey = 'players.rubies';
   const rubiesDate = sectionState[rubiesKey].date;
   const rubiesDates = getSectionDates(rubiesKey);
@@ -1333,11 +1329,11 @@ function renderPlayers() {
   if (rubiesIdx > 0) rubiesArrows = computeArrow(rubiesList, sortByValue(DATA.players.rubies[rubiesDates[rubiesIdx - 1]] || []));
   html += `<div class="card">
     ${cardHeader(rubiesKey, '💎 Топ по рубинам', fmtDate(rubiesDate) + ' МСК')}
-    ${renderTopList(rubiesList, ' 💎', rubiesArrows)}
+    ${renderTopList(rubiesList, ' 💎', rubiesArrows, false)}
     ${DATA.players.rubies.note ? `<div class="card-note">${DATA.players.rubies.note}</div>` : ''}
   </div>`;
 
-  // === 4. Осколки ===
+  // 4. Осколки
   const shardsKey = 'players.shards';
   const shardsDate = sectionState[shardsKey].date;
   const shardsDates = getSectionDates(shardsKey);
@@ -1347,7 +1343,7 @@ function renderPlayers() {
   if (shardsIdx > 0) shardsArrows = computeArrow(shardsList, sortByValue(DATA.players.shards[shardsDates[shardsIdx - 1]] || []));
   html += `<div class="card">
     ${cardHeader(shardsKey, '◆ Топ по осколкам', fmtDate(shardsDate) + ' МСК')}
-    ${renderTopList(shardsList, ' ◆', shardsArrows)}
+    ${renderTopList(shardsList, ' ◆', shardsArrows, false)}
   </div>`;
 
   return html;
@@ -1356,7 +1352,6 @@ function renderPlayers() {
 function renderNations() {
   let html = '';
 
-  // === 1. Размер ===
   const sizeKey = 'nations.size';
   const sizeDate = sectionState[sizeKey].date;
   const sizeDates = getSectionDates(sizeKey);
@@ -1366,10 +1361,9 @@ function renderNations() {
   if (sizeIdx > 0) sizeArrows = computeArrow(sizeList, sortByValue(DATA.nations.size[sizeDates[sizeIdx - 1]] || []));
   html += `<div class="card">
     ${cardHeader(sizeKey, '📏 Топ наций по размеру', fmtDate(sizeDate) + ' МСК')}
-    ${renderTopList(sizeList, ' ⬛', sizeArrows)}
+    ${renderTopList(sizeList, ' ⬛', sizeArrows, false)}
   </div>`;
 
-  // === 2. Баланс (деньги) ===
   const balKey = 'nations.balance';
   const balDate = sectionState[balKey].date;
   const balDates = getSectionDates(balKey);
@@ -1379,10 +1373,9 @@ function renderNations() {
   if (balIdx > 0) balArrows = computeArrow(balList, sortByValue(DATA.nations.balance[balDates[balIdx - 1]] || []));
   html += `<div class="card">
     ${cardHeader(balKey, '💰 Топ наций по балансу', fmtDate(balDate) + ' МСК')}
-    ${renderTopList(balList, ' ₽', balArrows)}
+    ${renderTopList(balList, ' ₽', balArrows, false)}
   </div>`;
 
-  // === 3. Граждане ===
   const citKey = 'nations.citizens';
   const citDate = sectionState[citKey].date;
   const citDates = getSectionDates(citKey);
@@ -1392,9 +1385,8 @@ function renderNations() {
   if (citIdx > 0) citArrows = computeArrow(citList, sortByValue(DATA.nations.citizens[citDates[citIdx - 1]] || []));
   html += `<div class="card">
     ${cardHeader(citKey, '👥 Топ наций по гражданам', fmtDate(citDate) + ' МСК')}
-    ${renderTopList(citList, ' 👤', citArrows)}
+    ${renderTopList(citList, ' 👤', citArrows, false)}
   </div>`;
-
   return html;
 }
 
@@ -1409,40 +1401,23 @@ function renderWars() {
     </div>`;
   wars.forEach(w => {
     const t1W = w.winner === 1, t2W = w.winner === 2;
-    html += `<div class="war-item">
+    const statusClass = w.status === 'ongoing' ? ' ongoing' : (w.status === 'cancelled' ? ' cancelled' : '');
+    let resultHTML = '';
+    if (w.status === 'ongoing') {
+      resultHTML = `<span class="status ongoing">⚔️ ВОЙНА ЕЩЁ ИДЁТ</span>`;
+    } else if (w.status === 'cancelled') {
+      resultHTML = `<span class="status cancelled">✖ ВОЙНА ОТМЕНЕНА</span>`;
+    } else {
+      resultHTML = `<span class="trophy">🏆</span><span>Победа: <b style="color:var(--win)">${w.winner === 1 ? w.team1 : w.team2}</b></span>${w.faction ? `<span class="faction">${w.faction}</span>` : ''}`;
+    }
+    html += `<div class="war-item${statusClass}">
       <div class="war-date">${w.date}</div>
       <div class="war-teams">
-        <span class="war-team ${t1W ? 'winner' : 'loser'}">${w.team1}</span>
+        <span class="war-team ${t1W ? 'winner' : ''}">${w.team1}</span>
         <span class="war-vs">VS</span>
-        <span class="war-team ${t2W ? 'winner' : 'loser'}">${w.team2}</span>
+        <span class="war-team ${t2W ? 'winner' : ''}">${w.team2}</span>
       </div>
-      <div class="war-result">
-        <span class="trophy">🏆</span>
-        <span>Победа: <b style="color:var(--win)">${w.winner === 1 ? w.team1 : w.team2}</b></span>
-        ${w.faction ? `<span class="faction">${w.faction}</span>` : ''}
-      </div>
-    </div>`;
-  });
-  html += `</div>`;
-  return html;
-}
-
-function renderOther() {
-  let html = `<div class="card">
-    <div class="card-head">
-      <div class="card-head-text">
-        <h2>📈 Графики городов</h2>
-        <div class="card-sub">изменение экономики за время наблюдений · всего ${Object.keys(DATA.cities.histories).length} городов</div>
-      </div>
-    </div>`;
-  const entries = Object.entries(DATA.cities.histories).sort((a, b) => b[1].length - a[1].length);
-  entries.forEach(([name, history]) => {
-    html += `<div class="chart-block">
-      <div class="chart-title">
-        <span>📌 ${name}</span>
-        <span class="chart-pos">${history.length} ${history.length === 1 ? 'точка' : history.length < 5 ? 'точки' : 'точек'}</span>
-      </div>
-      ${renderLineChart(history)}
+      <div class="war-result">${resultHTML}</div>
     </div>`;
   });
   html += `</div>`;
@@ -1513,7 +1488,6 @@ const RENDERERS = {
   nations: renderNations,
   wars: renderWars,
   minigame: renderMinigame,
-  other: renderOther,
 };
 
 function render() {
@@ -1731,18 +1705,15 @@ function mgDraw() {
   const ctx = MG.ctx;
   if (!ctx) return;
   const W = 900, H = 500;
-
   const g = ctx.createLinearGradient(0, 0, 0, H);
   g.addColorStop(0, '#0a140c');
   g.addColorStop(1, '#040608');
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, W, H);
-
   ctx.strokeStyle = 'rgba(34,197,94,0.05)';
   ctx.lineWidth = 1;
   for (let x = 0; x < W; x += 60) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
   for (let y = 0; y < H; y += 60) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
-
   MG.obstacles.forEach(o => {
     if (o.type === 'spike') {
       ctx.fillStyle = '#ef4444';
@@ -1761,14 +1732,8 @@ function mgDraw() {
       ctx.strokeStyle = '#7f1d1d';
       ctx.lineWidth = 2;
       ctx.strokeRect(o.x - o.w/2, o.y, o.w, o.h);
-      ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-      ctx.beginPath();
-      ctx.moveTo(o.x - o.w/2 + 4, o.y + 4);
-      ctx.lineTo(o.x + o.w/2 - 4, o.y + o.h - 4);
-      ctx.stroke();
     }
   });
-
   MG.sapphires.forEach(s => {
     ctx.save();
     ctx.translate(s.x, s.y);
@@ -1782,20 +1747,11 @@ function mgDraw() {
     ctx.strokeStyle = '#93c5fd';
     ctx.lineWidth = 2;
     ctx.stroke();
-    ctx.fillStyle = 'rgba(255,255,255,0.6)';
-    ctx.beginPath();
-    ctx.moveTo(0, -s.size/2);
-    ctx.lineTo(s.size/2, 0);
-    ctx.lineTo(0, 0);
-    ctx.closePath();
-    ctx.fill();
     ctx.restore();
   });
-
   const px = MG.player.x, py = MG.player.y;
   ctx.save();
   ctx.translate(px, py);
-
   ctx.fillStyle = '#8a5a2a';
   ctx.fillRect(-20, 8, 40, 6);
   ctx.fillRect(-20, -20, 6, 30);
@@ -1803,7 +1759,6 @@ function mgDraw() {
   ctx.fillRect(-20, -22, 40, 6);
   ctx.fillRect(-18, 14, 4, 12);
   ctx.fillRect(14, 14, 4, 12);
-
   ctx.fillStyle = '#f0c090';
   ctx.beginPath(); ctx.arc(0, -28, 12, 0, Math.PI*2); ctx.fill();
   ctx.fillStyle = '#000';
@@ -1818,7 +1773,6 @@ function mgDraw() {
   ctx.fillRect(-16, -16, 6, 14);
   ctx.fillRect(10, -16, 6, 14);
   ctx.restore();
-
   ctx.fillStyle = 'rgba(230,242,232,0.8)';
   ctx.font = 'bold 16px monospace';
   ctx.textAlign = 'left';
@@ -1835,18 +1789,15 @@ function mgLoop(now) {
   const dt = Math.min((now - MG.lastFrame) / 1000, 0.05);
   MG.lastFrame = now;
   MG.time += dt;
-
   const speed = 480;
   if (MG.keys.left) MG.player.x -= speed * dt;
   if (MG.keys.right) MG.player.x += speed * dt;
   MG.player.x = Math.max(30, Math.min(870, MG.player.x));
-
   MG.spawnTimer -= dt;
   if (MG.spawnTimer <= 0) {
     mgSpawn();
     MG.spawnTimer = Math.max(0.15, 0.65 / (0.9 + MG.time * 0.12));
   }
-
   const obsSpeed = 240 * (1 + MG.time * 0.16);
   for (let i = MG.obstacles.length - 1; i >= 0; i--) {
     const o = MG.obstacles[i];
@@ -1865,11 +1816,9 @@ function mgLoop(now) {
   for (const o of MG.obstacles) {
     if (mgRectOverlap(MG.player, o)) { mgCrash(); return; }
   }
-
   document.getElementById('mg-time').textContent = MG.time.toFixed(1);
   document.getElementById('mg-sapphires').textContent = MG.sapphiresCollected;
   document.getElementById('mg-speed').textContent = mgSpeedMult().toFixed(2);
-
   mgDraw();
   MG.rafId = requestAnimationFrame(mgLoop);
 }
@@ -1878,7 +1827,6 @@ function mgCrash() {
   MG.running = false;
   if (MG.rafId) { cancelAnimationFrame(MG.rafId); MG.rafId = 0; }
   mgDraw();
-
   const ov = document.getElementById('mg-overlay');
   ov.classList.remove('hidden');
   document.getElementById('mg-ov-title').textContent = '💥 РАЗБИЛСЯ!';
@@ -1886,7 +1834,6 @@ function mgCrash() {
     `Продержался <b>${MG.time.toFixed(1)}с</b> · собрал <b>${MG.sapphiresCollected}</b> сапфиров` +
     (currentUser ? '<br><span style="color:var(--accent2)">Сохранение в топы...</span>' : '<br><span style="color:var(--red)">Войди в аккаунт, чтобы попасть в топы</span>');
   document.getElementById('mg-start-btn').textContent = '↻ ЕЩЁ РАЗ';
-
   saveMinigameScore(MG.sapphiresCollected, MG.time);
 }
 
@@ -1897,7 +1844,6 @@ async function saveMinigameScore(sapphires, time) {
   try {
     const nick = currentUser.nick;
     const key = currentUser.key;
-
     const sapRef = fb.ref(fb.db, 'minigame/sapphires/' + key);
     const sapSnap = await fb.get(sapRef);
     if (!sapSnap.exists() || sapphires > sapSnap.val().value) {
@@ -1908,7 +1854,6 @@ async function saveMinigameScore(sapphires, time) {
     if (!timeSnap.exists() || time > timeSnap.val().value) {
       await fb.set(timeRef, { nick, value: time, date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
     }
-
     loadMinigameLeaderboards();
     const sub = document.getElementById('mg-ov-sub');
     if (sub) sub.innerHTML = `Продержался <b>${time.toFixed(1)}с</b> · собрал <b>${sapphires}</b> сапфиров<br><span style="color:var(--accent2)">✓ Результат сохранён в топы</span>`;
@@ -1936,13 +1881,11 @@ async function loadMinigameLeaderboards() {
     const timeList = timeSnap.exists() ? Object.values(timeSnap.val()) : [];
     sapList.sort((a, b) => b.value - a.value);
     timeList.sort((a, b) => b.value - a.value);
-
     sapEl.innerHTML = sapList.length
-      ? renderTopList(sapList.slice(0, 10).map(x => ({ name: x.nick, value: x.value })), ' 💎', null)
+      ? renderTopList(sapList.slice(0, 10).map(x => ({ name: x.nick, value: x.value })), ' 💎', null, false)
       : '<div class="empty">Пока никто не играл</div>';
-
     timeEl.innerHTML = timeList.length
-      ? renderTopList(timeList.slice(0, 10).map(x => ({ name: x.nick, value: +x.value.toFixed(1) })), ' сек', null)
+      ? renderTopList(timeList.slice(0, 10).map(x => ({ name: x.nick, value: +x.value.toFixed(1) })), ' сек', null, false)
       : '<div class="empty">Пока никто не играл</div>';
   } catch (e) {
     sapEl.innerHTML = '<div class="empty">Ошибка загрузки</div>';
