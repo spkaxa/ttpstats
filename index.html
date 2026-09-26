@@ -768,7 +768,7 @@ const DATA = {
         ],
         '2026-09-24 21:00': [
           { name:'Рига', value:22982.35 }, { name:'Рим', value:13199.25 },
-          { name:'Seapure', value:7334.76 },
+          { name:'Seapure', value:7334.76, sub:'(данные за 0:30 — обновлены отдельно)' },
           { name:'Иокогама', value:5971.66 }, { name:'Лазурный_Стокгольм', value:5784.96 },
           { name:'Макондо', value:5137.23 }, { name:'Французская_Империя', value:3773.65 },
           { name:'mimika', value:3661.88 }, { name:'Florida', value:3603.27 },
@@ -782,7 +782,7 @@ const DATA = {
           { name:'Florida', value:3623.21 }, { name:'Hamburg', value:2720.81 },
         ],
         '2026-09-26 14:50': [
-          { name:'Рим', value:14619.92 }, { name:'Рига', value:12888.16 },
+          { name:'Рим', value:14619.92 }, { name:'Рига', value:12688.16 },
           { name:'Клан_Китайцев', value:12042.47 }, { name:'Лазурный_Стокгольм', value:7015.61 },
           { name:'Иокогама', value:5730.51 }, { name:'Макондо', value:5045.62 },
           { name:'Seapure', value:4138.56 }, { name:'mimika', value:3846.56 },
@@ -839,8 +839,8 @@ const DATA = {
       '2026-09-26 14:50': [
         { name:'Рига', value:8327 }, { name:'Рим', value:7961 }, { name:'Кавказский_Халифат', value:3899 },
         { name:'Иокогама', value:3582 }, { name:'Бенилюкс', value:3179 }, { name:'Seapure', value:2898 },
-        { name:'Клан_Китайцев', value:2807 }, { name:'Лазурный_Стокгольм', value:2310 },
-        { name:'Великие_Нидерланды', value:1808 }, { name:'Французкая_Империя', value:1787 },
+        { name:'Клан_Китайцев', value:2807 }, { name:'Лазурный_Стокгольм', value:2318 },
+        { name:'Великие_Нидерланды', value:1808 }, { name:'Французская_Империя', value:1787 },
       ],
     }
   },
@@ -925,16 +925,16 @@ const DATA = {
         { name:'Lunari2231', value:1074838, display:'12д 8ч 40м 38с' },
       ],
       '2026-09-26 14:50': [
-        { name:'timoxa_pistol', value:1972568, display:'22д 20ч 49м 28с' },
-        { name:'afarsic', sub:'(кастом ник)', value:1702946, display:'19д 18ч 2м 26с' },
-        { name:'Eclipse', value:1481305, display:'17д 4ч 8м 45с' },
-        { name:'cartez_ru', value:1340303, display:'15д 10ч 56м 33с' },
-        { name:'Frasie', value:1317995, display:'15д 9ч 21м 35с' },
-        { name:'Georg_23', value:1231223, display:'14д 7ч 12м 43с' },
-        { name:'shanci', value:1220920, display:'14д 6ч 27м 30с' },
-        { name:'KomiK0', sub:'(кастом ник)', value:1176143, display:'13д 15ч 7м 13с' },
-        { name:'Deekrush', value:1128742, display:'12д 17ч 37м 22с' },
-        { name:'Lunari2231', value:1077958, display:'12д 8ч 40м 38с' },
+        { name:'timoxa_pistol', value:1975768, display:'22д 20ч 49м 28с' },
+        { name:'afarsic', sub:'(кастом ник)', value:1706546, display:'19д 18ч 2м 26с' },
+        { name:'Eclipse', value:1483725, display:'17д 4ч 8м 45с' },
+        { name:'cartez_ru', value:1335393, display:'15д 10ч 56м 33с' },
+        { name:'Frasie', value:1329695, display:'15д 9ч 21м 35с' },
+        { name:'Georg_23', value:1235563, display:'14д 7ч 12м 43с' },
+        { name:'shanci', value:1232850, display:'14д 6ч 27м 30с' },
+        { name:'KomiK0', sub:'(кастом ник)', value:1177633, display:'13д 15ч 7м 13с' },
+        { name:'Deekrush', value:1100242, display:'12д 17ч 37м 22с' },
+        { name:'Lunari2231', value:1068038, display:'12д 8ч 40м 38с' },
       ],
     },
     shards: {
@@ -980,7 +980,8 @@ const DATA = {
       '2026-09-26 14:50': [
         { name:'Elena3e3', value:291776 }, { name:'El_Diablo', value:259176 }, { name:'chonka221', value:164633 },
         { name:'triadamc', value:161456 }, { name:'OkoscheiO', value:116505 }, { name:'LaGGeZ', value:106571 },
-        { name:'TheTheTher', value:95067 }, { name:'Myro_Okada', value:67920 }, { name:'Toxic22222', value:60964 }, { name:'vk2409', value:48020 },
+        { name:'TheTheTher', value:95067 }, { name:'Myro_Okada', value:67920 }, { name:'Toxic22222', value:60964 },
+        { name:'vk2409', value:48020 },
       ],
       note: 'за всё время был kaba_day с ~450000, но дата отсчёта — сегодня, так что не считается'
     }
@@ -1080,7 +1081,7 @@ const MAYORS = {
   'ворона': 'toxic22222',
   'клан_китайцев': 'kaba_day',
   'великие_нидерланды': 'bechenok',
-  'бенилюкс': 'bechenok',
+  'бенилюкс': null,
 };
 function getMayor(name) { return MAYORS[name.toLowerCase().trim()] || null; }
 
@@ -1113,6 +1114,7 @@ function applyPalette(name) {
 }
 
 const OVERLAY = { edits: {} };
+
 function getEditedKey(section, sub, name) { return `${section}.${sub}.${name}`; }
 
 function applyEdits(section, sub, item) {
@@ -1132,17 +1134,21 @@ function applyEdits(section, sub, item) {
 window.editEntity = function(section, sub, name) {
   const key = getEditedKey(section, sub, name);
   const existing = OVERLAY.edits[key] || {};
+
   const newName = prompt('✏️ Новое название (Enter = не менять):', existing.name || name);
   if (newName === null) return;
+
   const currentVal = existing.value !== undefined ? existing.value : '';
   const newValue = prompt('💰 Новое значение (Enter = не менять):', currentVal);
   if (newValue === null) return;
+
   let newMayor = null;
   if (section === 'cities') {
     const currentMayor = existing.mayor || getMayor(name) || '';
     newMayor = prompt('👑 Новый мэр (Enter = не менять):', currentMayor);
     if (newMayor === null) return;
   }
+
   const edited = {};
   if (newName.trim() && newName.trim() !== name) edited.name = newName.trim();
   if (newValue.trim() !== '') {
@@ -1155,8 +1161,12 @@ window.editEntity = function(section, sub, name) {
     if (m && m !== orig) edited.mayor = m;
     else if (!m) edited.mayor = '';
   }
-  if (Object.keys(edited).length === 0) delete OVERLAY.edits[key];
-  else OVERLAY.edits[key] = edited;
+
+  if (Object.keys(edited).length === 0) {
+    delete OVERLAY.edits[key];
+  } else {
+    OVERLAY.edits[key] = edited;
+  }
   render();
 };
 
@@ -1987,4 +1997,273 @@ function mgSpawn() {
     MG.sapphires.push({ x: 40 + Math.random() * 820, y: -20, size: 22, rot: 0 });
   } else {
     const types = ['block', 'spike', 'tall'];
-    const type = types[Math.floor(Math.random()
+    const type = types[Math.floor(Math.random() * types.length)];
+    let w = 40, h = 40;
+    if (type === 'tall') { w = 26; h = 70; }
+    if (type === 'spike') { w = 40; h = 40; }
+    MG.obstacles.push({ x: w/2 + 20 + Math.random() * (860 - w), y: -h - 10, w, h, type });
+  }
+}
+
+function mgRectOverlap(p, o) {
+  const px1 = p.x - p.w/2, py1 = p.y - p.h/2;
+  const px2 = p.x + p.w/2, py2 = p.y + p.h/2;
+  const ox1 = o.x - (o.w||0)/2, oy1 = o.y;
+  const ox2 = o.x + (o.w||0)/2, oy2 = o.y + (o.h||o.size||0);
+  return px2 > ox1 && px1 < ox2 && py2 > oy1 && py1 < oy2;
+}
+
+function getAccentColor() {
+  return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#3b82f6';
+}
+
+function mgDraw() {
+  const ctx = MG.ctx;
+  if (!ctx) return;
+  const W = 900, H = 500;
+  const accent = getAccentColor();
+  const g = ctx.createLinearGradient(0, 0, 0, H);
+  g.addColorStop(0, '#0a1018');
+  g.addColorStop(1, '#04060a');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, W, H);
+  ctx.strokeStyle = accent + '11';
+  ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += 60) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+  for (let y = 0; y < H; y += 60) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+  MG.obstacles.forEach(o => {
+    if (o.type === 'spike') {
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.moveTo(o.x - o.w/2, o.y + o.h);
+      ctx.lineTo(o.x + o.w/2, o.y + o.h);
+      ctx.lineTo(o.x, o.y);
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#991b1b';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    } else {
+      ctx.fillStyle = o.type === 'tall' ? '#dc2626' : '#b91c1c';
+      ctx.fillRect(o.x - o.w/2, o.y, o.w, o.h);
+      ctx.strokeStyle = '#7f1d1d';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(o.x - o.w/2, o.y, o.w, o.h);
+    }
+  });
+  MG.sapphires.forEach(s => {
+    ctx.save();
+    ctx.translate(s.x, s.y);
+    ctx.rotate(s.rot);
+    ctx.fillStyle = '#3b82f6';
+    ctx.beginPath();
+    ctx.moveTo(0, -s.size); ctx.lineTo(s.size, 0);
+    ctx.lineTo(0, s.size); ctx.lineTo(-s.size, 0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = '#93c5fd';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.restore();
+  });
+  const px = MG.player.x, py = MG.player.y;
+  ctx.save();
+  ctx.translate(px, py);
+  ctx.fillStyle = '#8a5a2a';
+  ctx.fillRect(-20, 8, 40, 6);
+  ctx.fillRect(-20, -20, 6, 30);
+  ctx.fillRect(14, -20, 6, 30);
+  ctx.fillRect(-20, -22, 40, 6);
+  ctx.fillRect(-18, 14, 4, 12);
+  ctx.fillRect(14, 14, 4, 12);
+  ctx.fillStyle = '#f0c090';
+  ctx.beginPath(); ctx.arc(0, -28, 12, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#000';
+  ctx.beginPath(); ctx.arc(-4, -30, 1.8, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(4, -30, 1.8, 0, Math.PI*2); ctx.fill();
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.arc(0, -24, 5, 0.1*Math.PI, 0.9*Math.PI); ctx.stroke();
+  ctx.fillStyle = '#3a6ea5';
+  ctx.fillRect(-10, -18, 20, 24);
+  ctx.fillStyle = '#f0c090';
+  ctx.fillRect(-16, -16, 6, 14);
+  ctx.fillRect(10, -16, 6, 14);
+  ctx.restore();
+  ctx.fillStyle = 'rgba(230,237,245,0.8)';
+  ctx.font = 'bold 16px monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText('⏱ ' + MG.time.toFixed(1) + 'с', 20, 30);
+  ctx.textAlign = 'right';
+  ctx.fillText('💎 ' + MG.sapphiresCollected, 880, 30);
+  ctx.textAlign = 'center';
+  ctx.fillStyle = accent;
+  ctx.fillText('×' + mgSpeedMult().toFixed(2), 450, 30);
+}
+
+function mgLoop(now) {
+  if (!MG.running) return;
+  const dt = Math.min((now - MG.lastFrame) / 1000, 0.05);
+  MG.lastFrame = now;
+  MG.time += dt;
+  const speed = 480;
+  if (MG.keys.left) MG.player.x -= speed * dt;
+  if (MG.keys.right) MG.player.x += speed * dt;
+  MG.player.x = Math.max(30, Math.min(870, MG.player.x));
+  MG.spawnTimer -= dt;
+  if (MG.spawnTimer <= 0) {
+    mgSpawn();
+    MG.spawnTimer = Math.max(0.15, 0.65 / (0.9 + MG.time * 0.12));
+  }
+  const obsSpeed = 240 * (1 + MG.time * 0.16);
+  for (let i = MG.obstacles.length - 1; i >= 0; i--) {
+    const o = MG.obstacles[i];
+    o.y += obsSpeed * dt;
+    if (o.y > 520) MG.obstacles.splice(i, 1);
+  }
+  for (let i = MG.sapphires.length - 1; i >= 0; i--) {
+    const s = MG.sapphires[i];
+    s.y += obsSpeed * 0.85 * dt;
+    s.rot += dt * 2;
+    if (mgRectOverlap(MG.player, { x: s.x, y: s.y - s.size, w: s.size*2, h: s.size*2 })) {
+      MG.sapphiresCollected++;
+      MG.sapphires.splice(i, 1);
+    } else if (s.y > 520) MG.sapphires.splice(i, 1);
+  }
+  for (const o of MG.obstacles) {
+    if (mgRectOverlap(MG.player, o)) { mgCrash(); return; }
+  }
+  document.getElementById('mg-time').textContent = MG.time.toFixed(1);
+  document.getElementById('mg-sapphires').textContent = MG.sapphiresCollected;
+  document.getElementById('mg-speed').textContent = mgSpeedMult().toFixed(2);
+  mgDraw();
+  MG.rafId = requestAnimationFrame(mgLoop);
+}
+
+function mgCrash() {
+  MG.running = false;
+  if (MG.rafId) { cancelAnimationFrame(MG.rafId); MG.rafId = 0; }
+  mgDraw();
+  const ov = document.getElementById('mg-overlay');
+  ov.classList.remove('hidden');
+  document.getElementById('mg-ov-title').textContent = '💥 РАЗБИЛСЯ!';
+  document.getElementById('mg-ov-sub').innerHTML =
+    `Продержался <b>${MG.time.toFixed(1)}с</b> · собрал <b>${MG.sapphiresCollected}</b> сапфиров` +
+    (currentUser ? '<br><span style="color:var(--accent2)">Сохранение в топы...</span>' : '<br><span style="color:var(--red)">Войди в аккаунт, чтобы попасть в топы</span>');
+  document.getElementById('mg-start-btn').textContent = '↻ ЕЩЁ РАЗ';
+  saveMinigameScore(MG.sapphiresCollected, MG.time);
+}
+
+async function saveMinigameScore(sapphires, time) {
+  if (!currentUser) return;
+  const fb = window.__fb;
+  if (!fb) return;
+  try {
+    const nick = currentUser.nick;
+    const key = currentUser.key;
+    const sapRef = fb.ref(fb.db, 'minigame/sapphires/' + key);
+    const sapSnap = await fb.get(sapRef);
+    const prevSapphires = sapSnap.exists() ? (sapSnap.val().value || 0) : 0;
+    const totalSapphires = prevSapphires + sapphires;
+    await fb.set(sapRef, {
+      nick,
+      value: totalSapphires,
+      date: new Date().toISOString().slice(0, 16).replace('T', ' ')
+    });
+    const timeRef = fb.ref(fb.db, 'minigame/time/' + key);
+    const timeSnap = await fb.get(timeRef);
+    if (!timeSnap.exists() || time > timeSnap.val().value) {
+      await fb.set(timeRef, { nick, value: time, date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
+    }
+    loadMinigameLeaderboards();
+    const sub = document.getElementById('mg-ov-sub');
+    if (sub) sub.innerHTML =
+      `Продержался <b>${time.toFixed(1)}с</b> · собрал <b>${sapphires}</b> сапфиров за игру<br>` +
+      `<span style="color:var(--accent2)">💎 Всего за всё время: ${totalSapphires}</span>`;
+  } catch (e) {
+    console.warn('[Minigame] save error:', e.message);
+  }
+}
+
+async function loadMinigameLeaderboards() {
+  const sapEl = document.getElementById('mg-lb-sap');
+  const timeEl = document.getElementById('mg-lb-time');
+  if (!sapEl || !timeEl) return;
+  const fb = window.__fb;
+  if (!fb) {
+    sapEl.innerHTML = '<div class="empty">Firebase недоступен</div>';
+    timeEl.innerHTML = '<div class="empty">Firebase недоступен</div>';
+    return;
+  }
+  try {
+    const [sapSnap, timeSnap] = await Promise.all([
+      fb.get(fb.ref(fb.db, 'minigame/sapphires')),
+      fb.get(fb.ref(fb.db, 'minigame/time')),
+    ]);
+    const sapList = sapSnap.exists() ? Object.values(sapSnap.val()) : [];
+    const timeList = timeSnap.exists() ? Object.values(timeSnap.val()) : [];
+    sapList.sort((a, b) => b.value - a.value);
+    timeList.sort((a, b) => b.value - a.value);
+    sapEl.innerHTML = sapList.length
+      ? renderTopList(sapList.slice(0, 10).map(x => ({ name: x.nick, value: x.value })), ' 💎', null, 'minigame', 'sapphires')
+      : '<div class="empty">Пока никто не играл</div>';
+    timeEl.innerHTML = timeList.length
+      ? renderTopList(timeList.slice(0, 10).map(x => ({ name: x.nick, value: +x.value.toFixed(1) })), ' сек', null, 'minigame', 'time')
+      : '<div class="empty">Пока никто не играл</div>';
+  } catch (e) {
+    sapEl.innerHTML = '<div class="empty">Ошибка загрузки</div>';
+    timeEl.innerHTML = '<div class="empty">Ошибка загрузки</div>';
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (state.tab !== 'minigame' || !MG.running) return;
+  if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A' || e.key === 'ф') { e.preventDefault(); MG.keys.left = true; }
+  if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D' || e.key === 'в') { e.preventDefault(); MG.keys.right = true; }
+});
+document.addEventListener('keyup', e => {
+  if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A' || e.key === 'ф') MG.keys.left = false;
+  if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D' || e.key === 'в') MG.keys.right = false;
+});
+
+window.openAd = function(type) {
+  document.getElementById('ad-modal-' + type).classList.add('open');
+};
+window.closeAd = function(type) {
+  document.getElementById('ad-modal-' + type).classList.remove('open');
+};
+document.querySelectorAll('.ad-modal').forEach(m => {
+  m.addEventListener('click', e => {
+    if (e.target === m) m.classList.remove('open');
+  });
+});
+
+const music = document.getElementById('bg-music');
+const musicBtn = document.getElementById('music-btn');
+const volSlider = document.getElementById('vol-slider');
+let savedVol = parseFloat(localStorage.getItem('ttp_vol') || '0.35');
+volSlider.value = savedVol;
+music.volume = savedVol;
+let musicPlaying = false, musicStarted = false;
+function tryStartMusic() {
+  if (musicStarted) return;
+  music.play().then(() => { musicPlaying = true; musicStarted = true; musicBtn.textContent = '🔊'; }).catch(() => { musicBtn.textContent = '🔇'; });
+}
+tryStartMusic();
+document.addEventListener('click', () => { if (!musicStarted) tryStartMusic(); }, { once: false });
+musicBtn.onclick = () => {
+  if (musicPlaying) { music.pause(); musicPlaying = false; musicBtn.textContent = '🔇'; }
+  else { music.play().then(() => { musicPlaying = true; musicStarted = true; musicBtn.textContent = '🔊'; }).catch(() => {}); }
+};
+volSlider.oninput = () => {
+  const v = parseFloat(volSlider.value);
+  music.volume = v;
+  localStorage.setItem('ttp_vol', v);
+};
+
+const savedPalette = localStorage.getItem('ttp_palette') || 'blue';
+applyPalette(savedPalette);
+render();
+</script>
+</body>
+</html>
