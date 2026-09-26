@@ -27,6 +27,7 @@ body {
     radial-gradient(ellipse 60% 40% at 80% 100%, var(--accent-glow), transparent 70%);
   background-attachment: fixed;
   transition: background .3s, color .3s;
+  -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
 }
 
 #visits-counter {
@@ -168,6 +169,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   background: var(--bg3); border: 1px solid var(--border2);
   color: var(--text); font-family: inherit; font-size: 14px;
   border-radius: 8px; transition: all .15s;
+  -webkit-user-select: text; user-select: text;
 }
 .auth-field input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
 .auth-submit {
@@ -532,7 +534,7 @@ footer .tg-note {
 <header>
   <div class="header-inner">
     <h1>timetoplay stats</h1>
-    <div class="version-badge">v1.1.0 · release</div>
+    <div class="version-badge">v1.1.1 · release</div>
     <div class="subtitle">статистика timetoplay с помощью просмотра прошлого с помощью разных дат и других разных интересных функций — ttpstats</div>
     <div class="telegram-line">📢 телеграм канал — <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></div>
     <div class="creator">создатель xxspk · made in arbuzovsk <span class="hint-tip">💡 кликни — график · правый клик — редактировать (только для тебя)</span></div>
@@ -700,7 +702,12 @@ footer .tg-note {
       try {
         const visitsRef = ref(fbDb, 'visits/count');
         const snap = await get(visitsRef);
-        let count = snap.exists() ? (snap.val() || 0) : 0;
+        let raw = snap.exists() ? snap.val() : 0;
+        let count = (typeof raw === 'number' && isFinite(raw) && raw >= 0) ? Math.floor(raw) : 0;
+        // если значение битое — переписываем корректное
+        if (count !== raw) {
+          try { await set(visitsRef, count); } catch(e) {}
+        }
         if (!sessionStorage.getItem('ttp_visit_counted')) {
           count++;
           try { await set(visitsRef, count); } catch(e) {}
@@ -720,6 +727,22 @@ footer .tg-note {
     statusEl.className = 'offline';
     visitsEl.textContent = '👁 —';
   }
+
+  // ✅ АНТИ-ДЕВТУЛЗ: блокируем F12, Ctrl+Shift+I/J/C, Ctrl+U, Ctrl+S
+  (function antiDevTools(){
+    const block = (e) => {
+      const k = e.key || '';
+      if (k === 'F12' || e.keyCode === 123) { e.preventDefault(); e.stopPropagation(); return false; }
+      if (e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c'].includes(k)) { e.preventDefault(); e.stopPropagation(); return false; }
+      if (e.ctrlKey && (k === 'U' || k === 'u')) { e.preventDefault(); e.stopPropagation(); return false; }
+      if (e.ctrlKey && (k === 'S' || k === 's')) { e.preventDefault(); e.stopPropagation(); return false; }
+      if (e.metaKey && e.altKey && ['I','i','J','j','C','c'].includes(k)) { e.preventDefault(); e.stopPropagation(); return false; }
+    };
+    document.addEventListener('keydown', block, true);
+    document.addEventListener('keyup', (e) => {
+      if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
+  })();
 </script>
 
 <script>
@@ -1081,7 +1104,7 @@ const MAYORS = {
   'ворона': 'toxic22222',
   'клан_китайцев': 'kaba_day',
   'великие_нидерланды': 'bechenok',
-  'бенилюкс': null,
+  'бенилюкс': 'toxic22222',
 };
 function getMayor(name) { return MAYORS[name.toLowerCase().trim()] || null; }
 
@@ -1170,10 +1193,12 @@ window.editEntity = function(section, sub, name) {
   render();
 };
 
+// ✅ Правый клик — редактирование отключено для мини-игры
 document.addEventListener('contextmenu', e => {
   const item = e.target.closest('.top-item');
   if (!item || !item.dataset.section) return;
   e.preventDefault();
+  if (item.dataset.section === 'minigame') return; // 🔒 защита
   editEntity(item.dataset.section, item.dataset.sub, item.dataset.name);
 });
 
@@ -1946,6 +1971,9 @@ const MG = {
   spawnTimer: 0,
   lastFrame: 0,
   rafId: 0,
+  // 🔒 сессия текущего забега
+  sessionActive: false,
+  sessionStartTs: 0,
 };
 
 function initMinigame() {
@@ -1959,6 +1987,7 @@ function initMinigame() {
   MG.time = 0;
   MG.sapphiresCollected = 0;
   MG.spawnTimer = 0;
+  MG.sessionActive = false;
   mgDraw();
 
   document.getElementById('mg-start-btn').onclick = mgStart;
@@ -1973,6 +2002,7 @@ function initMinigame() {
 function destroyMinigame() {
   if (MG.rafId) { cancelAnimationFrame(MG.rafId); MG.rafId = 0; }
   MG.running = false;
+  MG.sessionActive = false;
   MG.keys.left = MG.keys.right = false;
 }
 
@@ -1985,6 +2015,8 @@ function mgStart() {
   MG.spawnTimer = 0.3;
   MG.player.x = 450;
   MG.player.y = 440;
+  MG.sessionActive = true;
+  MG.sessionStartTs = performance.now();
   document.getElementById('mg-overlay').classList.add('hidden');
   MG.lastFrame = performance.now();
   MG.rafId = requestAnimationFrame(mgLoop);
@@ -2144,6 +2176,13 @@ function mgCrash() {
   MG.running = false;
   if (MG.rafId) { cancelAnimationFrame(MG.rafId); MG.rafId = 0; }
   mgDraw();
+  // 🔒 считаем, что сессия валидна только если реально играли
+  const realTime = (performance.now() - MG.sessionStartTs) / 1000;
+  const timeValid = Math.abs(realTime - MG.time) < 5 && MG.time <= 900;
+  const sapValid = MG.sapphiresCollected <= 1000;
+  const sessionValid = MG.sessionActive && timeValid && sapValid;
+  MG.sessionActive = false;
+
   const ov = document.getElementById('mg-overlay');
   ov.classList.remove('hidden');
   document.getElementById('mg-ov-title').textContent = '💥 РАЗБИЛСЯ!';
@@ -2151,20 +2190,36 @@ function mgCrash() {
     `Продержался <b>${MG.time.toFixed(1)}с</b> · собрал <b>${MG.sapphiresCollected}</b> сапфиров` +
     (currentUser ? '<br><span style="color:var(--accent2)">Сохранение в топы...</span>' : '<br><span style="color:var(--red)">Войди в аккаунт, чтобы попасть в топы</span>');
   document.getElementById('mg-start-btn').textContent = '↻ ЕЩЁ РАЗ';
-  saveMinigameScore(MG.sapphiresCollected, MG.time);
+
+  if (sessionValid) {
+    saveMinigameScore(MG.sapphiresCollected, MG.time);
+  } else {
+    console.warn('[Minigame] session invalid, score not saved');
+    const sub = document.getElementById('mg-ov-sub');
+    if (sub) sub.innerHTML += '<br><span style="color:var(--red)">⚠ Забег не засчитан (подозрение на читерство)</span>';
+  }
 }
 
 async function saveMinigameScore(sapphires, time) {
   if (!currentUser) return;
   const fb = window.__fb;
   if (!fb) return;
+
+  // 🔒 Санитизация: режем невозможные значения
+  let sap = Math.max(0, Math.floor(sapphires));
+  let tm = Math.max(0, Number(time) || 0);
+  if (sap > 1000) sap = 0;      // за один забег столько не собрать
+  if (tm > 900) tm = 0;         // 15 минут — потолок
+
   try {
     const nick = currentUser.nick;
     const key = currentUser.key;
     const sapRef = fb.ref(fb.db, 'minigame/sapphires/' + key);
     const sapSnap = await fb.get(sapRef);
-    const prevSapphires = sapSnap.exists() ? (sapSnap.val().value || 0) : 0;
-    const totalSapphires = prevSapphires + sapphires;
+    const prevRaw = sapSnap.exists() ? (sapSnap.val().value || 0) : 0;
+    // если старое значение битое/читерское — сбрасываем
+    const prevSapphires = (typeof prevRaw === 'number' && isFinite(prevRaw) && prevRaw >= 0 && prevRaw <= 100000) ? prevRaw : 0;
+    const totalSapphires = prevSapphires + sap;
     await fb.set(sapRef, {
       nick,
       value: totalSapphires,
@@ -2172,8 +2227,10 @@ async function saveMinigameScore(sapphires, time) {
     });
     const timeRef = fb.ref(fb.db, 'minigame/time/' + key);
     const timeSnap = await fb.get(timeRef);
-    if (!timeSnap.exists() || time > timeSnap.val().value) {
-      await fb.set(timeRef, { nick, value: time, date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
+    const prevTimeRaw = timeSnap.exists() ? (timeSnap.val().value || 0) : 0;
+    const prevTime = (typeof prevTimeRaw === 'number' && isFinite(prevTimeRaw) && prevTimeRaw >= 0 && prevTimeRaw <= 1800) ? prevTimeRaw : 0;
+    if (tm > prevTime) {
+      await fb.set(timeRef, { nick, value: tm, date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
     }
     loadMinigameLeaderboards();
     const sub = document.getElementById('mg-ov-sub');
@@ -2200,8 +2257,11 @@ async function loadMinigameLeaderboards() {
       fb.get(fb.ref(fb.db, 'minigame/sapphires')),
       fb.get(fb.ref(fb.db, 'minigame/time')),
     ]);
-    const sapList = sapSnap.exists() ? Object.values(sapSnap.val()) : [];
-    const timeList = timeSnap.exists() ? Object.values(timeSnap.val()) : [];
+    let sapList = sapSnap.exists() ? Object.values(sapSnap.val()) : [];
+    let timeList = timeSnap.exists() ? Object.values(timeSnap.val()) : [];
+    // 🔒 ФИЛЬТР ЧИТЕРОВ: убираем невозможные значения и дубликаты
+    sapList = sapList.filter(x => x && typeof x.value === 'number' && isFinite(x.value) && x.value >= 0 && x.value <= 100000);
+    timeList = timeList.filter(x => x && typeof x.value === 'number' && isFinite(x.value) && x.value >= 0 && x.value <= 1800);
     sapList.sort((a, b) => b.value - a.value);
     timeList.sort((a, b) => b.value - a.value);
     sapEl.innerHTML = sapList.length
