@@ -27,36 +27,12 @@ body {
     radial-gradient(ellipse 60% 40% at 80% 100%, var(--accent-glow), transparent 70%);
   background-attachment: fixed;
   transition: background .3s, color .3s;
-  -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
 }
-
-#visits-counter {
-  position: fixed; top: 18px; left: 22px; z-index: 999;
-  font-size: 11px; letter-spacing: 1.5px; color: var(--text3);
-  background: var(--bg2); border: 1px solid var(--border);
-  padding: 6px 12px; border-radius: 12px; font-weight: 600;
-  opacity: 0.5; transition: opacity .3s;
-  font-variant-numeric: tabular-nums; user-select: none;
-}
-#visits-counter:hover { opacity: 1; }
 
 .top-controls {
   position:fixed; top:18px; right:18px; z-index:999;
   display:flex; flex-direction:column; gap:10px; align-items:flex-end;
 }
-#auth-btn {
-  background: linear-gradient(135deg, var(--accent3) 0%, var(--accent) 100%);
-  border: none; color: #fff; padding: 14px 28px; border-radius: 24px;
-  font-size: 15px; cursor: pointer; font-family: inherit;
-  font-weight: 800; letter-spacing: .5px;
-  transition: all .2s;
-  box-shadow: 0 4px 20px var(--accent-glow), 0 0 0 1px var(--accent-glow);
-  display: flex; align-items: center; gap: 8px;
-  min-width: 140px; justify-content: center;
-}
-#auth-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); filter: brightness(1.1); }
-#auth-btn.logged { background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%); box-shadow: 0 4px 20px rgba(6,182,212,.3); }
-
 #settings-btn {
   width: 44px; height: 44px; border-radius: 50%;
   background: var(--bg2); border: 1px solid var(--border2);
@@ -82,21 +58,13 @@ body {
 }
 #music-btn:hover { color: var(--accent); }
 #vol-slider { width: 80px; accent-color: var(--accent); }
-#db-status {
-  width: 10px; height: 10px; border-radius: 50%;
-  background: #666; transition: background .3s;
-}
-#db-status.online { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
-#db-status.offline { background: var(--red); }
-#db-status.loading { background: var(--gold); animation: pulse 1s infinite; }
-@keyframes pulse { 0%,100% { opacity:1 } 50% { opacity:0.4 } }
 
-#settings-modal, .auth-modal, .ad-modal {
+#settings-modal, .ad-modal {
   position: fixed; inset: 0; z-index: 1100;
   background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
   display: none; align-items: center; justify-content: center; padding: 20px;
 }
-#settings-modal.open, .auth-modal.open, .ad-modal.open { display: flex; animation: fadeIn .25s; }
+#settings-modal.open, .ad-modal.open { display: flex; animation: fadeIn .25s; }
 @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
 @keyframes slideUp { from { transform: translateY(20px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
 
@@ -139,67 +107,6 @@ body {
 
 input[type="range"] { width: 100%; accent-color: var(--accent); }
 
-.auth-box {
-  background: var(--bg2); border: 1px solid var(--border2);
-  border-radius: 14px; padding: 32px 36px; max-width: 460px; width: 100%;
-  position: relative; animation: slideUp .3s;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px var(--accent-glow);
-  max-height: 90vh; overflow-y: auto;
-}
-.auth-box h2 {
-  font-size: 22px; margin-bottom: 6px;
-  background: linear-gradient(135deg, var(--accent2), var(--accent3));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-}
-.auth-box .sub { color: var(--text3); font-size: 12px; margin-bottom: 22px; line-height: 1.6; }
-.auth-tabs { display: flex; gap: 4px; margin-bottom: 22px; background: var(--bg3); padding: 4px; border-radius: 8px; }
-.auth-tabs button {
-  flex: 1; padding: 11px; border: none; background: transparent;
-  color: var(--text2); font-family: inherit; font-size: 13px;
-  cursor: pointer; border-radius: 6px; font-weight: 700; transition: all .15s;
-}
-.auth-tabs button.active { background: linear-gradient(135deg, var(--accent3), var(--accent)); color: #fff; }
-.auth-field { margin-bottom: 16px; }
-.auth-field label {
-  display: block; font-size: 11px; color: var(--text3);
-  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; font-weight: 700;
-}
-.auth-field input {
-  width: 100%; padding: 13px 16px;
-  background: var(--bg3); border: 1px solid var(--border2);
-  color: var(--text); font-family: inherit; font-size: 14px;
-  border-radius: 8px; transition: all .15s;
-  -webkit-user-select: text; user-select: text;
-}
-.auth-field input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
-.auth-submit {
-  width: 100%; padding: 14px; margin-top: 8px;
-  background: linear-gradient(135deg, var(--accent3), var(--accent));
-  color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 800;
-  letter-spacing: 1px; cursor: pointer; font-family: inherit; transition: all .15s;
-}
-.auth-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 24px var(--accent-glow); filter: brightness(1.1); }
-.auth-submit:disabled { opacity: .5; cursor: wait; }
-.auth-msg { font-size: 12px; margin-top: 16px; text-align: center; min-height: 18px; line-height: 1.5; }
-.auth-msg.err { color: var(--red); }
-.auth-msg.ok { color: var(--accent); }
-.auth-logout {
-  width: 100%; padding: 11px; margin-top: 20px;
-  background: transparent; border: 1px solid var(--red); color: var(--red);
-  border-radius: 6px; font-size: 12px; font-weight: 700; letter-spacing: 1px;
-  cursor: pointer; font-family: inherit;
-}
-.auth-logout:hover { background: var(--red); color: #fff; }
-
-.profile-stats { display: grid; gap: 10px; margin-top: 16px; }
-.profile-stat {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 12px 16px; background: var(--bg3); border-radius: 8px;
-  border-left: 3px solid var(--accent);
-}
-.profile-stat .lbl { font-size: 12px; color: var(--text2); }
-.profile-stat .val { font-size: 15px; font-weight: 800; color: var(--accent2); font-variant-numeric: tabular-nums; }
-
 header {
   padding:44px 24px 26px; border-bottom:1px solid var(--border);
   background: var(--header-bg); position: relative;
@@ -209,7 +116,7 @@ header::after {
   background: linear-gradient(90deg, transparent 0%, var(--accent) 50%, transparent 100%);
   opacity: 0.5;
 }
-.header-inner { max-width:1100px; margin:0 auto; padding: 0 220px 0 130px; }
+.header-inner { max-width:1100px; margin:0 auto; padding: 0 120px 0 20px; }
 
 h1 {
   font-size:38px; font-weight:900; letter-spacing:-0.8px; margin-bottom:10px;
@@ -424,50 +331,6 @@ main { max-width:1100px; margin:0 auto; padding:24px; }
 .war-result .status.ongoing { background: rgba(251,191,36,.15); color: var(--gold); border: 1px solid var(--gold); }
 .war-result .status.cancelled { background: rgba(92,92,106,.2); color: var(--text3); border: 1px solid var(--border2); }
 
-#mg-wrap { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--border2); margin-bottom: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
-#mg-canvas { display: block; width: 100%; height: auto; max-height: 60vh; background: #080c12; touch-action: none; }
-#mg-overlay {
-  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-  background: rgba(0,0,0,0.85); backdrop-filter: blur(6px); padding: 20px;
-}
-#mg-overlay.hidden { display: none; }
-#mg-overlay .msg { text-align: center; max-width: 420px; }
-#mg-overlay h3 { font-size: 28px; color: var(--accent2); margin-bottom: 12px; letter-spacing: 2px; font-weight: 900; }
-#mg-overlay p { color: var(--text2); font-size: 13px; margin-bottom: 22px; line-height: 1.7; }
-#mg-overlay button {
-  background: linear-gradient(135deg, var(--accent3), var(--accent)); color: #fff;
-  border: none; padding: 14px 44px; border-radius: 10px;
-  font-size: 15px; font-weight: 800; letter-spacing: 1px; cursor: pointer;
-  font-family: inherit; transition: all .15s;
-}
-#mg-overlay button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--accent-glow); filter: brightness(1.1); }
-.mg-stats {
-  display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
-  padding: 14px; background: var(--bg3); border-radius: 10px;
-  font-size: 14px; margin-bottom: 14px; border: 1px solid var(--border);
-}
-.mg-stats b { color: var(--accent2); font-size: 16px; }
-.mg-touch { display: none; gap: 12px; margin-top: 12px; }
-.mg-touch button {
-  flex: 1; padding: 22px; font-size: 24px;
-  background: var(--bg3); border: 1px solid var(--border2);
-  color: var(--text); border-radius: 10px; cursor: pointer;
-  font-family: inherit; user-select: none; touch-action: none;
-}
-.mg-touch button:active { background: var(--accent); color: #fff; }
-
-.mg-login-hint {
-  text-align: center; padding: 14px 20px; margin-bottom: 16px;
-  background: linear-gradient(135deg, var(--accent-glow), transparent);
-  border: 1px solid var(--accent); border-radius: 10px;
-  color: var(--accent2); font-size: 13px; font-weight: 600;
-}
-.mg-login-hint b { color: var(--accent2); text-shadow: 0 0 10px var(--accent-glow); }
-
-.sections { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.sections .card { margin-bottom: 0; }
-@media (max-width:820px) { .sections { grid-template-columns:1fr; } }
-
 @media (max-width:820px) {
   .top-item { grid-template-columns:36px 1fr auto; }
   .arrow { display:none; }
@@ -478,14 +341,11 @@ main { max-width:1100px; margin:0 auto; padding:24px; }
   .top-controls { top:12px; right:12px; gap: 6px; }
   #settings-btn { width:38px; height:38px; font-size:16px; }
   #vol-slider { width: 60px; }
-  #auth-btn { font-size: 12px; padding: 10px 18px; min-width: 100px; }
-  .header-inner { padding: 0 100px 0 90px; }
+  .header-inner { padding: 0 90px 0 20px; }
   .ads-row { grid-template-columns: 1fr; }
   .ad-slot { height: 70px; }
   .sec-date-wrap label { display: none; }
   .sec-date { min-width: 110px; font-size: 11px; }
-  #visits-counter { top: 12px; left: 12px; font-size: 10px; padding: 5px 10px; }
-  .mg-touch { display: flex; }
   .color-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
@@ -515,13 +375,9 @@ footer .tg-note {
 </head>
 <body>
 
-<div id="visits-counter" title="Просмотры сайта">👁 …</div>
-
 <div class="top-controls">
-  <button id="auth-btn" title="Войти или зарегистрироваться">🔐 Войти</button>
   <button id="settings-btn" title="Настройки">⚙</button>
   <div class="music-row">
-    <div id="db-status" class="loading" title="Статус базы данных"></div>
     <button id="music-btn" title="Вкл/выкл музыку">🔊</button>
     <input type="range" id="vol-slider" min="0" max="1" step="0.05" value="0.35">
   </div>
@@ -534,7 +390,7 @@ footer .tg-note {
 <header>
   <div class="header-inner">
     <h1>timetoplay stats</h1>
-    <div class="version-badge">v1.1.1 · release</div>
+    <div class="version-badge">v1.2.0 · release</div>
     <div class="subtitle">статистика timetoplay с помощью просмотра прошлого с помощью разных дат и других разных интересных функций — ttpstats</div>
     <div class="telegram-line">📢 телеграм канал — <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></div>
     <div class="creator">создатель xxspk · made in arbuzovsk <span class="hint-tip">💡 кликни — график · правый клик — редактировать (только для тебя)</span></div>
@@ -634,116 +490,6 @@ footer .tg-note {
     </div>
   </div>
 </div>
-
-<div id="auth-modal" class="auth-modal">
-  <div class="auth-box">
-    <button class="panel-close" onclick="closeAuth()">✕</button>
-    <h2 id="auth-title">Вход / Регистрация</h2>
-    <div class="sub" id="auth-sub">если аккаунта с таким ником нет — он создастся автоматически</div>
-    <div class="auth-tabs">
-      <button id="tab-reg" class="active" onclick="authSwitch('reg')">Регистрация</button>
-      <button id="tab-login" onclick="authSwitch('login')">Вход</button>
-    </div>
-    <div class="auth-field">
-      <label>Ник</label>
-      <input type="text" id="auth-nick" maxlength="20" autocomplete="off" placeholder="твой ник">
-    </div>
-    <div class="auth-field">
-      <label>Пароль</label>
-      <input type="password" id="auth-pass" maxlength="40" placeholder="пароль">
-    </div>
-    <button class="auth-submit" id="auth-submit" onclick="authSubmit()">СОЗДАТЬ АККАУНТ</button>
-    <div class="auth-msg" id="auth-msg"></div>
-    <div id="profile-extra" style="display:none"></div>
-    <button class="auth-logout" id="auth-logout-btn" onclick="authLogout()" style="display:none">ВЫЙТИ ИЗ АККАУНТА</button>
-  </div>
-</div>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyC0rNfKYADXZLjMiXGy9inUzZmw-xYn160",
-    authDomain: "ttpstatsof.firebaseapp.com",
-    projectId: "ttpstatsof",
-    storageBucket: "ttpstatsof.firebasestorage.app",
-    messagingSenderId: "315139227692",
-    appId: "1:315139227692:web:dec167343ae2245ca11189",
-    databaseURL: "https://ttpstatsof-default-rtdb.europe-west1.firebasedatabase.app"
-  };
-
-  let fbApp = null, fbDb = null;
-  const statusEl = document.getElementById('db-status');
-  const visitsEl = document.getElementById('visits-counter');
-
-  try {
-    fbApp = initializeApp(firebaseConfig);
-    fbDb = getDatabase(fbApp);
-    window.__fb = { app: fbApp, db: fbDb, ref, get, set };
-    console.log('[Firebase] OK');
-
-    (async () => {
-      try {
-        const snap = await get(ref(fbDb, 'stats'));
-        if (snap.exists()) {
-          statusEl.className = 'online';
-          statusEl.title = 'Firebase: подключено';
-          window.__fbHasData = true;
-          if (window.__rerender) window.__rerender();
-        } else {
-          statusEl.className = 'offline';
-          statusEl.title = 'Firebase: база пуста';
-        }
-      } catch (e) { statusEl.className = 'offline'; statusEl.title = 'Firebase: нет доступа'; }
-    })();
-
-    (async () => {
-      try {
-        const visitsRef = ref(fbDb, 'visits/count');
-        const snap = await get(visitsRef);
-        let raw = snap.exists() ? snap.val() : 0;
-        let count = (typeof raw === 'number' && isFinite(raw) && raw >= 0) ? Math.floor(raw) : 0;
-        // если значение битое — переписываем корректное
-        if (count !== raw) {
-          try { await set(visitsRef, count); } catch(e) {}
-        }
-        if (!sessionStorage.getItem('ttp_visit_counted')) {
-          count++;
-          try { await set(visitsRef, count); } catch(e) {}
-          sessionStorage.setItem('ttp_visit_counted', '1');
-        }
-        visitsEl.textContent = '👁 ' + count.toLocaleString('ru-RU');
-      } catch (e) {
-        let lc = parseInt(localStorage.getItem('ttp_visits_local') || '0');
-        if (!sessionStorage.getItem('ttp_visit_counted')) {
-          lc++; localStorage.setItem('ttp_visits_local', lc);
-          sessionStorage.setItem('ttp_visit_counted', '1');
-        }
-        visitsEl.textContent = '👁 ' + lc.toLocaleString('ru-RU') + ' (лок)';
-      }
-    })();
-  } catch (e) {
-    statusEl.className = 'offline';
-    visitsEl.textContent = '👁 —';
-  }
-
-  // ✅ АНТИ-ДЕВТУЛЗ: блокируем F12, Ctrl+Shift+I/J/C, Ctrl+U, Ctrl+S
-  (function antiDevTools(){
-    const block = (e) => {
-      const k = e.key || '';
-      if (k === 'F12' || e.keyCode === 123) { e.preventDefault(); e.stopPropagation(); return false; }
-      if (e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c'].includes(k)) { e.preventDefault(); e.stopPropagation(); return false; }
-      if (e.ctrlKey && (k === 'U' || k === 'u')) { e.preventDefault(); e.stopPropagation(); return false; }
-      if (e.ctrlKey && (k === 'S' || k === 's')) { e.preventDefault(); e.stopPropagation(); return false; }
-      if (e.metaKey && e.altKey && ['I','i','J','j','C','c'].includes(k)) { e.preventDefault(); e.stopPropagation(); return false; }
-    };
-    document.addEventListener('keydown', block, true);
-    document.addEventListener('keyup', (e) => {
-      if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); e.stopPropagation(); }
-    }, true);
-  })();
-</script>
 
 <script>
 const DATA = {
@@ -1193,12 +939,10 @@ window.editEntity = function(section, sub, name) {
   render();
 };
 
-// ✅ Правый клик — редактирование отключено для мини-игры
 document.addEventListener('contextmenu', e => {
   const item = e.target.closest('.top-item');
   if (!item || !item.dataset.section) return;
   e.preventDefault();
-  if (item.dataset.section === 'minigame') return; // 🔒 защита
   editEntity(item.dataset.section, item.dataset.sub, item.dataset.name);
 });
 
@@ -1207,7 +951,6 @@ const TAB_ORDER = [
   { id:'players', icon:'🎮', label:'Игроки' },
   { id:'nations', icon:'🏛️', label:'Нации' },
   { id:'wars',    icon:'⚔️', label:'Войны вайпа' },
-  { id:'minigame',icon:'🪑', label:'Мини-игра' },
 ];
 
 const sectionState = {
@@ -1242,8 +985,6 @@ function sectionHasAllTime(key) {
 }
 
 let state = { tab:'cities' };
-let currentUser = null;
-try { currentUser = JSON.parse(localStorage.getItem('ttp_user') || 'null'); } catch(e) {}
 
 function fmtDate(d) {
   const [dp, tp] = d.split(' ');
@@ -1446,7 +1187,6 @@ window.openEntityChart = function(section, sub, name, unit) {
     cities: { balance: 'баланса', population: 'населения', size: 'размера' },
     players: { balance: 'баланса', active: 'игрового времени', shards: 'осколков', rubies: 'рубинов' },
     nations: { balance: 'баланса', size: 'размера', citizens: 'граждан' },
-    minigame: { sapphires: 'сапфиров', time: 'времени' },
   };
   const label = (labels[section] && labels[section][sub]) || '';
   title.innerHTML = `📈 ${name} — история ${label}`;
@@ -1656,70 +1396,11 @@ function renderWars() {
   return html;
 }
 
-function renderMinigame() {
-  const loginHint = currentUser
-    ? ''
-    : `<div class="mg-login-hint">чтобы попасть в топ — <b>войдите или зарегистрируйте аккаунт</b> (кнопка справа сверху)</div>`;
-
-  return `
-    <div class="card">
-      <div class="card-head">
-        <div class="card-head-text">
-          <h2>🪑 Стул Моролса</h2>
-          <div class="card-sub">уворачивайся от преград, собирай сапфиры. Скорость растёт каждую секунду</div>
-        </div>
-      </div>
-      ${loginHint}
-      <div id="mg-wrap">
-        <canvas id="mg-canvas" width="900" height="500"></canvas>
-        <div id="mg-overlay">
-          <div class="msg">
-            <h3 id="mg-ov-title">ГОТОВ?</h3>
-            <p id="mg-ov-sub">← → или A D — движение · собирай 💎 · избегай ⬛</p>
-            <button id="mg-start-btn">▶ ИГРАТЬ</button>
-          </div>
-        </div>
-      </div>
-      <div class="mg-stats">
-        <div>⏱ Время: <b id="mg-time">0.0</b>с</div>
-        <div>💎 Сапфиры (за игру): <b id="mg-sapphires">0</b></div>
-        <div>⚡ Скорость: <b id="mg-speed">1.0</b>×</div>
-      </div>
-      <div class="mg-touch">
-        <button id="mg-left">←</button>
-        <button id="mg-right">→</button>
-      </div>
-    </div>
-
-    <div class="sections">
-      <div class="card">
-        <div class="card-head">
-          <div class="card-head-text">
-            <h2>💎 Топ по сапфирам</h2>
-            <div class="card-sub">сапфиры копятся за всё время — каждый забег прибавляется к сумме</div>
-          </div>
-        </div>
-        <div id="mg-lb-sap" class="top-list"><div class="empty">Загрузка…</div></div>
-      </div>
-      <div class="card">
-        <div class="card-head">
-          <div class="card-head-text">
-            <h2>⏱ Топ по времени</h2>
-            <div class="card-sub">кто дольше всех продержался в одном забеге</div>
-          </div>
-        </div>
-        <div id="mg-lb-time" class="top-list"><div class="empty">Загрузка…</div></div>
-      </div>
-    </div>
-  `;
-}
-
 const RENDERERS = {
   cities: renderCities,
   players: renderPlayers,
   nations: renderNations,
   wars: renderWars,
-  minigame: renderMinigame,
 };
 
 function render() {
@@ -1727,9 +1408,6 @@ function render() {
   const contentEl = document.getElementById('content');
   contentEl.innerHTML = RENDERERS[state.tab] ? RENDERERS[state.tab]() : '<div class="empty">В разработке</div>';
   attachSectionPickers();
-  if (state.tab === 'minigame') initMinigame();
-  else destroyMinigame();
-  updateAuthBtn();
 }
 window.__rerender = render;
 
@@ -1770,521 +1448,6 @@ document.getElementById('settings-vol').oninput = (e) => {
   volSlider.value = v;
   localStorage.setItem('ttp_vol', v);
 };
-
-let authMode = 'reg';
-
-function updateAuthBtn() {
-  const btn = document.getElementById('auth-btn');
-  if (currentUser) {
-    btn.textContent = '👤 ' + currentUser.nick;
-    btn.classList.add('logged');
-    document.getElementById('auth-logout-btn').style.display = 'block';
-    document.getElementById('auth-title').textContent = '👤 Профиль';
-    document.getElementById('auth-sub').textContent = 'ты вошёл как ' + currentUser.nick;
-    document.getElementById('auth-nick').value = currentUser.nick;
-    document.getElementById('auth-nick').disabled = true;
-    document.getElementById('auth-pass').style.display = 'none';
-    document.getElementById('auth-submit').style.display = 'none';
-    document.querySelector('.auth-tabs').style.display = 'none';
-    document.getElementById('profile-extra').style.display = 'block';
-    loadProfileData();
-  } else {
-    btn.textContent = '🔐 Войти';
-    btn.classList.remove('logged');
-    document.getElementById('auth-logout-btn').style.display = 'none';
-    document.getElementById('auth-nick').disabled = false;
-    document.getElementById('auth-pass').style.display = 'block';
-    document.getElementById('auth-submit').style.display = 'block';
-    document.querySelector('.auth-tabs').style.display = 'flex';
-    document.getElementById('profile-extra').style.display = 'none';
-  }
-}
-
-async function loadProfileData() {
-  const el = document.getElementById('profile-extra');
-  if (!currentUser || !window.__fb) {
-    el.innerHTML = '<div class="empty">Firebase недоступен</div>';
-    return;
-  }
-  el.innerHTML = '<div class="empty">Загрузка данных…</div>';
-  try {
-    const key = currentUser.key;
-    const fb = window.__fb;
-    const [sapSnap, timeSnap, userSnap] = await Promise.all([
-      fb.get(fb.ref(fb.db, 'minigame/sapphires/' + key)),
-      fb.get(fb.ref(fb.db, 'minigame/time/' + key)),
-      fb.get(fb.ref(fb.db, 'users/' + key)),
-    ]);
-    const sapphires = sapSnap.exists() ? (sapSnap.val().value || 0) : 0;
-    const bestTime = timeSnap.exists() ? (timeSnap.val().value || 0) : 0;
-
-    let created = userSnap.exists() ? userSnap.val().created : null;
-    if (created && created < 99999999999) created = created * 1000;
-
-    if (!created && userSnap.exists()) {
-      try {
-        await fb.set(fb.ref(fb.db, 'users/' + key + '/created'), Date.now());
-        created = Date.now();
-      } catch(e) {}
-    }
-
-    let createdStr = 'неизвестно';
-    if (created) {
-      const d = new Date(created);
-      const dateStr = d.toLocaleDateString('ru-RU', { day:'2-digit', month:'2-digit', year:'numeric' });
-      const timeStr = d.toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit' });
-      const diffMs = Date.now() - created;
-      const diffDays = Math.floor(diffMs / 86400000);
-      let relative = '';
-      if (diffDays < 1) relative = 'сегодня';
-      else if (diffDays === 1) relative = '1 день назад';
-      else if (diffDays < 5) relative = diffDays + ' дня назад';
-      else relative = diffDays + ' дней назад';
-      createdStr = `${dateStr} ${timeStr} · ${relative}`;
-    }
-
-    el.innerHTML = `
-      <div class="profile-stats">
-        <div class="profile-stat">
-          <span class="lbl">💎 Сапфиры (всего)</span>
-          <span class="val">${sapphires.toLocaleString('ru-RU')}</span>
-        </div>
-        <div class="profile-stat">
-          <span class="lbl">⏱ Рекорд в мини-игре</span>
-          <span class="val">${bestTime ? bestTime.toFixed(1) + 'с' : '—'}</span>
-        </div>
-        <div class="profile-stat">
-          <span class="lbl">📅 Аккаунт создан</span>
-          <span class="val" style="font-size:13px">${createdStr}</span>
-        </div>
-      </div>
-    `;
-  } catch (e) {
-    el.innerHTML = '<div class="empty">Ошибка загрузки профиля</div>';
-  }
-}
-
-window.openAuth = function() { document.getElementById('auth-modal').classList.add('open'); };
-window.closeAuth = function() {
-  document.getElementById('auth-modal').classList.remove('open');
-  document.getElementById('auth-msg').textContent = '';
-};
-window.authSwitch = function(mode) {
-  authMode = mode;
-  document.getElementById('tab-reg').classList.toggle('active', mode === 'reg');
-  document.getElementById('tab-login').classList.toggle('active', mode === 'login');
-  document.getElementById('auth-submit').textContent = mode === 'reg' ? 'СОЗДАТЬ АККАУНТ' : 'ВОЙТИ';
-  document.getElementById('auth-title').textContent = mode === 'reg' ? 'Регистрация' : 'Вход';
-  document.getElementById('auth-msg').textContent = '';
-};
-
-window.authSubmit = async function() {
-  if (currentUser) return;
-  const nick = document.getElementById('auth-nick').value.trim();
-  const pass = document.getElementById('auth-pass').value;
-  const msg = document.getElementById('auth-msg');
-  const btn = document.getElementById('auth-submit');
-
-  if (!nick || nick.length < 2) { msg.className = 'auth-msg err'; msg.textContent = 'Ник минимум 2 символа'; return; }
-  if (!pass || pass.length < 3) { msg.className = 'auth-msg err'; msg.textContent = 'Пароль минимум 3 символа'; return; }
-
-  const fb = window.__fb;
-  if (!fb) { msg.className = 'auth-msg err'; msg.textContent = 'Firebase недоступен'; return; }
-
-  const key = nick.toLowerCase().replace(/[^a-z0-9_\-]/g, '');
-  if (key.length < 2) { msg.className = 'auth-msg err'; msg.textContent = 'Ник должен содержать буквы/цифры'; return; }
-
-  btn.disabled = true;
-  btn.textContent = '...';
-
-  try {
-    const userRef = fb.ref(fb.db, 'users/' + key);
-    const snap = await fb.get(userRef);
-
-    if (authMode === 'reg') {
-      if (snap.exists()) {
-        msg.className = 'auth-msg err';
-        msg.textContent = 'Этот ник уже занят — попробуй войти';
-        btn.disabled = false; btn.textContent = 'СОЗДАТЬ АККАУНТ';
-        return;
-      }
-      await fb.set(userRef, { nick, pass, created: Date.now() });
-      currentUser = { nick, key };
-      localStorage.setItem('ttp_user', JSON.stringify(currentUser));
-      msg.className = 'auth-msg ok';
-      msg.textContent = '✓ Аккаунт создан!';
-    } else {
-      if (!snap.exists()) {
-        await fb.set(userRef, { nick, pass, created: Date.now() });
-        currentUser = { nick, key };
-        localStorage.setItem('ttp_user', JSON.stringify(currentUser));
-        msg.className = 'auth-msg ok';
-        msg.textContent = '✓ Аккаунта не было — зарегистрирован автоматически!';
-      } else if (snap.val().pass !== pass) {
-        msg.className = 'auth-msg err';
-        msg.textContent = 'Неверный пароль';
-        btn.disabled = false; btn.textContent = 'ВОЙТИ';
-        return;
-      } else {
-        currentUser = { nick: snap.val().nick, key };
-        localStorage.setItem('ttp_user', JSON.stringify(currentUser));
-        msg.className = 'auth-msg ok';
-        msg.textContent = '✓ Ты вошёл!';
-      }
-    }
-
-    setTimeout(() => {
-      closeAuth();
-      updateAuthBtn();
-      if (state.tab === 'minigame') render();
-    }, 800);
-  } catch (e) {
-    msg.className = 'auth-msg err';
-    msg.textContent = 'Ошибка: ' + e.message;
-    btn.disabled = false;
-    btn.textContent = authMode === 'reg' ? 'СОЗДАТЬ АККАУНТ' : 'ВОЙТИ';
-  }
-};
-
-window.authLogout = function() {
-  currentUser = null;
-  localStorage.removeItem('ttp_user');
-  closeAuth();
-  updateAuthBtn();
-  if (state.tab === 'minigame') render();
-};
-
-document.getElementById('auth-btn').onclick = window.openAuth;
-document.getElementById('auth-modal').addEventListener('click', e => {
-  if (e.target.id === 'auth-modal') window.closeAuth();
-});
-
-const MG = {
-  canvas: null, ctx: null,
-  running: false,
-  player: { x: 450, y: 440, w: 50, h: 50 },
-  obstacles: [],
-  sapphires: [],
-  keys: { left: false, right: false },
-  time: 0,
-  sapphiresCollected: 0,
-  spawnTimer: 0,
-  lastFrame: 0,
-  rafId: 0,
-  // 🔒 сессия текущего забега
-  sessionActive: false,
-  sessionStartTs: 0,
-};
-
-function initMinigame() {
-  MG.canvas = document.getElementById('mg-canvas');
-  if (!MG.canvas) return;
-  MG.ctx = MG.canvas.getContext('2d');
-  MG.running = false;
-  MG.player = { x: 450, y: 440, w: 50, h: 50 };
-  MG.obstacles = [];
-  MG.sapphires = [];
-  MG.time = 0;
-  MG.sapphiresCollected = 0;
-  MG.spawnTimer = 0;
-  MG.sessionActive = false;
-  mgDraw();
-
-  document.getElementById('mg-start-btn').onclick = mgStart;
-  document.getElementById('mg-left').addEventListener('touchstart', e => { e.preventDefault(); MG.keys.left = true; });
-  document.getElementById('mg-left').addEventListener('touchend', e => { e.preventDefault(); MG.keys.left = false; });
-  document.getElementById('mg-right').addEventListener('touchstart', e => { e.preventDefault(); MG.keys.right = true; });
-  document.getElementById('mg-right').addEventListener('touchend', e => { e.preventDefault(); MG.keys.right = false; });
-
-  loadMinigameLeaderboards();
-}
-
-function destroyMinigame() {
-  if (MG.rafId) { cancelAnimationFrame(MG.rafId); MG.rafId = 0; }
-  MG.running = false;
-  MG.sessionActive = false;
-  MG.keys.left = MG.keys.right = false;
-}
-
-function mgStart() {
-  MG.running = true;
-  MG.time = 0;
-  MG.sapphiresCollected = 0;
-  MG.obstacles = [];
-  MG.sapphires = [];
-  MG.spawnTimer = 0.3;
-  MG.player.x = 450;
-  MG.player.y = 440;
-  MG.sessionActive = true;
-  MG.sessionStartTs = performance.now();
-  document.getElementById('mg-overlay').classList.add('hidden');
-  MG.lastFrame = performance.now();
-  MG.rafId = requestAnimationFrame(mgLoop);
-}
-
-function mgSpeedMult() { return 1 + MG.time * 0.18; }
-
-function mgSpawn() {
-  if (Math.random() < 0.3) {
-    MG.sapphires.push({ x: 40 + Math.random() * 820, y: -20, size: 22, rot: 0 });
-  } else {
-    const types = ['block', 'spike', 'tall'];
-    const type = types[Math.floor(Math.random() * types.length)];
-    let w = 40, h = 40;
-    if (type === 'tall') { w = 26; h = 70; }
-    if (type === 'spike') { w = 40; h = 40; }
-    MG.obstacles.push({ x: w/2 + 20 + Math.random() * (860 - w), y: -h - 10, w, h, type });
-  }
-}
-
-function mgRectOverlap(p, o) {
-  const px1 = p.x - p.w/2, py1 = p.y - p.h/2;
-  const px2 = p.x + p.w/2, py2 = p.y + p.h/2;
-  const ox1 = o.x - (o.w||0)/2, oy1 = o.y;
-  const ox2 = o.x + (o.w||0)/2, oy2 = o.y + (o.h||o.size||0);
-  return px2 > ox1 && px1 < ox2 && py2 > oy1 && py1 < oy2;
-}
-
-function getAccentColor() {
-  return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#3b82f6';
-}
-
-function mgDraw() {
-  const ctx = MG.ctx;
-  if (!ctx) return;
-  const W = 900, H = 500;
-  const accent = getAccentColor();
-  const g = ctx.createLinearGradient(0, 0, 0, H);
-  g.addColorStop(0, '#0a1018');
-  g.addColorStop(1, '#04060a');
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, W, H);
-  ctx.strokeStyle = accent + '11';
-  ctx.lineWidth = 1;
-  for (let x = 0; x < W; x += 60) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
-  for (let y = 0; y < H; y += 60) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
-  MG.obstacles.forEach(o => {
-    if (o.type === 'spike') {
-      ctx.fillStyle = '#ef4444';
-      ctx.beginPath();
-      ctx.moveTo(o.x - o.w/2, o.y + o.h);
-      ctx.lineTo(o.x + o.w/2, o.y + o.h);
-      ctx.lineTo(o.x, o.y);
-      ctx.closePath();
-      ctx.fill();
-      ctx.strokeStyle = '#991b1b';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-    } else {
-      ctx.fillStyle = o.type === 'tall' ? '#dc2626' : '#b91c1c';
-      ctx.fillRect(o.x - o.w/2, o.y, o.w, o.h);
-      ctx.strokeStyle = '#7f1d1d';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(o.x - o.w/2, o.y, o.w, o.h);
-    }
-  });
-  MG.sapphires.forEach(s => {
-    ctx.save();
-    ctx.translate(s.x, s.y);
-    ctx.rotate(s.rot);
-    ctx.fillStyle = '#3b82f6';
-    ctx.beginPath();
-    ctx.moveTo(0, -s.size); ctx.lineTo(s.size, 0);
-    ctx.lineTo(0, s.size); ctx.lineTo(-s.size, 0);
-    ctx.closePath();
-    ctx.fill();
-    ctx.strokeStyle = '#93c5fd';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-    ctx.restore();
-  });
-  const px = MG.player.x, py = MG.player.y;
-  ctx.save();
-  ctx.translate(px, py);
-  ctx.fillStyle = '#8a5a2a';
-  ctx.fillRect(-20, 8, 40, 6);
-  ctx.fillRect(-20, -20, 6, 30);
-  ctx.fillRect(14, -20, 6, 30);
-  ctx.fillRect(-20, -22, 40, 6);
-  ctx.fillRect(-18, 14, 4, 12);
-  ctx.fillRect(14, 14, 4, 12);
-  ctx.fillStyle = '#f0c090';
-  ctx.beginPath(); ctx.arc(0, -28, 12, 0, Math.PI*2); ctx.fill();
-  ctx.fillStyle = '#000';
-  ctx.beginPath(); ctx.arc(-4, -30, 1.8, 0, Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.arc(4, -30, 1.8, 0, Math.PI*2); ctx.fill();
-  ctx.strokeStyle = '#000';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath(); ctx.arc(0, -24, 5, 0.1*Math.PI, 0.9*Math.PI); ctx.stroke();
-  ctx.fillStyle = '#3a6ea5';
-  ctx.fillRect(-10, -18, 20, 24);
-  ctx.fillStyle = '#f0c090';
-  ctx.fillRect(-16, -16, 6, 14);
-  ctx.fillRect(10, -16, 6, 14);
-  ctx.restore();
-  ctx.fillStyle = 'rgba(230,237,245,0.8)';
-  ctx.font = 'bold 16px monospace';
-  ctx.textAlign = 'left';
-  ctx.fillText('⏱ ' + MG.time.toFixed(1) + 'с', 20, 30);
-  ctx.textAlign = 'right';
-  ctx.fillText('💎 ' + MG.sapphiresCollected, 880, 30);
-  ctx.textAlign = 'center';
-  ctx.fillStyle = accent;
-  ctx.fillText('×' + mgSpeedMult().toFixed(2), 450, 30);
-}
-
-function mgLoop(now) {
-  if (!MG.running) return;
-  const dt = Math.min((now - MG.lastFrame) / 1000, 0.05);
-  MG.lastFrame = now;
-  MG.time += dt;
-  const speed = 480;
-  if (MG.keys.left) MG.player.x -= speed * dt;
-  if (MG.keys.right) MG.player.x += speed * dt;
-  MG.player.x = Math.max(30, Math.min(870, MG.player.x));
-  MG.spawnTimer -= dt;
-  if (MG.spawnTimer <= 0) {
-    mgSpawn();
-    MG.spawnTimer = Math.max(0.15, 0.65 / (0.9 + MG.time * 0.12));
-  }
-  const obsSpeed = 240 * (1 + MG.time * 0.16);
-  for (let i = MG.obstacles.length - 1; i >= 0; i--) {
-    const o = MG.obstacles[i];
-    o.y += obsSpeed * dt;
-    if (o.y > 520) MG.obstacles.splice(i, 1);
-  }
-  for (let i = MG.sapphires.length - 1; i >= 0; i--) {
-    const s = MG.sapphires[i];
-    s.y += obsSpeed * 0.85 * dt;
-    s.rot += dt * 2;
-    if (mgRectOverlap(MG.player, { x: s.x, y: s.y - s.size, w: s.size*2, h: s.size*2 })) {
-      MG.sapphiresCollected++;
-      MG.sapphires.splice(i, 1);
-    } else if (s.y > 520) MG.sapphires.splice(i, 1);
-  }
-  for (const o of MG.obstacles) {
-    if (mgRectOverlap(MG.player, o)) { mgCrash(); return; }
-  }
-  document.getElementById('mg-time').textContent = MG.time.toFixed(1);
-  document.getElementById('mg-sapphires').textContent = MG.sapphiresCollected;
-  document.getElementById('mg-speed').textContent = mgSpeedMult().toFixed(2);
-  mgDraw();
-  MG.rafId = requestAnimationFrame(mgLoop);
-}
-
-function mgCrash() {
-  MG.running = false;
-  if (MG.rafId) { cancelAnimationFrame(MG.rafId); MG.rafId = 0; }
-  mgDraw();
-  // 🔒 считаем, что сессия валидна только если реально играли
-  const realTime = (performance.now() - MG.sessionStartTs) / 1000;
-  const timeValid = Math.abs(realTime - MG.time) < 5 && MG.time <= 900;
-  const sapValid = MG.sapphiresCollected <= 1000;
-  const sessionValid = MG.sessionActive && timeValid && sapValid;
-  MG.sessionActive = false;
-
-  const ov = document.getElementById('mg-overlay');
-  ov.classList.remove('hidden');
-  document.getElementById('mg-ov-title').textContent = '💥 РАЗБИЛСЯ!';
-  document.getElementById('mg-ov-sub').innerHTML =
-    `Продержался <b>${MG.time.toFixed(1)}с</b> · собрал <b>${MG.sapphiresCollected}</b> сапфиров` +
-    (currentUser ? '<br><span style="color:var(--accent2)">Сохранение в топы...</span>' : '<br><span style="color:var(--red)">Войди в аккаунт, чтобы попасть в топы</span>');
-  document.getElementById('mg-start-btn').textContent = '↻ ЕЩЁ РАЗ';
-
-  if (sessionValid) {
-    saveMinigameScore(MG.sapphiresCollected, MG.time);
-  } else {
-    console.warn('[Minigame] session invalid, score not saved');
-    const sub = document.getElementById('mg-ov-sub');
-    if (sub) sub.innerHTML += '<br><span style="color:var(--red)">⚠ Забег не засчитан (подозрение на читерство)</span>';
-  }
-}
-
-async function saveMinigameScore(sapphires, time) {
-  if (!currentUser) return;
-  const fb = window.__fb;
-  if (!fb) return;
-
-  // 🔒 Санитизация: режем невозможные значения
-  let sap = Math.max(0, Math.floor(sapphires));
-  let tm = Math.max(0, Number(time) || 0);
-  if (sap > 1000) sap = 0;      // за один забег столько не собрать
-  if (tm > 900) tm = 0;         // 15 минут — потолок
-
-  try {
-    const nick = currentUser.nick;
-    const key = currentUser.key;
-    const sapRef = fb.ref(fb.db, 'minigame/sapphires/' + key);
-    const sapSnap = await fb.get(sapRef);
-    const prevRaw = sapSnap.exists() ? (sapSnap.val().value || 0) : 0;
-    // если старое значение битое/читерское — сбрасываем
-    const prevSapphires = (typeof prevRaw === 'number' && isFinite(prevRaw) && prevRaw >= 0 && prevRaw <= 100000) ? prevRaw : 0;
-    const totalSapphires = prevSapphires + sap;
-    await fb.set(sapRef, {
-      nick,
-      value: totalSapphires,
-      date: new Date().toISOString().slice(0, 16).replace('T', ' ')
-    });
-    const timeRef = fb.ref(fb.db, 'minigame/time/' + key);
-    const timeSnap = await fb.get(timeRef);
-    const prevTimeRaw = timeSnap.exists() ? (timeSnap.val().value || 0) : 0;
-    const prevTime = (typeof prevTimeRaw === 'number' && isFinite(prevTimeRaw) && prevTimeRaw >= 0 && prevTimeRaw <= 1800) ? prevTimeRaw : 0;
-    if (tm > prevTime) {
-      await fb.set(timeRef, { nick, value: tm, date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
-    }
-    loadMinigameLeaderboards();
-    const sub = document.getElementById('mg-ov-sub');
-    if (sub) sub.innerHTML =
-      `Продержался <b>${time.toFixed(1)}с</b> · собрал <b>${sapphires}</b> сапфиров за игру<br>` +
-      `<span style="color:var(--accent2)">💎 Всего за всё время: ${totalSapphires}</span>`;
-  } catch (e) {
-    console.warn('[Minigame] save error:', e.message);
-  }
-}
-
-async function loadMinigameLeaderboards() {
-  const sapEl = document.getElementById('mg-lb-sap');
-  const timeEl = document.getElementById('mg-lb-time');
-  if (!sapEl || !timeEl) return;
-  const fb = window.__fb;
-  if (!fb) {
-    sapEl.innerHTML = '<div class="empty">Firebase недоступен</div>';
-    timeEl.innerHTML = '<div class="empty">Firebase недоступен</div>';
-    return;
-  }
-  try {
-    const [sapSnap, timeSnap] = await Promise.all([
-      fb.get(fb.ref(fb.db, 'minigame/sapphires')),
-      fb.get(fb.ref(fb.db, 'minigame/time')),
-    ]);
-    let sapList = sapSnap.exists() ? Object.values(sapSnap.val()) : [];
-    let timeList = timeSnap.exists() ? Object.values(timeSnap.val()) : [];
-    // 🔒 ФИЛЬТР ЧИТЕРОВ: убираем невозможные значения и дубликаты
-    sapList = sapList.filter(x => x && typeof x.value === 'number' && isFinite(x.value) && x.value >= 0 && x.value <= 100000);
-    timeList = timeList.filter(x => x && typeof x.value === 'number' && isFinite(x.value) && x.value >= 0 && x.value <= 1800);
-    sapList.sort((a, b) => b.value - a.value);
-    timeList.sort((a, b) => b.value - a.value);
-    sapEl.innerHTML = sapList.length
-      ? renderTopList(sapList.slice(0, 10).map(x => ({ name: x.nick, value: x.value })), ' 💎', null, 'minigame', 'sapphires')
-      : '<div class="empty">Пока никто не играл</div>';
-    timeEl.innerHTML = timeList.length
-      ? renderTopList(timeList.slice(0, 10).map(x => ({ name: x.nick, value: +x.value.toFixed(1) })), ' сек', null, 'minigame', 'time')
-      : '<div class="empty">Пока никто не играл</div>';
-  } catch (e) {
-    sapEl.innerHTML = '<div class="empty">Ошибка загрузки</div>';
-    timeEl.innerHTML = '<div class="empty">Ошибка загрузки</div>';
-  }
-}
-
-document.addEventListener('keydown', e => {
-  if (state.tab !== 'minigame' || !MG.running) return;
-  if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A' || e.key === 'ф') { e.preventDefault(); MG.keys.left = true; }
-  if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D' || e.key === 'в') { e.preventDefault(); MG.keys.right = true; }
-});
-document.addEventListener('keyup', e => {
-  if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A' || e.key === 'ф') MG.keys.left = false;
-  if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D' || e.key === 'в') MG.keys.right = false;
-});
 
 window.openAd = function(type) {
   document.getElementById('ad-modal-' + type).classList.add('open');
