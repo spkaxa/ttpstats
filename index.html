@@ -90,7 +90,6 @@ body {
 #db-status.loading { background: var(--gold); animation: pulse 1s infinite; }
 @keyframes pulse { 0%,100% { opacity:1 } 50% { opacity:0.4 } }
 
-/* Модалка настроек */
 #settings-modal, .auth-modal, .ad-modal {
   position: fixed; inset: 0; z-index: 1100;
   background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
@@ -139,7 +138,6 @@ body {
 
 input[type="range"] { width: 100%; accent-color: var(--accent); }
 
-/* auth */
 .auth-box {
   background: var(--bg2); border: 1px solid var(--border2);
   border-radius: 14px; padding: 32px 36px; max-width: 460px; width: 100%;
@@ -219,9 +217,14 @@ h1 {
 }
 .version-badge {
   display:inline-block; font-size:12px; font-weight:800;
-  background: linear-gradient(135deg, var(--accent3), var(--accent));
-  color: #fff; padding:4px 12px; border-radius:12px;
-  letter-spacing:.5px; box-shadow: 0 0 15px var(--accent-glow);
+  background: var(--bg2);
+  color: var(--accent2);
+  padding:4px 12px; border-radius:12px;
+  letter-spacing:.5px;
+  border: 1px solid var(--accent);
+  box-shadow: 0 0 15px var(--accent-glow);
+  position: relative;
+  z-index: 1;
 }
 .subtitle { color:var(--text2); font-size:13px; margin-bottom:10px; line-height:1.6; max-width: 780px; }
 .telegram-line { color: var(--accent2); font-size: 13px; margin-bottom: 10px; font-weight: 600; letter-spacing: .3px; }
@@ -525,7 +528,7 @@ footer .tg-note {
     <h1>timetoplay stats <span class="version-badge">v1.1.0</span></h1>
     <div class="subtitle">статистика timetoplay с помощью просмотра прошлого с помощью разных дат и других разных интересных функций — ttpstats</div>
     <div class="telegram-line">📢 телеграм канал — <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></div>
-    <div class="creator">создатель xxspk · made in arbuzovsk <span class="hint-tip">💡 кликни на что угодно — увидишь график · правый клик — редактировать (только для тебя)</span></div>
+    <div class="creator">создатель xxspk · made in arbuzovsk <span class="hint-tip">💡 кликни — график · правый клик — редактировать (только для тебя)</span></div>
   </div>
 </header>
 
@@ -564,12 +567,11 @@ footer .tg-note {
   </div>
 </footer>
 
-<!-- Модалка Арбузовск -->
 <div id="ad-modal-arena" class="ad-modal">
   <div class="ad-modal-inner">
     <button class="panel-close" onclick="closeAd('arena')">✕</button>
     <h2>⚔️ ПВП Арена Арбузовска</h2>
-    <p>На <b>/t spawn арбузовск</b> есть прикольная пвп арена на <b>4 чанка</b> — она не плоская, интересная, прикольная. Здесь можно сражаться со всеми кем хочешь.</p>
+    <p>На <b>/t spawn арбузовск</b> есть прикольная пвп арена на <b>4 чанка</b> — она не плоская, интересная, прикольная.</p>
     <ul>
       <li>Правил нет</li>
       <li>Можно заказать арену на время для пвп с кем-то</li>
@@ -580,7 +582,6 @@ footer .tg-note {
   </div>
 </div>
 
-<!-- Модалка НАТО -->
 <div id="ad-modal-nato" class="ad-modal">
   <div class="ad-modal-inner">
     <button class="panel-close" onclick="closeAd('nato')">✕</button>
@@ -596,7 +597,6 @@ footer .tg-note {
   </div>
 </div>
 
-<!-- Модалка графика -->
 <div id="chart-modal" class="ad-modal">
   <div class="ad-modal-inner" style="max-width: 900px">
     <button class="panel-close" onclick="closeChart()">✕</button>
@@ -605,7 +605,6 @@ footer .tg-note {
   </div>
 </div>
 
-<!-- Модалка настроек -->
 <div id="settings-modal">
   <div class="panel-box">
     <button class="panel-close" onclick="closeSettings()">✕</button>
@@ -627,7 +626,6 @@ footer .tg-note {
   </div>
 </div>
 
-<!-- Модалка авторизации / профиля -->
 <div id="auth-modal" class="auth-modal">
   <div class="auth-box">
     <button class="panel-close" onclick="closeAuth()">✕</button>
@@ -1017,7 +1015,6 @@ const MAYORS = {
 };
 function getMayor(name) { return MAYORS[name.toLowerCase().trim()] || null; }
 
-/* ============ ЦВЕТОВЫЕ ПАЛИТРЫ ============ */
 const PALETTES = {
   blue:    { name:'Синий',     dot:'#3b82f6', accent:'#3b82f6', accent2:'#60a5fa', accent3:'#2563eb', glow:'rgba(59,130,246,0.25)' },
   red:     { name:'Красный',   dot:'#ef4444', accent:'#ef4444', accent2:'#f87171', accent3:'#dc2626', glow:'rgba(239,68,68,0.25)' },
@@ -1046,7 +1043,6 @@ function applyPalette(name) {
   });
 }
 
-/* ============ OVERLAY КАСТОМИЗАЦИИ ============ */
 const OVERLAY = { edits: {} };
 
 function getEditedKey(section, sub, name) { return `${section}.${sub}.${name}`; }
@@ -1068,21 +1064,35 @@ function applyEdits(section, sub, item) {
 window.editEntity = function(section, sub, name) {
   const key = getEditedKey(section, sub, name);
   const existing = OVERLAY.edits[key] || {};
-  const newName = prompt('Новое название (Enter = оставить):', existing.name || name);
+
+  const newName = prompt('✏️ Новое название (Enter = не менять):', existing.name || name);
   if (newName === null) return;
-  const newValue = prompt('Новое значение (Enter = оставить):', existing.value !== undefined ? existing.value : '');
+
+  const currentVal = existing.value !== undefined ? existing.value : '';
+  const newValue = prompt('💰 Новое значение (Enter = не менять):', currentVal);
   if (newValue === null) return;
+
   let newMayor = null;
   if (section === 'cities') {
-    newMayor = prompt('Новый мэр (Enter = оставить):', existing.mayor || getMayor(name) || '');
+    const currentMayor = existing.mayor || getMayor(name) || '';
+    newMayor = prompt('👑 Новый мэр (Enter = не менять):', currentMayor);
     if (newMayor === null) return;
   }
-  const edited = {
-    name: newName.trim() && newName.trim() !== name ? newName.trim() : undefined,
-    value: newValue.trim() !== '' ? parseFloat(newValue) : undefined,
-    mayor: newMayor && newMayor.trim() ? newMayor.trim() : undefined,
-  };
-  if (!edited.name && edited.value === undefined && !edited.mayor) {
+
+  const edited = {};
+  if (newName.trim() && newName.trim() !== name) edited.name = newName.trim();
+  if (newValue.trim() !== '') {
+    const num = parseFloat(newValue.replace(',', '.'));
+    if (!isNaN(num)) edited.value = num;
+  }
+  if (newMayor !== null) {
+    const m = newMayor.trim();
+    const orig = getMayor(name) || '';
+    if (m && m !== orig) edited.mayor = m;
+    else if (!m) edited.mayor = '';
+  }
+
+  if (Object.keys(edited).length === 0) {
     delete OVERLAY.edits[key];
   } else {
     OVERLAY.edits[key] = edited;
@@ -1193,8 +1203,9 @@ function sortByValue(list) { return [...list].sort((a, b) => b.value - a.value);
 function getEntityHistory(section, sub, entityName) {
   const sectionData = DATA[section];
   if (!sectionData) return [];
-  const data = sectionData[sub];
+  let data = sectionData[sub];
   if (!data) return [];
+  if (data.snapshots) data = data.snapshots;
   const nk = normalizeKey(entityName);
   const points = [];
   Object.keys(data).sort().forEach(date => {
@@ -1340,6 +1351,7 @@ window.openEntityChart = function(section, sub, name, unit) {
     cities: { balance: 'баланса', population: 'населения', size: 'размера' },
     players: { balance: 'баланса', active: 'игрового времени', shards: 'осколков', rubies: 'рубинов' },
     nations: { balance: 'баланса', size: 'размера', citizens: 'граждан' },
+    minigame: { sapphires: 'сапфиров', time: 'времени' },
   };
   const label = (labels[section] && labels[section][sub]) || '';
   title.innerHTML = `📈 ${name} — история ${label}`;
@@ -1370,7 +1382,7 @@ function renderCities() {
     balList = sortByValue(DATA.cities.balance.snapshots[balSt.date] || []).slice(0, 10);
     const idx = balDates.indexOf(balSt.date);
     if (idx > 0) balArrows = computeArrow(balList, sortByValue(DATA.cities.balance.snapshots[balDates[idx - 1]] || []));
-    balHeading = fmtDate(balSt.date) + ' МСК · 💡 кликни на город чтобы увидеть график · правый клик — изменить';
+    balHeading = fmtDate(balSt.date) + ' МСК · 💡 клик — график · правый клик — изменить';
   }
   html += `<div class="card">
     ${cardHeader(balKey, '📊 Топ городов по балансу', balHeading, balBadge)}
@@ -1626,7 +1638,6 @@ function render() {
 }
 window.__rerender = render;
 
-/* ============ НАСТРОЙКИ ============ */
 function renderColorGrid() {
   const grid = document.getElementById('color-grid');
   if (!grid) return;
@@ -1665,7 +1676,6 @@ document.getElementById('settings-vol').oninput = (e) => {
   localStorage.setItem('ttp_vol', v);
 };
 
-/* ============ АВТОРИЗАЦИЯ ============ */
 let authMode = 'reg';
 
 function updateAuthBtn() {
@@ -1712,16 +1722,32 @@ async function loadProfileData() {
     ]);
     const sapphires = sapSnap.exists() ? (sapSnap.val().value || 0) : 0;
     const bestTime = timeSnap.exists() ? (timeSnap.val().value || 0) : 0;
-    const created = userSnap.exists() && userSnap.val().created ? userSnap.val().created : null;
-    let daysAgo = '—';
+
+    let created = userSnap.exists() ? userSnap.val().created : null;
+    if (created && created < 99999999999) created = created * 1000;
+
+    if (!created && userSnap.exists()) {
+      try {
+        await fb.set(fb.ref(fb.db, 'users/' + key + '/created'), Date.now());
+        created = Date.now();
+      } catch(e) {}
+    }
+
+    let createdStr = 'неизвестно';
     if (created) {
       const d = new Date(created);
+      const dateStr = d.toLocaleDateString('ru-RU', { day:'2-digit', month:'2-digit', year:'numeric' });
+      const timeStr = d.toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit' });
       const diffMs = Date.now() - created;
       const diffDays = Math.floor(diffMs / 86400000);
-      if (diffDays < 1) daysAgo = 'сегодня';
-      else if (diffDays === 1) daysAgo = '1 день назад';
-      else daysAgo = diffDays + ' дней назад';
+      let relative = '';
+      if (diffDays < 1) relative = 'сегодня';
+      else if (diffDays === 1) relative = '1 день назад';
+      else if (diffDays < 5) relative = diffDays + ' дня назад';
+      else relative = diffDays + ' дней назад';
+      createdStr = `${dateStr} ${timeStr} · ${relative}`;
     }
+
     el.innerHTML = `
       <div class="profile-stats">
         <div class="profile-stat">
@@ -1734,7 +1760,7 @@ async function loadProfileData() {
         </div>
         <div class="profile-stat">
           <span class="lbl">📅 Аккаунт создан</span>
-          <span class="val">${daysAgo}</span>
+          <span class="val" style="font-size:13px">${createdStr}</span>
         </div>
       </div>
     `;
@@ -1838,7 +1864,6 @@ document.getElementById('auth-modal').addEventListener('click', e => {
   if (e.target.id === 'auth-modal') window.closeAuth();
 });
 
-/* ============ МИНИ-ИГРА ============ */
 const MG = {
   canvas: null, ctx: null,
   running: false,
@@ -2131,7 +2156,6 @@ document.addEventListener('keyup', e => {
   if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D' || e.key === 'в') MG.keys.right = false;
 });
 
-/* ============ РЕКЛАМА / МУЗЫКА ============ */
 window.openAd = function(type) {
   document.getElementById('ad-modal-' + type).classList.add('open');
 };
@@ -2167,7 +2191,6 @@ volSlider.oninput = () => {
   localStorage.setItem('ttp_vol', v);
 };
 
-/* ============ СТАРТ ============ */
 const savedPalette = localStorage.getItem('ttp_palette') || 'blue';
 applyPalette(savedPalette);
 render();
