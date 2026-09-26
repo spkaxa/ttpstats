@@ -208,21 +208,31 @@ header::after {
   opacity: 0.5;
 }
 .header-inner { max-width:1100px; margin:0 auto; padding: 0 220px 0 130px; }
+
 h1 {
-  font-size:38px; font-weight:900; letter-spacing:-0.8px; margin-bottom:8px;
+  font-size:38px; font-weight:900; letter-spacing:-0.8px; margin-bottom:10px;
   background: linear-gradient(135deg, var(--accent2) 0%, var(--accent) 50%, var(--accent3) 100%);
   -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  display:inline-flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+  display:block;
   filter: drop-shadow(0 0 20px var(--accent-glow));
 }
+
+/* ✅ ИСПРАВЛЕНО: версия вынесена из h1, белый текст на синем фоне */
 .version-badge {
-  display:inline-block; font-size:12px; font-weight:800;
-  background: #0a1018;
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
   color: #ffffff;
-  padding:4px 12px; border-radius:12px;
-  letter-spacing:.5px;
-  border: 1px solid var(--accent);
+  -webkit-text-fill-color: #ffffff;
+  background: linear-gradient(135deg, var(--accent3), var(--accent));
+  padding: 5px 16px;
+  border-radius: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 14px var(--accent-glow);
 }
+
 .subtitle { color:var(--text2); font-size:13px; margin-bottom:10px; line-height:1.6; max-width: 780px; }
 .telegram-line { color: var(--accent2); font-size: 13px; margin-bottom: 10px; font-weight: 600; letter-spacing: .3px; }
 .telegram-line a { color: var(--accent2); text-decoration: none; border-bottom: 1px dashed var(--accent2); }
@@ -461,7 +471,7 @@ main { max-width:1100px; margin:0 auto; padding:24px; }
   .top-item { grid-template-columns:36px 1fr auto; }
   .arrow { display:none; }
   h1 { font-size:24px; }
-  .version-badge { font-size:10px; padding:3px 9px; }
+  .version-badge { font-size:10px; padding:3px 10px; }
   .tabs { overflow-x:auto; flex-wrap:nowrap; padding-bottom:0; }
   .tabs::-webkit-scrollbar { height:0; }
   .top-controls { top:12px; right:12px; gap: 6px; }
@@ -522,7 +532,8 @@ footer .tg-note {
 
 <header>
   <div class="header-inner">
-    <h1>timetoplay stats <span class="version-badge">v1.1.0</span></h1>
+    <h1>timetoplay stats</h1>
+    <div class="version-badge">v1.1.0 · release</div>
     <div class="subtitle">статистика timetoplay с помощью просмотра прошлого с помощью разных дат и других разных интересных функций — ttpstats</div>
     <div class="telegram-line">📢 телеграм канал — <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></div>
     <div class="creator">создатель xxspk · made in arbuzovsk <span class="hint-tip">💡 кликни — график · правый клик — редактировать (только для тебя)</span></div>
