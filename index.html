@@ -6,44 +6,27 @@
 <title>timetoplay stats — ttpstats</title>
 <style>
 :root {
-  --bg:#080c09; --bg2:#0f1611; --bg3:#182019; --bg4:#1f2a20;
-  --accent:#22c55e; --accent2:#4ade80; --accent3:#16a34a;
-  --accent-glow:rgba(34,197,94,0.25);
-  --text:#e6f2e8; --text2:#8fa892; --text3:#566a59;
-  --border:#223328; --border2:#2e4433;
-  --green:#22c55e; --red:#ef4444; --gold:#fbbf24; --purple:#a78bfa;
-  --gridline:rgba(80,120,90,0.15);
-  --header-bg:linear-gradient(135deg, #0a140c 0%, #0f1c14 50%, #0a140c 100%);
-  --win:#22c55e;
-  --ad-bg:linear-gradient(135deg, #102a18 0%, #0f1c14 100%);
-  --ad-border:#22c55e;
-}
-body.light {
-  --bg:#f0f5f1; --bg2:#ffffff; --bg3:#e6ede8; --bg4:#d8e3db;
-  --accent:#16a34a; --accent2:#22c55e; --accent3:#15803d;
-  --text:#0f1c14; --text2:#4a5a4e; --text3:#7a8a7e;
-  --border:#c8d5cc; --border2:#b0c0b4;
-  --green:#16a34a; --red:#dc2626; --gold:#b45309; --purple:#7c3aed;
-  --gridline:rgba(0,0,0,0.08);
-  --header-bg:linear-gradient(135deg, #ffffff 0%, #eef6f0 100%);
-  --win:#16a34a;
-  --ad-bg:linear-gradient(135deg, #e8f5ec 0%, #d8ecde 100%);
-  --ad-border:#16a34a;
+  --bg:#080c12; --bg2:#0f141d; --bg3:#171e2a; --bg4:#1f2838;
+  --accent:#3b82f6; --accent2:#60a5fa; --accent3:#2563eb;
+  --accent-glow:rgba(59,130,246,0.25);
+  --text:#e6edf5; --text2:#8f9bb0; --text3:#566073;
+  --border:#1e2836; --border2:#2e3d52;
+  --green:#3b82f6; --red:#ef4444; --gold:#fbbf24; --purple:#a78bfa;
+  --gridline:rgba(80,120,180,0.15);
+  --header-bg:linear-gradient(135deg, #0a1018 0%, #0f1a28 50%, #0a1018 100%);
+  --win:#3b82f6;
+  --ad-bg:linear-gradient(135deg, #102033 0%, #0f141d 100%);
+  --ad-border:#3b82f6;
 }
 * { box-sizing:border-box; margin:0; padding:0; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
   background: var(--bg); color: var(--text); min-height:100vh; line-height:1.5;
   background-image:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(34,197,94,0.08), transparent 70%),
-    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(34,197,94,0.05), transparent 70%);
+    radial-gradient(ellipse 80% 60% at 50% 0%, var(--accent-glow), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, var(--accent-glow), transparent 70%);
   background-attachment: fixed;
   transition: background .3s, color .3s;
-}
-body.light {
-  background-image:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(22,163,74,0.10), transparent 70%),
-    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(22,163,74,0.06), transparent 70%);
 }
 
 #visits-counter {
@@ -66,14 +49,14 @@ body.light {
   font-size: 15px; cursor: pointer; font-family: inherit;
   font-weight: 800; letter-spacing: .5px;
   transition: all .2s;
-  box-shadow: 0 4px 20px var(--accent-glow), 0 0 0 1px rgba(74,222,128,0.3);
+  box-shadow: 0 4px 20px var(--accent-glow), 0 0 0 1px var(--accent-glow);
   display: flex; align-items: center; gap: 8px;
   min-width: 140px; justify-content: center;
 }
 #auth-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); filter: brightness(1.1); }
 #auth-btn.logged { background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%); box-shadow: 0 4px 20px rgba(6,182,212,.3); }
 
-#theme-toggle {
+#settings-btn {
   width: 44px; height: 44px; border-radius: 50%;
   background: var(--bg2); border: 1px solid var(--border2);
   color: var(--text); font-size: 18px; cursor: pointer;
@@ -81,7 +64,7 @@ body.light {
   transition: all .2s; font-family: inherit;
   box-shadow: 0 2px 10px rgba(0,0,0,.2);
 }
-#theme-toggle:hover { transform: scale(1.08); border-color: var(--accent); color: var(--accent); }
+#settings-btn:hover { transform: scale(1.08); border-color: var(--accent); color: var(--accent); }
 
 .music-row {
   background: var(--bg2); border: 1px solid var(--border);
@@ -102,22 +85,67 @@ body.light {
   width: 10px; height: 10px; border-radius: 50%;
   background: #666; transition: background .3s;
 }
-#db-status.online { background: var(--green); box-shadow: 0 0 10px var(--green); }
+#db-status.online { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
 #db-status.offline { background: var(--red); }
 #db-status.loading { background: var(--gold); animation: pulse 1s infinite; }
 @keyframes pulse { 0%,100% { opacity:1 } 50% { opacity:0.4 } }
 
-.auth-modal {
+/* Модалка настроек */
+#settings-modal, .auth-modal, .ad-modal {
   position: fixed; inset: 0; z-index: 1100;
   background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
   display: none; align-items: center; justify-content: center; padding: 20px;
 }
-.auth-modal.open { display: flex; animation: fadeIn .25s; }
+#settings-modal.open, .auth-modal.open, .ad-modal.open { display: flex; animation: fadeIn .25s; }
+@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+
+.panel-box {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 14px; padding: 28px 32px; max-width: 460px; width: 100%;
+  position: relative; animation: slideUp .3s;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px var(--accent-glow);
+  max-height: 90vh; overflow-y: auto;
+}
+.panel-box h2 {
+  font-size: 20px; margin-bottom: 6px;
+  background: linear-gradient(135deg, var(--accent2), var(--accent3));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.panel-box .sub { color: var(--text3); font-size: 12px; margin-bottom: 20px; line-height: 1.6; }
+.panel-close {
+  position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%;
+  background: var(--bg3); border: 1px solid var(--border2); color: var(--text); font-size: 14px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: all .15s;
+  font-family: inherit;
+}
+.panel-close:hover { background: var(--red); color: #fff; border-color: var(--red); }
+
+.setting-group { margin-bottom: 22px; }
+.setting-label {
+  font-size: 11px; color: var(--text3); letter-spacing: 1.5px; text-transform: uppercase;
+  font-weight: 700; margin-bottom: 10px; display: block;
+}
+.color-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.color-opt {
+  padding: 12px; border-radius: 8px; cursor: pointer;
+  border: 2px solid transparent; background: var(--bg3);
+  display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600;
+  transition: all .15s; font-family: inherit; color: var(--text);
+}
+.color-opt:hover { transform: translateY(-1px); border-color: var(--border2); }
+.color-opt.active { border-color: var(--accent); background: var(--bg4); }
+.color-dot { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 8px currentColor; }
+
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+
+/* auth */
 .auth-box {
   background: var(--bg2); border: 1px solid var(--border2);
-  border-radius: 14px; padding: 32px 36px; max-width: 440px; width: 100%;
+  border-radius: 14px; padding: 32px 36px; max-width: 460px; width: 100%;
   position: relative; animation: slideUp .3s;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(34,197,94,0.1);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px var(--accent-glow);
+  max-height: 90vh; overflow-y: auto;
 }
 .auth-box h2 {
   font-size: 22px; margin-bottom: 6px;
@@ -154,7 +182,7 @@ body.light {
 .auth-submit:disabled { opacity: .5; cursor: wait; }
 .auth-msg { font-size: 12px; margin-top: 16px; text-align: center; min-height: 18px; line-height: 1.5; }
 .auth-msg.err { color: var(--red); }
-.auth-msg.ok { color: var(--green); }
+.auth-msg.ok { color: var(--accent); }
 .auth-logout {
   width: 100%; padding: 11px; margin-top: 20px;
   background: transparent; border: 1px solid var(--red); color: var(--red);
@@ -162,6 +190,15 @@ body.light {
   cursor: pointer; font-family: inherit;
 }
 .auth-logout:hover { background: var(--red); color: #fff; }
+
+.profile-stats { display: grid; gap: 10px; margin-top: 16px; }
+.profile-stat {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 16px; background: var(--bg3); border-radius: 8px;
+  border-left: 3px solid var(--accent);
+}
+.profile-stat .lbl { font-size: 12px; color: var(--text2); }
+.profile-stat .val { font-size: 15px; font-weight: 800; color: var(--accent2); font-variant-numeric: tabular-nums; }
 
 header {
   padding:44px 24px 26px; border-bottom:1px solid var(--border);
@@ -178,14 +215,13 @@ h1 {
   background: linear-gradient(135deg, var(--accent2) 0%, var(--accent) 50%, var(--accent3) 100%);
   -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
   display:inline-flex; align-items:baseline; gap:12px; flex-wrap:wrap;
-  filter: drop-shadow(0 0 20px rgba(34,197,94,.3));
+  filter: drop-shadow(0 0 20px var(--accent-glow));
 }
 .version-badge {
   display:inline-block; font-size:12px; font-weight:800;
   background: linear-gradient(135deg, var(--accent3), var(--accent));
-  color: #000; padding:4px 12px; border-radius:12px;
-  letter-spacing:.5px; -webkit-text-fill-color:#000;
-  box-shadow: 0 0 15px var(--accent-glow);
+  color: #fff; padding:4px 12px; border-radius:12px;
+  letter-spacing:.5px; box-shadow: 0 0 15px var(--accent-glow);
 }
 .subtitle { color:var(--text2); font-size:13px; margin-bottom:10px; line-height:1.6; max-width: 780px; }
 .telegram-line { color: var(--accent2); font-size: 13px; margin-bottom: 10px; font-weight: 600; letter-spacing: .3px; }
@@ -205,10 +241,10 @@ h1 {
   transition:all .15s; font-family:inherit; white-space:nowrap;
   border-radius: 6px 6px 0 0;
 }
-.tabs button:hover { color:var(--text); background: rgba(34,197,94,0.05); }
+.tabs button:hover { color:var(--text); background: var(--accent-glow); }
 .tabs button.active {
   color:var(--accent2); border-bottom-color:var(--accent);
-  background: linear-gradient(180deg, transparent 0%, rgba(34,197,94,0.08) 100%);
+  background: linear-gradient(180deg, transparent 0%, var(--accent-glow) 100%);
   text-shadow: 0 0 20px var(--accent-glow);
 }
 
@@ -234,49 +270,35 @@ main { max-width:1100px; margin:0 auto; padding:24px; }
 .ad-badge {
   position:absolute; top:6px; right:8px; font-size: 9px; font-weight: 800; letter-spacing: 1px;
   background: linear-gradient(135deg, var(--accent3), var(--accent));
-  color: #000; padding: 2px 8px; border-radius: 3px;
+  color: #fff; padding: 2px 8px; border-radius: 3px;
 }
-.ad-body { flex: 1; }
+.ad-body { flex: 1; min-width: 0; }
 .ad-title { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 3px; }
 .ad-desc { font-size: 11px; color: var(--text2); }
 .ad-emoji { font-size: 32px; flex-shrink: 0; }
 
-.ad-modal {
-  position: fixed; inset: 0; z-index: 1000;
-  background: rgba(0,0,0,0.85); backdrop-filter: blur(6px);
-  display: none; align-items: center; justify-content: center; padding: 24px;
-}
-.ad-modal.open { display: flex; animation: fadeIn .25s; }
-@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
-@keyframes slideUp { from { transform: translateY(20px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
-.ad-modal-inner {
+.ad-modal .ad-modal-inner {
   background: var(--bg2); border: 1px solid var(--accent);
   border-radius: 14px; padding: 32px 36px; max-width: 580px; width: 100%;
   position: relative; animation: slideUp .3s;
   box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px var(--accent-glow);
   max-height: 90vh; overflow-y: auto;
 }
-.ad-modal-inner h2 {
+.ad-modal h2 {
   font-size: 22px; font-weight: 800; margin-bottom: 16px;
   background: linear-gradient(135deg, var(--accent2), var(--accent3));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
-.ad-modal-inner p { font-size: 14px; line-height: 1.7; color: var(--text); margin-bottom: 14px; }
-.ad-modal-inner ul { list-style: none; margin: 14px 0; }
-.ad-modal-inner li { font-size: 14px; line-height: 1.9; color: var(--text2); padding-left: 22px; position: relative; }
-.ad-modal-inner li::before { content: '✓'; position: absolute; left: 0; color: var(--accent2); font-weight: 800; }
+.ad-modal p { font-size: 14px; line-height: 1.7; color: var(--text); margin-bottom: 14px; }
+.ad-modal ul { list-style: none; margin: 14px 0; }
+.ad-modal li { font-size: 14px; line-height: 1.9; color: var(--text2); padding-left: 22px; position: relative; }
+.ad-modal li::before { content: '✓'; position: absolute; left: 0; color: var(--accent2); font-weight: 800; }
 .ad-highlight {
-  background: linear-gradient(135deg, rgba(34,197,94,.18), rgba(34,197,94,.05));
+  background: linear-gradient(135deg, var(--accent-glow), transparent);
   border-left: 3px solid var(--accent);
   padding: 12px 16px; border-radius: 6px;
   font-weight: 700; color: var(--accent2); font-size: 14px; margin-top: 16px;
 }
-.ad-close {
-  position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 50%;
-  background: var(--bg3); border: 1px solid var(--border2); color: var(--text); font-size: 14px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; transition: all .15s;
-}
-.ad-close:hover { background: var(--red); color: #fff; border-color: var(--red); }
 
 .card {
   background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
@@ -320,43 +342,44 @@ main { max-width:1100px; margin:0 auto; padding:24px; }
   display:grid; grid-template-columns:44px 1fr auto auto; gap:12px; align-items:center;
   padding:12px 16px; background:var(--bg3); border-radius:8px;
   transition:all .15s; border-left:3px solid transparent;
+  cursor: pointer;
 }
 .top-item:hover { transform:translateX(3px); border-color: var(--accent); }
-.top-item.clickable { cursor: pointer; }
-.top-item.clickable:hover { background: var(--bg4); box-shadow: 0 0 20px rgba(34,197,94,0.15); }
+.top-item:hover { background: var(--bg4); box-shadow: 0 0 20px var(--accent-glow); }
 .top-item.r1 {
-  border-left-color: #22c55e;
-  background: linear-gradient(90deg, rgba(34,197,94,.14), transparent 55%);
-  box-shadow: inset 0 0 20px rgba(34,197,94,.05);
+  border-left-color: var(--accent);
+  background: linear-gradient(90deg, var(--accent-glow), transparent 55%);
+  box-shadow: inset 0 0 20px var(--accent-glow);
 }
-.top-item.r2 { border-left-color: #86efac; background: linear-gradient(90deg, rgba(134,239,172,.09), transparent 55%); }
-.top-item.r3 { border-left-color: #16a34a; background: linear-gradient(90deg, rgba(22,163,74,.08), transparent 55%); }
-body.light .top-item.r1 { background: linear-gradient(90deg, rgba(34,197,94,.18), transparent 55%); }
-body.light .top-item.r2 { background: linear-gradient(90deg, rgba(134,239,172,.22), transparent 55%); }
-body.light .top-item.r3 { background: linear-gradient(90deg, rgba(22,163,74,.14), transparent 55%); }
+.top-item.r2 { border-left-color: var(--accent2); background: linear-gradient(90deg, var(--accent-glow), transparent 55%); }
+.top-item.r3 { border-left-color: var(--accent3); background: linear-gradient(90deg, var(--accent-glow), transparent 55%); }
+.top-item.edited {
+  background: linear-gradient(90deg, rgba(255,255,255,0.08), transparent 60%);
+  border-left-color: #ffffff !important;
+}
 
 .rank { font-size:16px; font-weight:800; color:var(--text2); text-align:center; font-variant-numeric:tabular-nums; }
-.r1 .rank { color:#22c55e; text-shadow: 0 0 12px rgba(34,197,94,.5); }
-.r2 .rank { color:#86efac; }
-.r3 .rank { color:#16a34a; }
-body.light .r1 .rank { color:#15803d; }
+.r1 .rank { color:var(--accent); text-shadow: 0 0 12px var(--accent-glow); }
+.r2 .rank { color:var(--accent2); }
+.r3 .rank { color:var(--accent3); }
 
 .name-wrap { display:flex; flex-direction:column; gap:1px; min-width: 0; }
 .name { font-size:14px; font-weight:600; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .name .sub-note { color:var(--text3); font-size:10px; font-weight:400; margin-left:4px; font-style:italic; }
 .mayor-line { font-size:10px; color:var(--text3); font-weight: 500; letter-spacing: 0.2px; }
 .mayor-line b { color: var(--accent2); font-weight: 600; }
+.edited-badge { font-size: 9px; color: #ffffff; font-weight: 800; letter-spacing: 1px; opacity: 0.85; }
 .value { font-size:14px; font-weight:800; color:var(--accent2); font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap; }
 .value .unit { color:var(--text3); font-weight:400; font-size:11px; margin-left:3px; }
 .arrow { font-size:12px; font-weight:700; padding:2px 8px; border-radius:5px; min-width:46px; text-align:center; font-variant-numeric:tabular-nums; }
-.arrow.up { color:var(--green); background:rgba(34,197,94,.15); }
+.arrow.up { color:var(--accent); background:var(--accent-glow); }
 .arrow.down { color:var(--red); background:rgba(239,68,68,.15); }
 .arrow.same { color:var(--text3); background:rgba(92,92,106,.15); }
 .arrow.new { color:var(--purple); background:rgba(167,139,250,.18); font-size:10px; }
 .arrow.dash { color:var(--text3); background:transparent; }
 
 .chart-wrap { background:var(--bg3); border-radius:8px; padding:16px; margin-top:8px; border: 1px solid var(--border); }
-.chart-wrap svg { width:100%; height:180px; display:block; overflow:visible; }
+.chart-wrap svg { width:100%; height:220px; display:block; overflow:visible; }
 .chart-labels { display:flex; justify-content:space-between; margin-top:10px; font-size:10px; color:var(--text3); font-variant-numeric:tabular-nums; }
 .chart-single { background:var(--bg3); border-radius:8px; padding:28px 16px; text-align:center; border:1px dashed var(--border2); }
 .chart-single .val { font-size:32px; font-weight:900; color:var(--accent2); margin-bottom:4px; }
@@ -380,7 +403,7 @@ body.light .r1 .rank { color:#15803d; }
 .war-item.cancelled .war-date::before { background: var(--text3); box-shadow: none; }
 .war-teams { display:flex; align-items:center; gap:14px; flex-wrap:wrap; font-size:15px; font-weight:700; margin-bottom:8px; }
 .war-team { color:var(--text); }
-.war-team.winner { color:var(--win); text-shadow:0 0 14px rgba(34,197,94,.4); }
+.war-team.winner { color:var(--win); text-shadow:0 0 14px var(--accent-glow); }
 .war-team.loser { color:var(--text2); opacity:0.7; }
 .war-vs { color:var(--text3); font-size:12px; font-weight:700; letter-spacing:2px; opacity:0.7; }
 .war-result { font-size:12px; color:var(--text3); display:flex; align-items:center; gap:8px; flex-wrap: wrap; }
@@ -391,7 +414,7 @@ body.light .r1 .rank { color:#15803d; }
 .war-result .status.cancelled { background: rgba(92,92,106,.2); color: var(--text3); border: 1px solid var(--border2); }
 
 #mg-wrap { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--border2); margin-bottom: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
-#mg-canvas { display: block; width: 100%; height: auto; max-height: 60vh; background: #080c09; touch-action: none; }
+#mg-canvas { display: block; width: 100%; height: auto; max-height: 60vh; background: #080c12; touch-action: none; }
 #mg-overlay {
   position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
   background: rgba(0,0,0,0.85); backdrop-filter: blur(6px); padding: 20px;
@@ -424,7 +447,7 @@ body.light .r1 .rank { color:#15803d; }
 
 .mg-login-hint {
   text-align: center; padding: 14px 20px; margin-bottom: 16px;
-  background: linear-gradient(135deg, rgba(34,197,94,.12), rgba(34,197,94,.04));
+  background: linear-gradient(135deg, var(--accent-glow), transparent);
   border: 1px solid var(--accent); border-radius: 10px;
   color: var(--accent2); font-size: 13px; font-weight: 600;
 }
@@ -442,7 +465,7 @@ body.light .r1 .rank { color:#15803d; }
   .tabs { overflow-x:auto; flex-wrap:nowrap; padding-bottom:0; }
   .tabs::-webkit-scrollbar { height:0; }
   .top-controls { top:12px; right:12px; gap: 6px; }
-  #theme-toggle { width:38px; height:38px; font-size:16px; }
+  #settings-btn { width:38px; height:38px; font-size:16px; }
   #vol-slider { width: 60px; }
   #auth-btn { font-size: 12px; padding: 10px 18px; min-width: 100px; }
   .header-inner { padding: 0 100px 0 90px; }
@@ -452,6 +475,7 @@ body.light .r1 .rank { color:#15803d; }
   .sec-date { min-width: 110px; font-size: 11px; }
   #visits-counter { top: 12px; left: 12px; font-size: 10px; padding: 5px 10px; }
   .mg-touch { display: flex; }
+  .color-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 footer {
@@ -462,13 +486,20 @@ footer {
 footer a { color:var(--accent2); text-decoration:none; font-weight:600; }
 footer a:hover { text-decoration:underline; }
 footer .sep { margin:10px 0; color:var(--border); }
+footer .tg-note {
+  color: var(--accent2); font-size: 13px; line-height: 1.7;
+  max-width: 780px; margin: 14px auto 0;
+  padding: 14px 20px; background: linear-gradient(135deg, var(--accent-glow), transparent);
+  border-left: 3px solid var(--accent); border-radius: 6px; text-align: left;
+}
 .empty { text-align:center; padding:50px 20px; color:var(--text3); font-size:13px; font-style:italic; }
 .badge-alltime {
   display:inline-block; font-size:9px;
   background:linear-gradient(135deg, var(--accent3), var(--accent2));
-  color:#000; padding:2px 8px; border-radius:3px; font-weight:800;
+  color:#fff; padding:2px 8px; border-radius:3px; font-weight:800;
   letter-spacing:.3px; margin-left:8px; vertical-align:middle;
 }
+.hint-click { color: var(--accent2); font-size: 10px; }
 </style>
 </head>
 <body>
@@ -477,7 +508,7 @@ footer .sep { margin:10px 0; color:var(--border); }
 
 <div class="top-controls">
   <button id="auth-btn" title="Войти или зарегистрироваться">🔐 Войти</button>
-  <button id="theme-toggle" title="Переключить тему">☀️</button>
+  <button id="settings-btn" title="Настройки">⚙</button>
   <div class="music-row">
     <div id="db-status" class="loading" title="Статус базы данных"></div>
     <button id="music-btn" title="Вкл/выкл музыку">🔊</button>
@@ -491,10 +522,10 @@ footer .sep { margin:10px 0; color:var(--border); }
 
 <header>
   <div class="header-inner">
-    <h1>timetoplay stats <span class="version-badge">v1.0.3</span></h1>
+    <h1>timetoplay stats <span class="version-badge">v1.1.0</span></h1>
     <div class="subtitle">статистика timetoplay с помощью просмотра прошлого с помощью разных дат и других разных интересных функций — ttpstats</div>
     <div class="telegram-line">📢 телеграм канал — <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></div>
-    <div class="creator">создатель xxspk · made in arbuzovsk <span class="hint-tip">💡 кликни на любой город — увидишь его график</span></div>
+    <div class="creator">создатель xxspk · made in arbuzovsk <span class="hint-tip">💡 кликни на что угодно — увидишь график · правый клик — редактировать (только для тебя)</span></div>
   </div>
 </header>
 
@@ -510,7 +541,14 @@ footer .sep { margin:10px 0; color:var(--border); }
         <div class="ad-desc">нажми чтобы узнать больше</div>
       </div>
     </div>
-    <div class="ad-slot empty"></div>
+    <div class="ad-slot filled" onclick="openAd('nato')">
+      <span class="ad-badge">РЕКЛАМА</span>
+      <div class="ad-emoji">🛡️</div>
+      <div class="ad-body">
+        <div class="ad-title">Нация НАТО</div>
+        <div class="ad-desc">лучшая нация по прокачке</div>
+      </div>
+    </div>
     <div class="ad-slot empty"></div>
   </div>
 
@@ -521,11 +559,15 @@ footer .sep { margin:10px 0; color:var(--border); }
   <div>если хотите добавить свой город сюда пишите <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></div>
   <div class="sep">·</div>
   <div>возможно тут появится больше параметров помимо экономики и больше функций</div>
+  <div class="tg-note">
+    📢 <b>telegram <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></b> — подпишитесь, тут новости, разное, можно предложить че либо или пообщаться, скоро будут делаться новые ии-сайты про ттп или че то интересное
+  </div>
 </footer>
 
-<div id="ad-modal" class="ad-modal">
+<!-- Модалка Арбузовск -->
+<div id="ad-modal-arena" class="ad-modal">
   <div class="ad-modal-inner">
-    <button class="ad-close" onclick="closeAd()">✕</button>
+    <button class="panel-close" onclick="closeAd('arena')">✕</button>
     <h2>⚔️ ПВП Арена Арбузовска</h2>
     <p>На <b>/t spawn арбузовск</b> есть прикольная пвп арена на <b>4 чанка</b> — она не плоская, интересная, прикольная. Здесь можно сражаться со всеми кем хочешь.</p>
     <ul>
@@ -534,21 +576,61 @@ footer .sep { margin:10px 0; color:var(--border); }
       <li>Приходи и сражайся!</li>
     </ul>
     <div class="ad-highlight">🛒 Скоро тут же откроется магазин</div>
-    <div class="ad-highlight" style="margin-top:10px">⬇️ А также скоро откроется <b>ПВП подвал под ареной</b> — там будет сложно отлиться, и не будет никаких препятствий. Чистая арена для настоящих дуэлей!</div>
+    <div class="ad-highlight" style="margin-top:10px">⬇️ А также скоро откроется <b>ПВП подвал под ареной</b> — там будет сложно отлиться, и не будет никаких препятствий.</div>
   </div>
 </div>
 
+<!-- Модалка НАТО -->
+<div id="ad-modal-nato" class="ad-modal">
+  <div class="ad-modal-inner">
+    <button class="panel-close" onclick="closeAd('nato')">✕</button>
+    <h2>🛡️ Вступайте в нацию НАТО</h2>
+    <p>Хочешь вступить в лучшую нацию на сервере? НАТО ждёт именно тебя.</p>
+    <ul>
+      <li>У нас много фармилок</li>
+      <li>Красивый <b>/n spawn</b></li>
+      <li>Куча разных приколюшек</li>
+      <li>Лучшая нация в целом по прокачке</li>
+    </ul>
+    <div class="ad-highlight">🎯 Присоединяйся к НАТО — прокачивайся быстрее всех!</div>
+  </div>
+</div>
+
+<!-- Модалка графика -->
 <div id="chart-modal" class="ad-modal">
   <div class="ad-modal-inner" style="max-width: 900px">
-    <button class="ad-close" onclick="closeChart()">✕</button>
+    <button class="panel-close" onclick="closeChart()">✕</button>
     <h2 id="chart-title">📈 График</h2>
     <div id="chart-content"></div>
   </div>
 </div>
 
+<!-- Модалка настроек -->
+<div id="settings-modal">
+  <div class="panel-box">
+    <button class="panel-close" onclick="closeSettings()">✕</button>
+    <h2>⚙️ Настройки</h2>
+    <div class="sub">настройки сохраняются в этом браузере</div>
+
+    <div class="setting-group">
+      <span class="setting-label">🔊 Громкость музыки</span>
+      <input type="range" id="settings-vol" min="0" max="1" step="0.05" value="0.35">
+      <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; color: var(--text3);">
+        <span>0%</span><span id="settings-vol-val">35%</span><span>100%</span>
+      </div>
+    </div>
+
+    <div class="setting-group">
+      <span class="setting-label">🎨 Цвет меню</span>
+      <div class="color-grid" id="color-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Модалка авторизации / профиля -->
 <div id="auth-modal" class="auth-modal">
   <div class="auth-box">
-    <button class="ad-close" onclick="closeAuth()">✕</button>
+    <button class="panel-close" onclick="closeAuth()">✕</button>
     <h2 id="auth-title">Вход / Регистрация</h2>
     <div class="sub" id="auth-sub">если аккаунта с таким ником нет — он создастся автоматически</div>
     <div class="auth-tabs">
@@ -565,6 +647,7 @@ footer .sep { margin:10px 0; color:var(--border); }
     </div>
     <button class="auth-submit" id="auth-submit" onclick="authSubmit()">СОЗДАТЬ АККАУНТ</button>
     <div class="auth-msg" id="auth-msg"></div>
+    <div id="profile-extra" style="display:none"></div>
     <button class="auth-logout" id="auth-logout-btn" onclick="authLogout()" style="display:none">ВЫЙТИ ИЗ АККАУНТА</button>
   </div>
 </div>
@@ -695,56 +778,6 @@ const DATA = {
         ],
       },
       note: 'за всё время был восторг с ~100000, но дата отсчёта — сегодня, так что не считается',
-    },
-    histories: {
-      'seapure': [
-        { date:'2026-09-23 05:20', value:3917.00 },
-        { date:'2026-09-24 00:09', value:3591.69 },
-        { date:'2026-09-24 00:14', value:3591.69 },
-        { date:'2026-09-24 00:15', value:3591.69 },
-        { date:'2026-09-24 00:17', value:3591.69 },
-        { date:'2026-09-24 00:20', value:3591.69 },
-        { date:'2026-09-24 00:23', value:3598.79 },
-        { date:'2026-09-24 21:00', value:3527.41 },
-        { date:'2026-09-25 00:30', value:7334.76 },
-        { date:'2026-09-25 18:30', value:4149.08 },
-      ],
-      'рига': [
-        { date:'2026-09-24 00:15', value:22196.82 }, { date:'2026-09-24 00:23', value:22204.90 },
-        { date:'2026-09-24 21:00', value:22982.35 }, { date:'2026-09-25 18:30', value:23842.05 },
-      ],
-      'рим': [
-        { date:'2026-09-24 00:14', value:13374.32 }, { date:'2026-09-24 00:23', value:13380.03 },
-        { date:'2026-09-24 21:00', value:13199.25 }, { date:'2026-09-25 18:30', value:14037.75 },
-      ],
-      'иокогама': [
-        { date:'2026-09-24 00:17', value:6034.34 }, { date:'2026-09-24 00:23', value:6034.34 },
-        { date:'2026-09-24 21:00', value:5971.66 }, { date:'2026-09-25 18:30', value:5790.62 },
-      ],
-      'лазурный_стокгольм': [
-        { date:'2026-09-24 00:19', value:5409.59 }, { date:'2026-09-24 00:23', value:5411.42 },
-        { date:'2026-09-24 21:00', value:5784.96 }, { date:'2026-09-25 18:30', value:6123.89 },
-      ],
-      'макондо': [
-        { date:'2026-09-24 00:17', value:5143.74 }, { date:'2026-09-24 00:23', value:5143.74 },
-        { date:'2026-09-24 21:00', value:5137.23 }, { date:'2026-09-25 18:30', value:5198.85 },
-      ],
-      'французская_империя': [
-        { date:'2026-09-24 00:18', value:4107.64 }, { date:'2026-09-24 00:23', value:4111.85 },
-        { date:'2026-09-24 21:00', value:3773.65 }, { date:'2026-09-25 18:30', value:3958.03 },
-      ],
-      'mimika': [
-        { date:'2026-09-24 00:23', value:3670.64 }, { date:'2026-09-24 21:00', value:3661.88 },
-        { date:'2026-09-25 18:30', value:3664.22 },
-      ],
-      'florida': [
-        { date:'2026-09-24 00:23', value:3588.61 }, { date:'2026-09-24 21:00', value:3603.27 },
-        { date:'2026-09-25 18:30', value:3623.21 },
-      ],
-      'hamburg': [
-        { date:'2026-09-24 00:23', value:2734.43 }, { date:'2026-09-24 21:00', value:2731.49 },
-        { date:'2026-09-25 18:30', value:2720.81 },
-      ],
     },
     population: {
       '2026-09-24 00:30': [
@@ -944,7 +977,7 @@ const DATA = {
   },
   wars: {
     list: [
-      { date:'21:00 25.09.2026', team1:'военная_спецоперация', team2:'лагалище', winner:1, status:null },
+      { date:'21:00 25.09.2026', team1:'военная_спецоперация', team2:'лагалище', winner:1, faction:null },
       { date:'25 августа', team1:'tunibia', team2:'минск-мир', winner:0, status:'cancelled' },
       { date:'12–13 сентября', team1:'Латексные_мальчики', team2:'королевство_брдыщей', winner:2, faction:'kvkz' },
       { date:'6–7 сентября',   team1:'australia',          team2:'dtkl',               winner:1, faction:null },
@@ -959,14 +992,13 @@ const DATA = {
   other: {}
 };
 
-/* Мэры городов */
 const MAYORS = {
   'рига': 'Frasie',
   'рим': 'MrRatix',
   'лазурный_стокгольм': 'lepepesha228',
   'иокогама': 'Dotamamamuiui',
   'макондо': 'El_diablo',
-  'seapure': 'N1zzyx',
+  'seapure': 'n1zzyx',
   'французкая_империя': 'Nikita2010',
   'французская_империя': 'Nikita2010',
   'mimika': 'shanci',
@@ -983,9 +1015,87 @@ const MAYORS = {
   'клан_китайцев': 'kaba_day',
   'великие_нидерланды': 'bechenok',
 };
-function getMayor(name) {
-  return MAYORS[name.toLowerCase().trim()] || null;
+function getMayor(name) { return MAYORS[name.toLowerCase().trim()] || null; }
+
+/* ============ ЦВЕТОВЫЕ ПАЛИТРЫ ============ */
+const PALETTES = {
+  blue:    { name:'Синий',     dot:'#3b82f6', accent:'#3b82f6', accent2:'#60a5fa', accent3:'#2563eb', glow:'rgba(59,130,246,0.25)' },
+  red:     { name:'Красный',   dot:'#ef4444', accent:'#ef4444', accent2:'#f87171', accent3:'#dc2626', glow:'rgba(239,68,68,0.25)' },
+  white:   { name:'Белый',     dot:'#e5e7eb', accent:'#e5e7eb', accent2:'#f9fafb', accent3:'#9ca3af', glow:'rgba(229,231,235,0.2)' },
+  black:   { name:'Чёрный',    dot:'#374151', accent:'#6b7280', accent2:'#9ca3af', accent3:'#374151', glow:'rgba(107,114,128,0.25)' },
+  green:   { name:'Зелёный',   dot:'#22c55e', accent:'#22c55e', accent2:'#4ade80', accent3:'#16a34a', glow:'rgba(34,197,94,0.25)' },
+  yellow:  { name:'Жёлтый',    dot:'#eab308', accent:'#eab308', accent2:'#facc15', accent3:'#ca8a04', glow:'rgba(234,179,8,0.25)' },
+  orange:  { name:'Оранжевый', dot:'#f97316', accent:'#f97316', accent2:'#fb923c', accent3:'#ea580c', glow:'rgba(249,115,22,0.25)' },
+  pink:    { name:'Розовый',   dot:'#ec4899', accent:'#ec4899', accent2:'#f472b6', accent3:'#db2777', glow:'rgba(236,72,153,0.25)' },
+  cyan:    { name:'Голубой',   dot:'#06b6d4', accent:'#06b6d4', accent2:'#22d3ee', accent3:'#0891b2', glow:'rgba(6,182,212,0.25)' },
+};
+
+function applyPalette(name) {
+  const p = PALETTES[name] || PALETTES.blue;
+  const root = document.documentElement;
+  root.style.setProperty('--accent', p.accent);
+  root.style.setProperty('--accent2', p.accent2);
+  root.style.setProperty('--accent3', p.accent3);
+  root.style.setProperty('--accent-glow', p.glow);
+  root.style.setProperty('--green', p.accent);
+  root.style.setProperty('--win', p.accent);
+  root.style.setProperty('--ad-border', p.accent);
+  localStorage.setItem('ttp_palette', name);
+  document.querySelectorAll('.color-opt').forEach(el => {
+    el.classList.toggle('active', el.dataset.color === name);
+  });
 }
+
+/* ============ OVERLAY КАСТОМИЗАЦИИ ============ */
+const OVERLAY = { edits: {} };
+
+function getEditedKey(section, sub, name) { return `${section}.${sub}.${name}`; }
+
+function applyEdits(section, sub, item) {
+  const key = getEditedKey(section, sub, item.name);
+  const e = OVERLAY.edits[key];
+  if (!e) return { ...item, _edited: false };
+  return {
+    ...item,
+    name: e.name || item.name,
+    value: e.value !== undefined ? e.value : item.value,
+    _edited: true,
+    _originalName: item.name,
+    _mayorOverride: e.mayor,
+  };
+}
+
+window.editEntity = function(section, sub, name) {
+  const key = getEditedKey(section, sub, name);
+  const existing = OVERLAY.edits[key] || {};
+  const newName = prompt('Новое название (Enter = оставить):', existing.name || name);
+  if (newName === null) return;
+  const newValue = prompt('Новое значение (Enter = оставить):', existing.value !== undefined ? existing.value : '');
+  if (newValue === null) return;
+  let newMayor = null;
+  if (section === 'cities') {
+    newMayor = prompt('Новый мэр (Enter = оставить):', existing.mayor || getMayor(name) || '');
+    if (newMayor === null) return;
+  }
+  const edited = {
+    name: newName.trim() && newName.trim() !== name ? newName.trim() : undefined,
+    value: newValue.trim() !== '' ? parseFloat(newValue) : undefined,
+    mayor: newMayor && newMayor.trim() ? newMayor.trim() : undefined,
+  };
+  if (!edited.name && edited.value === undefined && !edited.mayor) {
+    delete OVERLAY.edits[key];
+  } else {
+    OVERLAY.edits[key] = edited;
+  }
+  render();
+};
+
+document.addEventListener('contextmenu', e => {
+  const item = e.target.closest('.top-item');
+  if (!item || !item.dataset.section) return;
+  e.preventDefault();
+  editEntity(item.dataset.section, item.dataset.sub, item.dataset.name);
+});
 
 const TAB_ORDER = [
   { id:'cities',  icon:'🏙️', label:'Города' },
@@ -1078,8 +1188,22 @@ function collectAllTime(snapshots) {
   });
   return Object.values(best).sort((a, b) => b.value - a.value);
 }
-function sortByValue(list) {
-  return [...list].sort((a, b) => b.value - a.value);
+function sortByValue(list) { return [...list].sort((a, b) => b.value - a.value); }
+
+function getEntityHistory(section, sub, entityName) {
+  const sectionData = DATA[section];
+  if (!sectionData) return [];
+  const data = sectionData[sub];
+  if (!data) return [];
+  const nk = normalizeKey(entityName);
+  const points = [];
+  Object.keys(data).sort().forEach(date => {
+    const arr = data[date];
+    if (!Array.isArray(arr)) return;
+    const found = arr.find(it => normalizeKey(it.name) === nk);
+    if (found) points.push({ date, value: found.value });
+  });
+  return points;
 }
 
 function sectionPickerHTML(key) {
@@ -1117,33 +1241,37 @@ function renderTabs() {
     tabsEl.appendChild(btn);
   });
 }
-function makeListItem(rank, item, unit, arrowInfo, isCity) {
+function makeListItem(rank, item, unit, arrowInfo, section, sub) {
   const rClass = rank <= 3 ? ' r' + rank : '';
-  const clickClass = isCity ? ' clickable' : '';
+  const editedClass = item._edited ? ' edited' : '';
   let arrowHTML = arrowInfo
     ? `<span class="arrow ${arrowInfo.type}">${arrowInfo.text}</span>`
     : `<span class="arrow dash"></span>`;
   const subNote = item.sub ? `<span class="sub-note"> ${item.sub}</span>` : '';
-  const mayor = isCity ? getMayor(item.name) : null;
+  const mayor = section === 'cities' ? (item._mayorOverride || getMayor(item._originalName || item.name)) : null;
   const mayorHTML = mayor ? `<div class="mayor-line">👑 мэр: <b>${mayor}</b></div>` : '';
+  const editedHTML = item._edited ? `<div class="edited-badge">✏️ изменено игроком</div>` : '';
   let valueHTML;
   if (typeof item.display === 'string') valueHTML = item.display;
   else valueHTML = fmtNumber(item.value) + `<span class="unit">${unit || ''}</span>`;
-  const onClickAttr = isCity ? ` onclick="openCityChart('${item.name.replace(/'/g, "\\'")}')"` : '';
-  return `<div class="top-item${rClass}${clickClass}"${onClickAttr}>
+  const safeName = (item._originalName || item.name).replace(/'/g, "\\'");
+  return `<div class="top-item${rClass}${editedClass}" data-section="${section || ''}" data-sub="${sub || ''}" data-name="${item._originalName || item.name}" onclick="openEntityChart('${section||''}','${sub||''}','${safeName}','${unit||''}')">
     <span class="rank">#${rank}</span>
     <div class="name-wrap">
       <span class="name">${item.name}${subNote}</span>
       ${mayorHTML}
+      ${editedHTML}
     </div>
     <span class="value">${valueHTML}</span>
     ${arrowHTML}
   </div>`;
 }
-function renderTopList(list, unit, arrowsMap, isCity) {
+function renderTopList(list, unit, arrowsMap, section, sub) {
   if (!list || list.length === 0) return '<div class="empty">Нет данных</div>';
+  const processed = list.map(it => applyEdits(section || '', sub || '', it));
+  const sorted = sortByValue(processed);
   return '<div class="top-list">' +
-    list.map((it, i) => makeListItem(i + 1, it, unit || '', arrowsMap ? arrowsMap[it.name] : null, isCity)).join('') +
+    sorted.map((it, i) => makeListItem(i + 1, it, unit || '', arrowsMap ? arrowsMap[it.name] : null, section, sub)).join('') +
     '</div>';
 }
 function cardHeader(key, title, subText, badgeHTML = '') {
@@ -1155,13 +1283,13 @@ function cardHeader(key, title, subText, badgeHTML = '') {
     ${sectionPickerHTML(key)}
   </div>`;
 }
-function renderLineChart(history) {
+function renderLineChart(history, unit) {
   if (!history || history.length === 0) return '<div class="empty">Нет данных</div>';
   if (history.length === 1) {
     return `<div class="chart-single">
-      <div class="val">${fmtNumber(history[0].value)} ₽</div>
+      <div class="val">${fmtNumber(history[0].value)} ${unit||''}</div>
       <div class="date">${fmtDate(history[0].date)} МСК</div>
-      <div class="wait">⚡ ожидание следующих обновлений</div>
+      <div class="wait">⚡ ожидание следующих обновлений (нужно 2+ точки)</div>
     </div>`;
   }
   const W = 800, H = 220, PAD = 30;
@@ -1192,7 +1320,7 @@ function renderLineChart(history) {
   return `<div class="chart-wrap">
     <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
       ${grid}
-      <path d="${areaD}" fill="rgba(34,197,94,0.12)"/>
+      <path d="${areaD}" fill="var(--accent-glow)"/>
       <path d="${pathD}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>
       ${dots}${labels}${xLabels}
     </svg>
@@ -1204,49 +1332,50 @@ function renderLineChart(history) {
   </div>`;
 }
 
-/* Открыть график города в модалке */
-window.openCityChart = function(cityName) {
-  const key = normalizeKey(cityName);
-  const history = DATA.cities.histories[key];
+window.openEntityChart = function(section, sub, name, unit) {
   const modal = document.getElementById('chart-modal');
   const title = document.getElementById('chart-title');
   const content = document.getElementById('chart-content');
-  title.innerHTML = `📈 ${cityName} — история баланса`;
-  if (!history || history.length === 0) {
-    content.innerHTML = '<div class="empty">Для этого города пока нет графика</div>';
+  const labels = {
+    cities: { balance: 'баланса', population: 'населения', size: 'размера' },
+    players: { balance: 'баланса', active: 'игрового времени', shards: 'осколков', rubies: 'рубинов' },
+    nations: { balance: 'баланса', size: 'размера', citizens: 'граждан' },
+  };
+  const label = (labels[section] && labels[section][sub]) || '';
+  title.innerHTML = `📈 ${name} — история ${label}`;
+  const history = getEntityHistory(section, sub, name);
+  if (history.length === 0) {
+    content.innerHTML = '<div class="empty">Для этого объекта пока нет графика</div>';
   } else {
-    content.innerHTML = renderLineChart(history);
+    content.innerHTML = renderLineChart(history, unit);
   }
   modal.classList.add('open');
 };
-window.closeChart = function() {
-  document.getElementById('chart-modal').classList.remove('open');
-};
+window.closeChart = function() { document.getElementById('chart-modal').classList.remove('open'); };
 document.getElementById('chart-modal').addEventListener('click', e => {
   if (e.target.id === 'chart-modal') window.closeChart();
 });
 
 function renderCities() {
   let html = '';
-  const bal = DATA.cities.balance;
   const balKey = 'cities.balance';
   const balSt = sectionState[balKey];
   const balDates = getSectionDates(balKey);
   let balList, balHeading, balBadge = '', balArrows = null;
   if (balSt.allTime) {
-    balList = collectAllTime(bal.snapshots).slice(0, 10);
+    balList = collectAllTime(DATA.cities.balance.snapshots).slice(0, 10);
     balHeading = 'за всё время наблюдений';
     balBadge = '<span class="badge-alltime">ЗА ВСЁ ВРЕМЯ</span>';
   } else {
-    balList = sortByValue(bal.snapshots[balSt.date] || []).slice(0, 10);
+    balList = sortByValue(DATA.cities.balance.snapshots[balSt.date] || []).slice(0, 10);
     const idx = balDates.indexOf(balSt.date);
-    if (idx > 0) balArrows = computeArrow(balList, sortByValue(bal.snapshots[balDates[idx - 1]] || []));
-    balHeading = fmtDate(balSt.date) + ' МСК · 💡 кликни на город чтобы увидеть график';
+    if (idx > 0) balArrows = computeArrow(balList, sortByValue(DATA.cities.balance.snapshots[balDates[idx - 1]] || []));
+    balHeading = fmtDate(balSt.date) + ' МСК · 💡 кликни на город чтобы увидеть график · правый клик — изменить';
   }
   html += `<div class="card">
     ${cardHeader(balKey, '📊 Топ городов по балансу', balHeading, balBadge)}
-    ${renderTopList(balList, ' ₽', balArrows, true)}
-    ${bal.note ? `<div class="card-note">${bal.note}</div>` : ''}
+    ${renderTopList(balList, ' ₽', balArrows, 'cities', 'balance')}
+    ${DATA.cities.balance.note ? `<div class="card-note">${DATA.cities.balance.note}</div>` : ''}
   </div>`;
 
   const popKey = 'cities.population';
@@ -1258,7 +1387,7 @@ function renderCities() {
   if (popIdx > 0) popArrows = computeArrow(popList, sortByValue(DATA.cities.population[popDates[popIdx - 1]] || []));
   html += `<div class="card">
     ${cardHeader(popKey, '👥 Топ городов по населению', fmtDate(popDate) + ' МСК')}
-    ${renderTopList(popList, ' 👤', popArrows, true)}
+    ${renderTopList(popList, ' 👤', popArrows, 'cities', 'population')}
   </div>`;
 
   const sizeKey = 'cities.size';
@@ -1270,7 +1399,7 @@ function renderCities() {
   if (sizeIdx > 0) sizeArrows = computeArrow(sizeList, sortByValue(DATA.cities.size[sizeDates[sizeIdx - 1]] || []));
   html += `<div class="card">
     ${cardHeader(sizeKey, '📏 Топ городов по размеру', fmtDate(sizeDate) + ' МСК')}
-    ${renderTopList(sizeList, ' ⬛', sizeArrows, true)}
+    ${renderTopList(sizeList, ' ⬛', sizeArrows, 'cities', 'size')}
   </div>`;
   return html;
 }
@@ -1278,7 +1407,6 @@ function renderCities() {
 function renderPlayers() {
   let html = '';
 
-  // 1. Баланс игрока
   const balKey = 'players.balance';
   const balDate = sectionState[balKey].date;
   const balDates = getSectionDates(balKey);
@@ -1288,10 +1416,9 @@ function renderPlayers() {
   if (balIdx > 0) balArrows = computeArrow(balList, sortByValue(DATA.players.balance[balDates[balIdx - 1]] || []));
   html += `<div class="card">
     ${cardHeader(balKey, '💰 Топ по балансу игрока', fmtDate(balDate) + ' МСК')}
-    ${renderTopList(balList, ' ₽', balArrows, false)}
+    ${renderTopList(balList, ' ₽', balArrows, 'players', 'balance')}
   </div>`;
 
-  // 2. Активные
   const activeKey = 'players.active';
   const active = DATA.players.active;
   const activeSt = sectionState[activeKey];
@@ -1316,10 +1443,9 @@ function renderPlayers() {
   }
   html += `<div class="card">
     ${cardHeader(activeKey, '🎮 Топ самых активных игроков', activeHeading, activeBadge)}
-    ${renderTopList(activeList, '', activeArrows, false)}
+    ${renderTopList(activeList, '', activeArrows, 'players', 'active')}
   </div>`;
 
-  // 3. Рубины
   const rubiesKey = 'players.rubies';
   const rubiesDate = sectionState[rubiesKey].date;
   const rubiesDates = getSectionDates(rubiesKey);
@@ -1329,11 +1455,10 @@ function renderPlayers() {
   if (rubiesIdx > 0) rubiesArrows = computeArrow(rubiesList, sortByValue(DATA.players.rubies[rubiesDates[rubiesIdx - 1]] || []));
   html += `<div class="card">
     ${cardHeader(rubiesKey, '💎 Топ по рубинам', fmtDate(rubiesDate) + ' МСК')}
-    ${renderTopList(rubiesList, ' 💎', rubiesArrows, false)}
+    ${renderTopList(rubiesList, ' 💎', rubiesArrows, 'players', 'rubies')}
     ${DATA.players.rubies.note ? `<div class="card-note">${DATA.players.rubies.note}</div>` : ''}
   </div>`;
 
-  // 4. Осколки
   const shardsKey = 'players.shards';
   const shardsDate = sectionState[shardsKey].date;
   const shardsDates = getSectionDates(shardsKey);
@@ -1343,7 +1468,7 @@ function renderPlayers() {
   if (shardsIdx > 0) shardsArrows = computeArrow(shardsList, sortByValue(DATA.players.shards[shardsDates[shardsIdx - 1]] || []));
   html += `<div class="card">
     ${cardHeader(shardsKey, '◆ Топ по осколкам', fmtDate(shardsDate) + ' МСК')}
-    ${renderTopList(shardsList, ' ◆', shardsArrows, false)}
+    ${renderTopList(shardsList, ' ◆', shardsArrows, 'players', 'shards')}
   </div>`;
 
   return html;
@@ -1361,7 +1486,7 @@ function renderNations() {
   if (sizeIdx > 0) sizeArrows = computeArrow(sizeList, sortByValue(DATA.nations.size[sizeDates[sizeIdx - 1]] || []));
   html += `<div class="card">
     ${cardHeader(sizeKey, '📏 Топ наций по размеру', fmtDate(sizeDate) + ' МСК')}
-    ${renderTopList(sizeList, ' ⬛', sizeArrows, false)}
+    ${renderTopList(sizeList, ' ⬛', sizeArrows, 'nations', 'size')}
   </div>`;
 
   const balKey = 'nations.balance';
@@ -1373,7 +1498,7 @@ function renderNations() {
   if (balIdx > 0) balArrows = computeArrow(balList, sortByValue(DATA.nations.balance[balDates[balIdx - 1]] || []));
   html += `<div class="card">
     ${cardHeader(balKey, '💰 Топ наций по балансу', fmtDate(balDate) + ' МСК')}
-    ${renderTopList(balList, ' ₽', balArrows, false)}
+    ${renderTopList(balList, ' ₽', balArrows, 'nations', 'balance')}
   </div>`;
 
   const citKey = 'nations.citizens';
@@ -1385,7 +1510,7 @@ function renderNations() {
   if (citIdx > 0) citArrows = computeArrow(citList, sortByValue(DATA.nations.citizens[citDates[citIdx - 1]] || []));
   html += `<div class="card">
     ${cardHeader(citKey, '👥 Топ наций по гражданам', fmtDate(citDate) + ' МСК')}
-    ${renderTopList(citList, ' 👤', citArrows, false)}
+    ${renderTopList(citList, ' 👤', citArrows, 'nations', 'citizens')}
   </div>`;
   return html;
 }
@@ -1450,7 +1575,7 @@ function renderMinigame() {
       </div>
       <div class="mg-stats">
         <div>⏱ Время: <b id="mg-time">0.0</b>с</div>
-        <div>💎 Сапфиры: <b id="mg-sapphires">0</b></div>
+        <div>💎 Сапфиры (за игру): <b id="mg-sapphires">0</b></div>
         <div>⚡ Скорость: <b id="mg-speed">1.0</b>×</div>
       </div>
       <div class="mg-touch">
@@ -1473,7 +1598,7 @@ function renderMinigame() {
         <div class="card-head">
           <div class="card-head-text">
             <h2>⏱ Топ по времени</h2>
-            <div class="card-sub">кто дольше всех продержался</div>
+            <div class="card-sub">кто дольше всех продержался в одном забеге</div>
           </div>
         </div>
         <div id="mg-lb-time" class="top-list"><div class="empty">Загрузка…</div></div>
@@ -1501,6 +1626,45 @@ function render() {
 }
 window.__rerender = render;
 
+/* ============ НАСТРОЙКИ ============ */
+function renderColorGrid() {
+  const grid = document.getElementById('color-grid');
+  if (!grid) return;
+  const current = localStorage.getItem('ttp_palette') || 'blue';
+  grid.innerHTML = '';
+  Object.entries(PALETTES).forEach(([key, p]) => {
+    const btn = document.createElement('button');
+    btn.className = 'color-opt' + (key === current ? ' active' : '');
+    btn.dataset.color = key;
+    btn.innerHTML = `<span class="color-dot" style="background:${p.dot}; color:${p.dot}"></span>${p.name}`;
+    btn.onclick = () => applyPalette(key);
+    grid.appendChild(btn);
+  });
+}
+
+window.openSettings = function() {
+  document.getElementById('settings-modal').classList.add('open');
+  renderColorGrid();
+  const vol = parseFloat(localStorage.getItem('ttp_vol') || '0.35');
+  document.getElementById('settings-vol').value = vol;
+  document.getElementById('settings-vol-val').textContent = Math.round(vol*100) + '%';
+};
+window.closeSettings = function() {
+  document.getElementById('settings-modal').classList.remove('open');
+};
+document.getElementById('settings-modal').addEventListener('click', e => {
+  if (e.target.id === 'settings-modal') window.closeSettings();
+});
+document.getElementById('settings-btn').onclick = window.openSettings;
+
+document.getElementById('settings-vol').oninput = (e) => {
+  const v = parseFloat(e.target.value);
+  document.getElementById('settings-vol-val').textContent = Math.round(v*100) + '%';
+  music.volume = v;
+  volSlider.value = v;
+  localStorage.setItem('ttp_vol', v);
+};
+
 /* ============ АВТОРИЗАЦИЯ ============ */
 let authMode = 'reg';
 
@@ -1510,12 +1674,15 @@ function updateAuthBtn() {
     btn.textContent = '👤 ' + currentUser.nick;
     btn.classList.add('logged');
     document.getElementById('auth-logout-btn').style.display = 'block';
-    document.getElementById('auth-title').textContent = 'Профиль';
+    document.getElementById('auth-title').textContent = '👤 Профиль';
     document.getElementById('auth-sub').textContent = 'ты вошёл как ' + currentUser.nick;
     document.getElementById('auth-nick').value = currentUser.nick;
     document.getElementById('auth-nick').disabled = true;
     document.getElementById('auth-pass').style.display = 'none';
     document.getElementById('auth-submit').style.display = 'none';
+    document.querySelector('.auth-tabs').style.display = 'none';
+    document.getElementById('profile-extra').style.display = 'block';
+    loadProfileData();
   } else {
     btn.textContent = '🔐 Войти';
     btn.classList.remove('logged');
@@ -1523,6 +1690,56 @@ function updateAuthBtn() {
     document.getElementById('auth-nick').disabled = false;
     document.getElementById('auth-pass').style.display = 'block';
     document.getElementById('auth-submit').style.display = 'block';
+    document.querySelector('.auth-tabs').style.display = 'flex';
+    document.getElementById('profile-extra').style.display = 'none';
+  }
+}
+
+async function loadProfileData() {
+  const el = document.getElementById('profile-extra');
+  if (!currentUser || !window.__fb) {
+    el.innerHTML = '<div class="empty">Firebase недоступен</div>';
+    return;
+  }
+  el.innerHTML = '<div class="empty">Загрузка данных…</div>';
+  try {
+    const key = currentUser.key;
+    const fb = window.__fb;
+    const [sapSnap, timeSnap, userSnap] = await Promise.all([
+      fb.get(fb.ref(fb.db, 'minigame/sapphires/' + key)),
+      fb.get(fb.ref(fb.db, 'minigame/time/' + key)),
+      fb.get(fb.ref(fb.db, 'users/' + key)),
+    ]);
+    const sapphires = sapSnap.exists() ? (sapSnap.val().value || 0) : 0;
+    const bestTime = timeSnap.exists() ? (timeSnap.val().value || 0) : 0;
+    const created = userSnap.exists() && userSnap.val().created ? userSnap.val().created : null;
+    let daysAgo = '—';
+    if (created) {
+      const d = new Date(created);
+      const diffMs = Date.now() - created;
+      const diffDays = Math.floor(diffMs / 86400000);
+      if (diffDays < 1) daysAgo = 'сегодня';
+      else if (diffDays === 1) daysAgo = '1 день назад';
+      else daysAgo = diffDays + ' дней назад';
+    }
+    el.innerHTML = `
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <span class="lbl">💎 Сапфиры (всего)</span>
+          <span class="val">${sapphires.toLocaleString('ru-RU')}</span>
+        </div>
+        <div class="profile-stat">
+          <span class="lbl">⏱ Рекорд в мини-игре</span>
+          <span class="val">${bestTime ? bestTime.toFixed(1) + 'с' : '—'}</span>
+        </div>
+        <div class="profile-stat">
+          <span class="lbl">📅 Аккаунт создан</span>
+          <span class="val">${daysAgo}</span>
+        </div>
+      </div>
+    `;
+  } catch (e) {
+    el.innerHTML = '<div class="empty">Ошибка загрузки профиля</div>';
   }
 }
 
@@ -1701,16 +1918,21 @@ function mgRectOverlap(p, o) {
   return px2 > ox1 && px1 < ox2 && py2 > oy1 && py1 < oy2;
 }
 
+function getAccentColor() {
+  return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#3b82f6';
+}
+
 function mgDraw() {
   const ctx = MG.ctx;
   if (!ctx) return;
   const W = 900, H = 500;
+  const accent = getAccentColor();
   const g = ctx.createLinearGradient(0, 0, 0, H);
-  g.addColorStop(0, '#0a140c');
-  g.addColorStop(1, '#040608');
+  g.addColorStop(0, '#0a1018');
+  g.addColorStop(1, '#04060a');
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, W, H);
-  ctx.strokeStyle = 'rgba(34,197,94,0.05)';
+  ctx.strokeStyle = accent + '11';
   ctx.lineWidth = 1;
   for (let x = 0; x < W; x += 60) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
   for (let y = 0; y < H; y += 60) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
@@ -1773,14 +1995,14 @@ function mgDraw() {
   ctx.fillRect(-16, -16, 6, 14);
   ctx.fillRect(10, -16, 6, 14);
   ctx.restore();
-  ctx.fillStyle = 'rgba(230,242,232,0.8)';
+  ctx.fillStyle = 'rgba(230,237,245,0.8)';
   ctx.font = 'bold 16px monospace';
   ctx.textAlign = 'left';
   ctx.fillText('⏱ ' + MG.time.toFixed(1) + 'с', 20, 30);
   ctx.textAlign = 'right';
   ctx.fillText('💎 ' + MG.sapphiresCollected, 880, 30);
   ctx.textAlign = 'center';
-  ctx.fillStyle = 'rgba(74,222,128,0.8)';
+  ctx.fillStyle = accent;
   ctx.fillText('×' + mgSpeedMult().toFixed(2), 450, 30);
 }
 
@@ -1844,8 +2066,6 @@ async function saveMinigameScore(sapphires, time) {
   try {
     const nick = currentUser.nick;
     const key = currentUser.key;
-
-    // Сапфиры — КОПЯТСЯ за всё время
     const sapRef = fb.ref(fb.db, 'minigame/sapphires/' + key);
     const sapSnap = await fb.get(sapRef);
     const prevSapphires = sapSnap.exists() ? (sapSnap.val().value || 0) : 0;
@@ -1855,14 +2075,11 @@ async function saveMinigameScore(sapphires, time) {
       value: totalSapphires,
       date: new Date().toISOString().slice(0, 16).replace('T', ' ')
     });
-
-    // Время — личный рекорд за одну игру
     const timeRef = fb.ref(fb.db, 'minigame/time/' + key);
     const timeSnap = await fb.get(timeRef);
     if (!timeSnap.exists() || time > timeSnap.val().value) {
       await fb.set(timeRef, { nick, value: time, date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
     }
-
     loadMinigameLeaderboards();
     const sub = document.getElementById('mg-ov-sub');
     if (sub) sub.innerHTML =
@@ -1893,10 +2110,10 @@ async function loadMinigameLeaderboards() {
     sapList.sort((a, b) => b.value - a.value);
     timeList.sort((a, b) => b.value - a.value);
     sapEl.innerHTML = sapList.length
-      ? renderTopList(sapList.slice(0, 10).map(x => ({ name: x.nick, value: x.value })), ' 💎', null, false)
+      ? renderTopList(sapList.slice(0, 10).map(x => ({ name: x.nick, value: x.value })), ' 💎', null, 'minigame', 'sapphires')
       : '<div class="empty">Пока никто не играл</div>';
     timeEl.innerHTML = timeList.length
-      ? renderTopList(timeList.slice(0, 10).map(x => ({ name: x.nick, value: +x.value.toFixed(1) })), ' сек', null, false)
+      ? renderTopList(timeList.slice(0, 10).map(x => ({ name: x.nick, value: +x.value.toFixed(1) })), ' сек', null, 'minigame', 'time')
       : '<div class="empty">Пока никто не играл</div>';
   } catch (e) {
     sapEl.innerHTML = '<div class="empty">Ошибка загрузки</div>';
@@ -1914,24 +2131,18 @@ document.addEventListener('keyup', e => {
   if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D' || e.key === 'в') MG.keys.right = false;
 });
 
-window.openAd = function() { document.getElementById('ad-modal').classList.add('open'); };
-window.closeAd = function() { document.getElementById('ad-modal').classList.remove('open'); };
-document.getElementById('ad-modal').addEventListener('click', e => {
-  if (e.target.id === 'ad-modal') window.closeAd();
-});
-
-const themeBtn = document.getElementById('theme-toggle');
-function applyTheme(theme) {
-  document.body.classList.toggle('light', theme === 'light');
-  themeBtn.textContent = theme === 'light' ? '🌙' : '☀️';
-}
-let currentTheme = localStorage.getItem('ttp_theme') || 'dark';
-applyTheme(currentTheme);
-themeBtn.onclick = () => {
-  currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-  localStorage.setItem('ttp_theme', currentTheme);
-  applyTheme(currentTheme);
+/* ============ РЕКЛАМА / МУЗЫКА ============ */
+window.openAd = function(type) {
+  document.getElementById('ad-modal-' + type).classList.add('open');
 };
+window.closeAd = function(type) {
+  document.getElementById('ad-modal-' + type).classList.remove('open');
+};
+document.querySelectorAll('.ad-modal').forEach(m => {
+  m.addEventListener('click', e => {
+    if (e.target === m) m.classList.remove('open');
+  });
+});
 
 const music = document.getElementById('bg-music');
 const musicBtn = document.getElementById('music-btn');
@@ -1956,6 +2167,9 @@ volSlider.oninput = () => {
   localStorage.setItem('ttp_vol', v);
 };
 
+/* ============ СТАРТ ============ */
+const savedPalette = localStorage.getItem('ttp_palette') || 'blue';
+applyPalette(savedPalette);
 render();
 </script>
 </body>
