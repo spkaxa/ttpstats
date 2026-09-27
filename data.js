@@ -2,6 +2,51 @@ window.DATA = {
   "cities": {
     "balance": {
       "snapshots": {
+        "2026-09-23 05:20": [
+          { "name": "seapure", "value": 3917.00 }
+        ],
+        "2026-09-24 00:09": [
+          { "name": "seapure", "value": 3591.69 }
+        ],
+        "2026-09-24 00:14": [
+          { "name": "рим", "value": 13374.32 }, { "name": "seapure", "value": 3591.69 }
+        ],
+        "2026-09-24 00:15": [
+          { "name": "рига", "value": 22196.82 }, { "name": "рим", "value": 13374.32 },
+          { "name": "кельн", "value": 2289.55 }, { "name": "seapure", "value": 3591.69 }
+        ],
+        "2026-09-24 00:17": [
+          { "name": "рига", "value": 22196.82 }, { "name": "рим", "value": 13374.32 },
+          { "name": "иокогама", "value": 6034.34 }, { "name": "макондо", "value": 5143.74 },
+          { "name": "кельн", "value": 2289.55 }, { "name": "seapure", "value": 3591.69 }
+        ],
+        "2026-09-24 00:18": [
+          { "name": "рига", "value": 22196.82 }, { "name": "рим", "value": 13374.32 },
+          { "name": "иокогама", "value": 6034.34 }, { "name": "макондо", "value": 5143.74 },
+          { "name": "французская_империя", "value": 4107.64 }, { "name": "кельн", "value": 2289.55 },
+          { "name": "seapure", "value": 3591.69 }
+        ],
+        "2026-09-24 00:19": [
+          { "name": "рига", "value": 22196.82 }, { "name": "рим", "value": 13374.32 },
+          { "name": "иокогама", "value": 6034.34 }, { "name": "лазурный_стокгольм", "value": 5409.59 },
+          { "name": "макондо", "value": 5143.74 }, { "name": "французская_империя", "value": 4107.64 },
+          { "name": "seapure", "value": 3591.69 }, { "name": "великие_нидерланды", "value": 2378.07 },
+          { "name": "кельн", "value": 2289.55 }
+        ],
+        "2026-09-24 00:20": [
+          { "name": "рига", "value": 22196.82 }, { "name": "рим", "value": 13374.32 },
+          { "name": "иокогама", "value": 6034.34 }, { "name": "лазурный_стокгольм", "value": 5409.59 },
+          { "name": "макондо", "value": 5143.74 }, { "name": "французская_империя", "value": 4107.64 },
+          { "name": "seapure", "value": 3591.69 }, { "name": "великие_нидерланды", "value": 2378.07 },
+          { "name": "кельн", "value": 2289.55 }, { "name": "царство_кемет-ра", "value": 2029.39 }
+        ],
+        "2026-09-24 00:23": [
+          { "name": "рига", "value": 22204.90 }, { "name": "рим", "value": 13380.03 },
+          { "name": "иокогама", "value": 6034.34 }, { "name": "лазурный_стокгольм", "value": 5411.42 },
+          { "name": "макондо", "value": 5143.74 }, { "name": "французская_империя", "value": 4111.85 },
+          { "name": "mimika", "value": 3670.64 }, { "name": "seapure", "value": 3598.79 },
+          { "name": "florida", "value": 3588.61 }, { "name": "hamburg", "value": 2734.43 }
+        ],
         "2026-09-24 21:00": [
           { "name": "Рига", "value": 22982.35 }, { "name": "Рим", "value": 13199.25 },
           { "name": "Seapure", "value": 7334.76 }, { "name": "Иокогама", "value": 5971.66 },
@@ -23,7 +68,14 @@ window.DATA = {
           { "name": "Seapure", "value": 4138.56 }, { "name": "mimika", "value": 3846.56 },
           { "name": "Florida", "value": 3621.81 }, { "name": "Французкая_Империя", "value": 3571.75 }
         ],
-        "2026-09-27 15:00": [
+        "2026-09-26 19:20": [
+          { "name": "Рим", "value": 14619.92 }, { "name": "Рига", "value": 12688.16 },
+          { "name": "Клан_Китайцев", "value": 12042.47 }, { "name": "Лазурный_Стокгольм", "value": 7015.61 },
+          { "name": "Иокогама", "value": 5730.51 }, { "name": "Макондо", "value": 5045.62 },
+          { "name": "Seapure", "value": 12584.99 }, { "name": "mimika", "value": 3846.56 },
+          { "name": "Florida", "value": 3621.81 }, { "name": "Французкая_Империя", "value": 3571.75 }
+        ],
+        "2026-09-27 16:10": [
           { "name": "Рим", "value": 15770.46 }, { "name": "Рига", "value": 12243.95 },
           { "name": "Клан_Китайцев", "value": 10304.31 }, { "name": "Лазурный_Стокгольм", "value": 6822.12 },
           { "name": "Иокогама", "value": 5674.61 }, { "name": "Seapure", "value": 5390.78 },
@@ -41,6 +93,13 @@ window.DATA = {
         { "name": "Лазурный_Стокгольм", "value": 66 }, { "name": "Los_Angeles", "value": 55 },
         { "name": "Ufa", "value": 54 }, { "name": "Германская_Империя", "value": 52 }
       ],
+      "2026-09-24 21:00": [
+        { "name": "Рим", "value": 161 }, { "name": "Рига", "value": 142 },
+        { "name": "Кавказский_Халифат", "value": 119 }, { "name": "Ульяновск", "value": 115 },
+        { "name": "Шмаледуйск", "value": 104 }, { "name": "Томская_Империя", "value": 77 },
+        { "name": "Лазурный_Стокгольм", "value": 58 }, { "name": "Los_Angeles", "value": 55 },
+        { "name": "Ufa", "value": 54 }, { "name": "Германская_Империя", "value": 54 }
+      ],
       "2026-09-25 18:30": [
         { "name": "Рим", "value": 161 }, { "name": "Рига", "value": 142 },
         { "name": "Кавказский_Халифат", "value": 118 }, { "name": "Ульяновск", "value": 115 },
@@ -55,7 +114,7 @@ window.DATA = {
         { "name": "Лазурный_Стокгольм", "value": 58 }, { "name": "Германская_Империя", "value": 56 },
         { "name": "Los_Angeles", "value": 55 }, { "name": "Ufa", "value": 54 }
       ],
-      "2026-09-27 15:00": [
+      "2026-09-27 16:10": [
         { "name": "Рим", "value": 163 }, { "name": "Рига", "value": 144 },
         { "name": "Кавказский_Халифат", "value": 118 }, { "name": "Ульяновск", "value": 115 },
         { "name": "Кривой_Рог", "value": 107 }, { "name": "Томская_Империя", "value": 78 },
@@ -71,6 +130,13 @@ window.DATA = {
         { "name": "Seapure", "value": 2424 }, { "name": "Лазурный_Стокгольм", "value": 2310 },
         { "name": "Великие_Нидерланды", "value": 1800 }, { "name": "Французская_Империя", "value": 1786 }
       ],
+      "2026-09-24 21:00": [
+        { "name": "Рига", "value": 8927 }, { "name": "Рим", "value": 7961 },
+        { "name": "Кавказский_Халифат", "value": 3899 }, { "name": "Иокогама", "value": 3582 },
+        { "name": "Ворона", "value": 3168 }, { "name": "Клан_Китайцев", "value": 2808 },
+        { "name": "Seapure", "value": 2791 }, { "name": "Лазурный_Стокгольм", "value": 2310 },
+        { "name": "Великие_Нидерланды", "value": 1808 }, { "name": "Французская_Империя", "value": 1787 }
+      ],
       "2026-09-25 18:30": [
         { "name": "Рига", "value": 8327 }, { "name": "Рим", "value": 7961 },
         { "name": "Кавказский_Халифат", "value": 3899 }, { "name": "Иокогама", "value": 3582 },
@@ -85,7 +151,7 @@ window.DATA = {
         { "name": "Клан_Китайцев", "value": 2807 }, { "name": "Лазурный_Стокгольм", "value": 2318 },
         { "name": "Великие_Нидерланды", "value": 1808 }, { "name": "Французская_Империя", "value": 1787 }
       ],
-      "2026-09-27 15:00": [
+      "2026-09-27 16:10": [
         { "name": "Рига", "value": 8327 }, { "name": "Рим", "value": 7961 },
         { "name": "Кавказский_Халифат", "value": 3899 }, { "name": "Иокогама", "value": 3582 },
         { "name": "Бенилюкс", "value": 3193 }, { "name": "Seapure", "value": 2897 },
@@ -96,6 +162,13 @@ window.DATA = {
   },
   "players": {
     "balance": {
+      "2026-09-24 00:30": [
+        { "name": "merqq", "value": 50203.08 }, { "name": "elena3e3", "value": 16294.95 },
+        { "name": "5ekas", "value": 15755.60 }, { "name": "deekrush", "value": 14299.55 },
+        { "name": "ivan3754", "value": 11681.00 }, { "name": "laggez", "value": 3509.01 },
+        { "name": "urbosindustries", "value": 3111.00 }, { "name": "makph", "value": 3065.00 },
+        { "name": "destr0yer_n1mer", "value": 2831.75 }, { "name": "bryhhht", "value": 2520.52 }
+      ],
       "2026-09-24 21:00": [
         { "name": "MerrQQ", "value": 50182.95 }, { "name": "5ekas", "value": 15755.50 },
         { "name": "Elena3e3", "value": 15402.99 }, { "name": "Deekrush", "value": 14317.36 },
@@ -117,7 +190,7 @@ window.DATA = {
         { "name": "LaGGeZ", "value": 3509.01 }, { "name": "Butterfly", "value": 3200.07 },
         { "name": "UrbosIndustries", "value": 3111.00 }, { "name": "makph", "value": 3065.00 }
       ],
-      "2026-09-27 15:00": [
+      "2026-09-27 16:10": [
         { "name": "MerrQQ", "value": 51814.09 }, { "name": "5ekas", "value": 15755.60 },
         { "name": "Elena3e3", "value": 15479.10 }, { "name": "Deekrush", "value": 14294.49 },
         { "name": "Ivan3754", "value": 12023.32 }, { "name": "cartez_ru", "value": 8137.97 },
@@ -137,6 +210,18 @@ window.DATA = {
         { "name": "hrhwq", "value": 393542, "display": "4д 13ч 29м 2с" },
         { "name": "cartez_ru", "value": 364261, "display": "4д 5ч 51м 1с" },
         { "name": "Ivan3754", "value": 351854, "display": "4д 1ч 44м 14с" }
+      ],
+      "2026-09-24 00:30": [
+        { "name": "timoxa_pistol", "value": 1884527, "display": "21д 20ч 48м 47с" },
+        { "name": "afarstic", "value": 1634611, "display": "18д 23ч 23м 31с" },
+        { "name": "UznikKrasnBel", "value": 1350598, "display": "15д 15ч 29м 58с" },
+        { "name": "Frasie", "value": 1271071, "display": "14д 16ч 4м 31с" },
+        { "name": "cartez_ru", "value": 1259455, "display": "14д 11ч 40м 55с" },
+        { "name": "shanci", "value": 1177559, "display": "13д 14ч 25м 59с" },
+        { "name": "Georg_23", "value": 1167135, "display": "13д 12ч 52м 15с" },
+        { "name": "El_diablo", "value": 1114605, "display": "12д 23ч 17м" },
+        { "name": "Lunari2231", "value": 1062889, "display": "12д 6ч 8м 29с" },
+        { "name": "Deekrush", "value": 1059272, "display": "12д 4ч 54м 32с" }
       ],
       "2026-09-24 21:00": [
         { "name": "timoxa_pistol", "value": 1902705, "display": "22д 2ч 38м 25с" },
@@ -174,7 +259,7 @@ window.DATA = {
         { "name": "Deekrush", "value": 1100242, "display": "12д 17ч 37м 22с" },
         { "name": "Lunari2231", "value": 1068038, "display": "12д 8ч 40м 38с" }
       ],
-      "2026-09-27 15:00": [
+      "2026-09-27 16:10": [
         { "name": "timoxa_pistol", "value": 2002581, "display": "23д 4ч 16м 21с" },
         { "name": "afarstic", "value": 1749424, "display": "20д 5ч 57м 4с" },
         { "name": "Gotopot753", "value": 1504989, "display": "17д 10ч 3м 9с" },
@@ -188,6 +273,20 @@ window.DATA = {
       ]
     },
     "shards": {
+      "2026-09-24 00:30": [
+        { "name": "kaba_day", "value": 56 }, { "name": "FrazerS", "value": 52 },
+        { "name": "shanci", "value": 22 }, { "name": "Streifka", "value": 13 },
+        { "name": "HyperSuper", "value": 8 }, { "name": "Vlad4631", "value": 3 },
+        { "name": "Kise156567", "value": 3 }, { "name": "HE_3adrot", "value": 2 },
+        { "name": "TASIS", "value": 1 }, { "name": "kqkqha", "value": 1 }
+      ],
+      "2026-09-24 21:00": [
+        { "name": "kaba_day", "value": 56 }, { "name": "FrazerS", "value": 52 },
+        { "name": "shanci", "value": 22 }, { "name": "Streifka", "value": 13 },
+        { "name": "HyperSuper", "value": 9 }, { "name": "Vlad4631", "value": 3 },
+        { "name": "Kise156567", "value": 3 }, { "name": "HE_3adrot", "value": 2 },
+        { "name": "Willyy_Wonkaa", "value": 1 }, { "name": "CelestialLove", "value": 1 }
+      ],
       "2026-09-25 18:30": [
         { "name": "kaba_day", "value": 56 }, { "name": "FrazerS", "value": 52 },
         { "name": "shanci", "value": 22 }, { "name": "Streifka", "value": 13 },
@@ -202,7 +301,7 @@ window.DATA = {
         { "name": "Kise156567", "value": 3 }, { "name": "HE_3adrot", "value": 2 },
         { "name": "Toxic22222", "value": 2 }, { "name": "WholeSPk", "value": 1 }
       ],
-      "2026-09-27 15:00": [
+      "2026-09-27 16:10": [
         { "name": "kaba_day", "value": 56 }, { "name": "FrazerS", "value": 52 },
         { "name": "shanci", "value": 23 }, { "name": "Streifka", "value": 13 },
         { "name": "HyperSuper", "value": 11 }, { "name": "Vlad4631", "value": 4 },
@@ -211,6 +310,20 @@ window.DATA = {
       ]
     },
     "rubies": {
+      "2026-09-24 00:30": [
+        { "name": "elena3e3", "value": 291208 }, { "name": "el_diablo", "value": 259159 },
+        { "name": "chonka221", "value": 164633 }, { "name": "triadamc", "value": 161456 },
+        { "name": "okoscheio", "value": 116505 }, { "name": "laggez", "value": 106571 },
+        { "name": "thethether", "value": 95067 }, { "name": "myro_okada", "value": 67920 },
+        { "name": "toxic22222", "value": 60953 }, { "name": "vk2409", "value": 48020 }
+      ],
+      "2026-09-24 21:00": [
+        { "name": "Elena3e3", "value": 291208 }, { "name": "El_Diablo", "value": 259164 },
+        { "name": "chonka221", "value": 164633 }, { "name": "triadamc", "value": 161456 },
+        { "name": "OkoscheiO", "value": 116505 }, { "name": "LaGGeZ", "value": 106571 },
+        { "name": "TheTheTher", "value": 95067 }, { "name": "Myro_Okada", "value": 67920 },
+        { "name": "Toxic22222", "value": 60955 }, { "name": "vk2409", "value": 48020 }
+      ],
       "2026-09-25 18:30": [
         { "name": "Elena3e3", "value": 291210 }, { "name": "El_Diablo", "value": 259171 },
         { "name": "chonka221", "value": 164633 }, { "name": "triadamc", "value": 161456 },
@@ -225,7 +338,7 @@ window.DATA = {
         { "name": "TheTheTher", "value": 95067 }, { "name": "Myro_Okada", "value": 67920 },
         { "name": "Toxic22222", "value": 60964 }, { "name": "vk2409", "value": 48020 }
       ],
-      "2026-09-27 15:00": [
+      "2026-09-27 16:10": [
         { "name": "Elena3e3", "value": 291844 }, { "name": "El_Diablo", "value": 259084 },
         { "name": "chonka221", "value": 164633 }, { "name": "triadamc", "value": 161456 },
         { "name": "OkoscheiO", "value": 116505 }, { "name": "LaGGeZ", "value": 106571 },
@@ -237,6 +350,16 @@ window.DATA = {
   },
   "nations": {
     "balance": {
+      "2026-09-24 00:30": [
+        { "name": "Octagrama", "value": 1230.00 }, { "name": "SPQR", "value": 237.00 },
+        { "name": "Носочки_Ангелкас", "value": 73.00 }, { "name": "Ось", "value": 19.00 },
+        { "name": "ChN1", "value": 15.75 }, { "name": "NATO", "value": 0.50 }
+      ],
+      "2026-09-24 21:00": [
+        { "name": "Octagrama", "value": 1500.00 }, { "name": "SPQR", "value": 391.40 },
+        { "name": "Носочки_Ангелкас", "value": 57.00 }, { "name": "ChN1", "value": 15.75 },
+        { "name": "Ось", "value": 9.00 }, { "name": "NATO", "value": 0.50 }
+      ],
       "2026-09-25 18:30": [
         { "name": "Универсам", "value": 1845.00 }, { "name": "SPQR", "value": 674.00 },
         { "name": "Носочки_Ангелкас", "value": 41.00 }, { "name": "ChN1", "value": 15.75 },
@@ -247,13 +370,23 @@ window.DATA = {
         { "name": "Латвия", "value": 153.75 }, { "name": "Носочки_Ангелкас", "value": 25.00 },
         { "name": "Ось", "value": 9.00 }, { "name": "NATO", "value": 0.50 }
       ],
-      "2026-09-27 15:00": [
+      "2026-09-27 16:10": [
         { "name": "Универсам", "value": 2445.00 }, { "name": "SPQR", "value": 1104.20 },
         { "name": "Латвия", "value": 29.75 }, { "name": "Ось", "value": 9.00 },
         { "name": "Носочки_Ангелкас", "value": 9.00 }, { "name": "NATO", "value": 0.50 }
       ]
     },
     "size": {
+      "2026-09-24 00:30": [
+        { "name": "SPQR", "value": 74 }, { "name": "NATO", "value": 58 },
+        { "name": "Octagrama", "value": 46 }, { "name": "ChN1", "value": 26 },
+        { "name": "Ось", "value": 8 }, { "name": "Носочки_Ангелкас", "value": 2 }
+      ],
+      "2026-09-24 21:00": [
+        { "name": "SPQR", "value": 75 }, { "name": "NATO", "value": 59 },
+        { "name": "Octagrama", "value": 47 }, { "name": "ChN1", "value": 25 },
+        { "name": "Ось", "value": 8 }, { "name": "Носочки_Ангелкас", "value": 2 }
+      ],
       "2026-09-25 18:30": [
         { "name": "SPQR", "value": 74 }, { "name": "NATO", "value": 64 },
         { "name": "Универсам", "value": 47 }, { "name": "ChN1", "value": 24 },
@@ -264,13 +397,23 @@ window.DATA = {
         { "name": "Универсам", "value": 48 }, { "name": "Латвия", "value": 23 },
         { "name": "Ось", "value": 8 }, { "name": "Носочки_Ангелкас", "value": 2 }
       ],
-      "2026-09-27 15:00": [
+      "2026-09-27 16:10": [
         { "name": "SPQR", "value": 78 }, { "name": "NATO", "value": 63 },
         { "name": "Универсам", "value": 46 }, { "name": "Латвия", "value": 23 },
         { "name": "Ось", "value": 8 }, { "name": "Носочки_Ангелкас", "value": 2 }
       ]
     },
     "citizens": {
+      "2026-09-24 00:30": [
+        { "name": "SPQR", "value": 957 }, { "name": "NATO", "value": 600 },
+        { "name": "Octagrama", "value": 481 }, { "name": "ChN1", "value": 296 },
+        { "name": "Ось", "value": 137 }, { "name": "Носочки_Ангелкас", "value": 21 }
+      ],
+      "2026-09-24 21:00": [
+        { "name": "SPQR", "value": 957 }, { "name": "NATO", "value": 620 },
+        { "name": "Octagrama", "value": 489 }, { "name": "ChN1", "value": 297 },
+        { "name": "Ось", "value": 138 }, { "name": "Носочки_Ангелкас", "value": 22 }
+      ],
       "2026-09-25 18:30": [
         { "name": "SPQR", "value": 957 }, { "name": "NATO", "value": 643 },
         { "name": "Универсам", "value": 483 }, { "name": "ChN1", "value": 296 },
@@ -281,7 +424,7 @@ window.DATA = {
         { "name": "Универсам", "value": 500 }, { "name": "Латвия", "value": 402 },
         { "name": "Ось", "value": 141 }, { "name": "Носочки_Ангелкас", "value": 22 }
       ],
-      "2026-09-27 15:00": [
+      "2026-09-27 16:10": [
         { "name": "SPQR", "value": 854 }, { "name": "NATO", "value": 651 },
         { "name": "Универсам", "value": 490 }, { "name": "Латвия", "value": 414 },
         { "name": "Ось", "value": 146 }, { "name": "Носочки_Ангелкас", "value": 22 }
