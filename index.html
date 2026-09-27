@@ -5,173 +5,134 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>timetoplay stats — ttpstats</title>
 <style>
-:root {
-  --bg:#080c12; --bg2:#0f141d; --bg3:#171e2a; --bg4:#1f2838;
-  --accent:#3b82f6; --accent2:#60a5fa; --accent3:#2563eb;
-  --accent-glow:rgba(59,130,246,0.25);
-  --text:#e6edf5; --text2:#8f9bb0; --text3:#566073;
-  --border:#1e2836; --border2:#2e3d52;
-  --red:#ef4444; --gold:#fbbf24; --purple:#a78bfa;
-  --gridline:rgba(80,120,180,0.15);
-  --header-bg:linear-gradient(135deg, #0a1018 0%, #0f1a28 50%, #0a1018 100%);
-  --win:#3b82f6;
-  --ad-bg:linear-gradient(135deg, #102033 0%, #0f141d 100%);
-  --ad-border:#3b82f6;
-}
-* { box-sizing:border-box; margin:0; padding:0; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
-  background: var(--bg); color: var(--text); min-height:100vh; line-height:1.5;
-  background-image:
-    radial-gradient(ellipse 80% 60% at 50% 0%, var(--accent-glow), transparent 70%),
-    radial-gradient(ellipse 60% 40% at 80% 100%, var(--accent-glow), transparent 70%);
-  background-attachment: fixed; transition: background .3s, color .3s;
-}
-.top-controls { position:fixed; top:18px; right:18px; z-index:999; display:flex; flex-direction:column; gap:10px; align-items:flex-end; }
-#settings-btn { width:44px; height:44px; border-radius:50%; background:var(--bg2); border:1px solid var(--border2); color:var(--text); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; font-family:inherit; box-shadow:0 2px 10px rgba(0,0,0,.2); }
-#settings-btn:hover { transform:scale(1.08); border-color:var(--accent); color:var(--accent); }
-.music-row { background:var(--bg2); border:1px solid var(--border); border-radius:24px; padding:6px 10px; display:flex; align-items:center; gap:8px; box-shadow:0 2px 10px rgba(0,0,0,.15); }
-#music-btn { width:30px; height:30px; border-radius:50%; background:transparent; border:none; cursor:pointer; color:var(--text); font-size:15px; display:flex; align-items:center; justify-content:center; transition:all .15s; font-family:inherit; }
-#music-btn:hover { color:var(--accent); }
-#vol-slider { width:80px; accent-color:var(--accent); }
-#settings-modal, .ad-modal { position:fixed; inset:0; z-index:1100; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); display:none; align-items:center; justify-content:center; padding:20px; }
-#settings-modal.open, .ad-modal.open { display:flex; animation:fadeIn .25s; }
-@keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
-@keyframes slideUp { from { transform:translateY(20px); opacity:0 } to { transform:translateY(0); opacity:1 } }
-.panel-box { background:var(--bg2); border:1px solid var(--border2); border-radius:14px; padding:28px 32px; max-width:460px; width:100%; position:relative; animation:slideUp .3s; box-shadow:0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px var(--accent-glow); max-height:90vh; overflow-y:auto; }
-.panel-box h2 { font-size:20px; margin-bottom:6px; background:linear-gradient(135deg, var(--accent2), var(--accent3)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-.panel-box .sub { color:var(--text3); font-size:12px; margin-bottom:20px; line-height:1.6; }
-.panel-close { position:absolute; top:14px; right:14px; width:32px; height:32px; border-radius:50%; background:var(--bg3); border:1px solid var(--border2); color:var(--text); font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .15s; font-family:inherit; }
-.panel-close:hover { background:var(--red); color:#fff; border-color:var(--red); }
-.setting-group { margin-bottom:22px; }
-.setting-label { font-size:11px; color:var(--text3); letter-spacing:1.5px; text-transform:uppercase; font-weight:700; margin-bottom:10px; display:block; }
-.color-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; }
-.color-opt { padding:12px; border-radius:8px; cursor:pointer; border:2px solid transparent; background:var(--bg3); display:flex; align-items:center; gap:8px; font-size:12px; font-weight:600; transition:all .15s; font-family:inherit; color:var(--text); }
-.color-opt:hover { transform:translateY(-1px); border-color:var(--border2); }
-.color-opt.active { border-color:var(--accent); background:var(--bg4); }
-.color-dot { width:16px; height:16px; border-radius:50%; flex-shrink:0; box-shadow:0 0 8px currentColor; }
-input[type="range"] { width:100%; accent-color:var(--accent); }
-header { padding:44px 24px 26px; border-bottom:1px solid var(--border); background:var(--header-bg); position:relative; }
-header::after { content:''; position:absolute; bottom:-1px; left:0; right:0; height:1px; background:linear-gradient(90deg, transparent 0%, var(--accent) 50%, transparent 100%); opacity:0.5; }
-.header-inner { max-width:1100px; margin:0 auto; padding:0 120px 0 20px; }
-h1 { font-size:38px; font-weight:900; letter-spacing:-0.8px; margin-bottom:10px; background:linear-gradient(135deg, var(--accent2) 0%, var(--accent) 50%, var(--accent3) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; display:block; filter:drop-shadow(0 0 20px var(--accent-glow)); }
-.version-badge { display:inline-block; font-size:11px; font-weight:800; color:#ffffff; -webkit-text-fill-color:#ffffff; background:linear-gradient(135deg, var(--accent3), var(--accent)); padding:5px 16px; border-radius:14px; letter-spacing:2px; margin-bottom:14px; text-transform:uppercase; box-shadow:0 2px 14px var(--accent-glow); }
-.subtitle { color:var(--text2); font-size:13px; margin-bottom:10px; line-height:1.6; max-width:780px; }
-.telegram-line { color:var(--accent2); font-size:13px; margin-bottom:10px; font-weight:600; letter-spacing:.3px; }
-.telegram-line a { color:var(--accent2); text-decoration:none; border-bottom:1px dashed var(--accent2); }
-.soon-line { color:var(--gold); font-size:13px; margin-bottom:10px; font-weight:600; letter-spacing:.3px; padding:10px 14px; background:linear-gradient(135deg, rgba(251,191,36,0.12), transparent); border-left:3px solid var(--gold); border-radius:6px; max-width:780px; line-height:1.6; }
-.soon-line a { color:var(--gold); text-decoration:none; border-bottom:1px dashed var(--gold); font-weight:700; }
-.creator { color:var(--text3); font-size:12px; }
-.creator .hint-tip { color:var(--accent2); font-size:11px; margin-left:6px; opacity:0.85; }
-.tabs { max-width:1100px; margin:0 auto; padding:24px 24px 0; display:flex; gap:6px; flex-wrap:wrap; border-bottom:1px solid var(--border); }
-.tabs button { background:transparent; border:none; color:var(--text2); padding:13px 18px; font-size:14px; font-weight:700; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all .15s; font-family:inherit; white-space:nowrap; border-radius:6px 6px 0 0; }
-.tabs button:hover { color:var(--text); background:var(--accent-glow); }
-.tabs button.active { color:var(--accent2); border-bottom-color:var(--accent); background:linear-gradient(180deg, transparent 0%, var(--accent-glow) 100%); text-shadow:0 0 20px var(--accent-glow); }
-main { max-width:1100px; margin:0 auto; padding:24px; }
-.ads-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:20px; }
-.ad-slot { height:82px; border-radius:10px; padding:12px 16px; display:flex; align-items:center; gap:12px; overflow:hidden; position:relative; border:1px dashed var(--border); background:var(--bg2); }
-.ad-slot.empty { opacity:0.4; }
-.ad-slot.empty::before { content:'📢 Реклама'; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:11px; color:var(--text3); letter-spacing:2px; }
-.ad-slot.filled { background:var(--ad-bg); border:1px solid var(--accent); cursor:pointer; transition:all .2s; box-shadow:0 4px 20px var(--accent-glow); }
-.ad-slot.filled:hover { transform:translateY(-2px); box-shadow:0 8px 30px var(--accent-glow), 0 0 0 1px var(--accent); }
-.ad-badge { position:absolute; top:6px; right:8px; font-size:9px; font-weight:800; letter-spacing:1px; background:linear-gradient(135deg, var(--accent3), var(--accent)); color:#fff; padding:2px 8px; border-radius:3px; }
-.ad-body { flex:1; min-width:0; }
-.ad-title { font-size:14px; font-weight:800; color:var(--text); margin-bottom:3px; }
-.ad-desc { font-size:11px; color:var(--text2); }
-.ad-emoji { font-size:32px; flex-shrink:0; }
-.ad-modal .ad-modal-inner { background:var(--bg2); border:1px solid var(--accent); border-radius:14px; padding:32px 36px; max-width:580px; width:100%; position:relative; animation:slideUp .3s; box-shadow:0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px var(--accent-glow); max-height:90vh; overflow-y:auto; }
-.ad-modal h2 { font-size:22px; font-weight:800; margin-bottom:16px; background:linear-gradient(135deg, var(--accent2), var(--accent3)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-.ad-modal p { font-size:14px; line-height:1.7; color:var(--text); margin-bottom:14px; }
-.ad-modal ul { list-style:none; margin:14px 0; }
-.ad-modal li { font-size:14px; line-height:1.9; color:var(--text2); padding-left:22px; position:relative; }
-.ad-modal li::before { content:'✓'; position:absolute; left:0; color:var(--accent2); font-weight:800; }
-.ad-highlight { background:linear-gradient(135deg, var(--accent-glow), transparent); border-left:3px solid var(--accent); padding:12px 16px; border-radius:6px; font-weight:700; color:var(--accent2); font-size:14px; margin-top:16px; }
-.card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:22px; margin-bottom:16px; box-shadow:0 4px 20px rgba(0,0,0,0.15); transition:border-color .2s; }
-.card:hover { border-color:var(--border2); }
-.card-head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:18px; flex-wrap:wrap; }
-.card-head-text { flex:1; min-width:200px; }
-.card h2 { font-size:16px; font-weight:800; margin-bottom:5px; background:linear-gradient(135deg, var(--accent2), var(--accent3)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-.card .card-sub { color:var(--text3); font-size:11px; }
-.card .card-note { color:var(--text3); font-size:11px; margin-top:16px; font-style:italic; padding-top:14px; border-top:1px dashed var(--border); line-height:1.6; }
-.sec-date-wrap { display:flex; align-items:center; gap:6px; background:var(--bg3); border:1px solid var(--border2); border-radius:8px; padding:4px 10px; flex-shrink:0; transition:border-color .15s; }
-.sec-date-wrap:hover { border-color:var(--accent); }
-.sec-date-wrap label { font-size:10px; color:var(--text3); letter-spacing:1px; text-transform:uppercase; font-weight:700; }
-.sec-date { background:transparent; color:var(--text); border:none; font-family:inherit; font-size:12px; cursor:pointer; padding:4px 4px; min-width:130px; }
-.sec-date:focus { outline:none; }
-.sec-date option { background:var(--bg3); color:var(--text); }
-.top-list { display:flex; flex-direction:column; gap:5px; }
-.top-item { display:grid; grid-template-columns:44px 1fr auto auto; gap:12px; align-items:center; padding:12px 16px; background:var(--bg3); border-radius:8px; transition:all .15s; border-left:3px solid transparent; cursor:pointer; }
-.top-item:hover { transform:translateX(3px); border-color:var(--accent); }
-.top-item:hover { background:var(--bg4); box-shadow:0 0 20px var(--accent-glow); }
-.top-item.r1 { border-left-color:var(--accent); background:linear-gradient(90deg, var(--accent-glow), transparent 55%); box-shadow:inset 0 0 20px var(--accent-glow); }
-.top-item.r2 { border-left-color:var(--accent2); background:linear-gradient(90deg, var(--accent-glow), transparent 55%); }
-.top-item.r3 { border-left-color:var(--accent3); background:linear-gradient(90deg, var(--accent-glow), transparent 55%); }
-.rank { font-size:16px; font-weight:800; color:var(--text2); text-align:center; font-variant-numeric:tabular-nums; }
-.r1 .rank { color:var(--accent); text-shadow:0 0 12px var(--accent-glow); }
-.r2 .rank { color:var(--accent2); }
-.r3 .rank { color:var(--accent3); }
-.name-wrap { display:flex; flex-direction:column; gap:1px; min-width:0; }
-.name { font-size:14px; font-weight:600; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.name .sub-note { color:var(--purple); font-size:10px; font-weight:600; margin-left:4px; font-style:italic; }
-.mayor-line { font-size:10px; color:var(--text3); font-weight:500; letter-spacing:0.2px; }
-.mayor-line b { color:var(--accent2); font-weight:600; }
-.value { font-size:14px; font-weight:800; color:var(--accent2); font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap; }
-.value .unit { color:var(--text3); font-weight:400; font-size:11px; margin-left:3px; }
-.arrow { font-size:12px; font-weight:700; padding:2px 8px; border-radius:5px; min-width:46px; text-align:center; font-variant-numeric:tabular-nums; }
-.arrow.up { color:var(--accent); background:var(--accent-glow); }
-.arrow.down { color:var(--red); background:rgba(239,68,68,.15); }
-.arrow.same { color:var(--text3); background:rgba(92,92,106,.15); }
-.arrow.new { color:var(--purple); background:rgba(167,139,250,.18); font-size:10px; }
-.arrow.dash { color:var(--text3); background:transparent; }
-.chart-wrap { background:var(--bg3); border-radius:8px; padding:16px; margin-top:8px; border:1px solid var(--border); }
-.chart-wrap svg { width:100%; height:220px; display:block; overflow:visible; }
-.chart-labels { display:flex; justify-content:space-between; margin-top:10px; font-size:10px; color:var(--text3); font-variant-numeric:tabular-nums; }
-.chart-single { background:var(--bg3); border-radius:8px; padding:28px 16px; text-align:center; border:1px dashed var(--border2); }
-.chart-single .val { font-size:32px; font-weight:900; color:var(--accent2); margin-bottom:4px; }
-.chart-single .date { font-size:11px; color:var(--text3); letter-spacing:1px; text-transform:uppercase; }
-.chart-single .wait { font-size:11px; color:var(--text3); margin-top:10px; font-style:italic; }
-.war-item { background:var(--bg3); border-radius:10px; padding:16px 20px; margin-bottom:10px; border-left:4px solid var(--accent); transition:all .15s; }
-.war-item:hover { transform:translateX(4px); border-left-color:var(--accent2); box-shadow:-4px 0 20px var(--accent-glow); }
-.war-item.ongoing { border-left-color:var(--gold); }
-.war-item.cancelled { border-left-color:var(--text3); opacity:0.75; }
-.war-date { font-size:11px; color:var(--text3); letter-spacing:1px; margin-bottom:10px; text-transform:uppercase; font-weight:700; display:flex; align-items:center; gap:6px; }
-.war-date::before { content:''; display:inline-block; width:6px; height:6px; background:var(--accent); border-radius:50%; box-shadow:0 0 8px var(--accent); }
-.war-item.ongoing .war-date::before { background:var(--gold); box-shadow:0 0 8px var(--gold); }
-.war-item.cancelled .war-date::before { background:var(--text3); box-shadow:none; }
-.war-teams { display:flex; align-items:center; gap:14px; flex-wrap:wrap; font-size:15px; font-weight:700; margin-bottom:8px; }
-.war-team { color:var(--text); }
-.war-team.winner { color:var(--win); text-shadow:0 0 14px var(--accent-glow); }
-.war-team.loser { color:var(--text2); opacity:0.7; }
-.war-vs { color:var(--text3); font-size:12px; font-weight:700; letter-spacing:2px; opacity:0.7; }
-.war-result { font-size:12px; color:var(--text3); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-.war-result .trophy { color:var(--gold); font-size:13px; }
-.war-result .faction { background:var(--bg2); color:var(--accent2); padding:2px 10px; border-radius:4px; font-size:10px; font-weight:700; border:1px solid var(--border2); }
-.war-result .status { padding:2px 10px; border-radius:4px; font-size:10px; font-weight:800; letter-spacing:0.5px; }
-.war-result .status.ongoing { background:rgba(251,191,36,.15); color:var(--gold); border:1px solid var(--gold); }
-.war-result .status.cancelled { background:rgba(92,92,106,.2); color:var(--text3); border:1px solid var(--border2); }
-@media (max-width:820px) {
-  .top-item { grid-template-columns:36px 1fr auto; }
-  .arrow { display:none; }
-  h1 { font-size:24px; }
-  .version-badge { font-size:10px; padding:3px 10px; }
-  .tabs { overflow-x:auto; flex-wrap:nowrap; padding-bottom:0; }
-  .tabs::-webkit-scrollbar { height:0; }
-  .top-controls { top:12px; right:12px; gap:6px; }
-  #settings-btn { width:38px; height:38px; font-size:16px; }
-  #vol-slider { width:60px; }
-  .header-inner { padding:0 90px 0 20px; }
-  .ads-row { grid-template-columns:1fr; }
-  .ad-slot { height:70px; }
-  .sec-date-wrap label { display:none; }
-  .sec-date { min-width:110px; font-size:11px; }
-  .color-grid { grid-template-columns:repeat(2, 1fr); }
-}
-footer { max-width:1100px; margin:60px auto 0; padding:32px 24px; border-top:1px solid var(--border); color:var(--text3); font-size:12px; text-align:center; line-height:2; }
-footer a { color:var(--accent2); text-decoration:none; font-weight:600; }
-footer .sep { margin:10px 0; color:var(--border); }
-footer .tg-note { color:var(--accent2); font-size:13px; line-height:1.7; max-width:780px; margin:14px auto 0; padding:14px 20px; background:linear-gradient(135deg, var(--accent-glow), transparent); border-left:3px solid var(--accent); border-radius:6px; text-align:left; }
-.empty { text-align:center; padding:50px 20px; color:var(--text3); font-size:13px; font-style:italic; }
-.badge-alltime { display:inline-block; font-size:9px; background:linear-gradient(135deg, var(--accent3), var(--accent2)); color:#fff; padding:2px 8px; border-radius:3px; font-weight:800; letter-spacing:.3px; margin-left:8px; vertical-align:middle; }
+:root{--bg:#080c12;--bg2:#0f141d;--bg3:#171e2a;--bg4:#1f2838;--accent:#3b82f6;--accent2:#60a5fa;--accent3:#2563eb;--accent-glow:rgba(59,130,246,0.25);--text:#e6edf5;--text2:#8f9bb0;--text3:#566073;--border:#1e2836;--border2:#2e3d52;--red:#ef4444;--gold:#fbbf24;--purple:#a78bfa;--gridline:rgba(80,120,180,0.15);--header-bg:linear-gradient(135deg,#0a1018 0%,#0f1a28 50%,#0a1018 100%);--win:#3b82f6;--ad-bg:linear-gradient(135deg,#102033 0%,#0f141d 100%)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5;background-image:radial-gradient(ellipse 80% 60% at 50% 0%,var(--accent-glow),transparent 70%),radial-gradient(ellipse 60% 40% at 80% 100%,var(--accent-glow),transparent 70%);background-attachment:fixed}
+.top-controls{position:fixed;top:18px;right:18px;z-index:999;display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+#settings-btn{width:44px;height:44px;border-radius:50%;background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}
+#settings-btn:hover{transform:scale(1.08);border-color:var(--accent);color:var(--accent)}
+.music-row{background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:6px 10px;display:flex;align-items:center;gap:8px}
+#music-btn{width:30px;height:30px;border-radius:50%;background:transparent;border:none;cursor:pointer;color:var(--text);font-size:15px;display:flex;align-items:center;justify-content:center;font-family:inherit}
+#music-btn:hover{color:var(--accent)}
+#vol-slider{width:80px;accent-color:var(--accent)}
+#settings-modal,.ad-modal{position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px}
+#settings-modal.open,.ad-modal.open{display:flex;animation:fadeIn .25s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.panel-box{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:28px 32px;max-width:460px;width:100%;position:relative;animation:slideUp .3s;box-shadow:0 20px 60px rgba(0,0,0,0.6);max-height:90vh;overflow-y:auto}
+.panel-box h2{font-size:20px;margin-bottom:6px;background:linear-gradient(135deg,var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.panel-box .sub{color:var(--text3);font-size:12px;margin-bottom:20px}
+.panel-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);color:var(--text);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit}
+.panel-close:hover{background:var(--red);color:#fff}
+.setting-group{margin-bottom:22px}
+.setting-label{font-size:11px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-bottom:10px;display:block}
+.color-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.color-opt{padding:12px;border-radius:8px;cursor:pointer;border:2px solid transparent;background:var(--bg3);display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;font-family:inherit;color:var(--text)}
+.color-opt.active{border-color:var(--accent);background:var(--bg4)}
+.color-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0}
+input[type="range"]{width:100%;accent-color:var(--accent)}
+header{padding:44px 24px 26px;border-bottom:1px solid var(--border);background:var(--header-bg);position:relative}
+header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,var(--accent) 50%,transparent 100%);opacity:0.5}
+.header-inner{max-width:1100px;margin:0 auto;padding:0 120px 0 20px}
+h1{font-size:38px;font-weight:900;letter-spacing:-0.8px;margin-bottom:10px;background:linear-gradient(135deg,var(--accent2) 0%,var(--accent) 50%,var(--accent3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;filter:drop-shadow(0 0 20px var(--accent-glow))}
+.version-badge{display:inline-block;font-size:11px;font-weight:800;color:#fff;-webkit-text-fill-color:#fff;background:linear-gradient(135deg,var(--accent3),var(--accent));padding:5px 16px;border-radius:14px;letter-spacing:2px;margin-bottom:14px;text-transform:uppercase}
+.subtitle{color:var(--text2);font-size:13px;margin-bottom:10px;line-height:1.6;max-width:780px}
+.telegram-line{color:var(--accent2);font-size:13px;margin-bottom:10px;font-weight:600}
+.telegram-line a{color:var(--accent2);text-decoration:none;border-bottom:1px dashed var(--accent2)}
+.soon-line{color:var(--gold);font-size:13px;margin-bottom:10px;font-weight:600;padding:10px 14px;background:linear-gradient(135deg,rgba(251,191,36,0.12),transparent);border-left:3px solid var(--gold);border-radius:6px;max-width:780px;line-height:1.6}
+.soon-line a{color:var(--gold);text-decoration:none;border-bottom:1px dashed var(--gold);font-weight:700}
+.creator{color:var(--text3);font-size:12px}
+.creator .hint-tip{color:var(--accent2);font-size:11px;margin-left:6px;opacity:0.85}
+.tabs{max-width:1100px;margin:0 auto;padding:24px 24px 0;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+.tabs button{background:transparent;border:none;color:var(--text2);padding:13px 18px;font-size:14px;font-weight:700;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;font-family:inherit;white-space:nowrap;border-radius:6px 6px 0 0}
+.tabs button:hover{color:var(--text);background:var(--accent-glow)}
+.tabs button.active{color:var(--accent2);border-bottom-color:var(--accent);background:linear-gradient(180deg,transparent 0%,var(--accent-glow) 100%)}
+main{max-width:1100px;margin:0 auto;padding:24px}
+.ads-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px}
+.ad-slot{height:82px;border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:12px;overflow:hidden;position:relative;border:1px dashed var(--border);background:var(--bg2)}
+.ad-slot.empty{opacity:0.4}
+.ad-slot.empty::before{content:'📢 Реклама';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:11px;color:var(--text3);letter-spacing:2px}
+.ad-slot.filled{background:var(--ad-bg);border:1px solid var(--accent);cursor:pointer;box-shadow:0 4px 20px var(--accent-glow)}
+.ad-slot.filled:hover{transform:translateY(-2px)}
+.ad-badge{position:absolute;top:6px;right:8px;font-size:9px;font-weight:800;letter-spacing:1px;background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;padding:2px 8px;border-radius:3px}
+.ad-body{flex:1;min-width:0}
+.ad-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:3px}
+.ad-desc{font-size:11px;color:var(--text2)}
+.ad-emoji{font-size:32px;flex-shrink:0}
+.ad-modal .ad-modal-inner{background:var(--bg2);border:1px solid var(--accent);border-radius:14px;padding:32px 36px;max-width:580px;width:100%;position:relative;animation:slideUp .3s;max-height:90vh;overflow-y:auto}
+.ad-modal h2{font-size:22px;font-weight:800;margin-bottom:16px;background:linear-gradient(135deg,var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ad-modal p{font-size:14px;line-height:1.7;color:var(--text);margin-bottom:14px}
+.ad-modal ul{list-style:none;margin:14px 0}
+.ad-modal li{font-size:14px;line-height:1.9;color:var(--text2);padding-left:22px;position:relative}
+.ad-modal li::before{content:'✓';position:absolute;left:0;color:var(--accent2);font-weight:800}
+.ad-highlight{background:linear-gradient(135deg,var(--accent-glow),transparent);border-left:3px solid var(--accent);padding:12px 16px;border-radius:6px;font-weight:700;color:var(--accent2);font-size:14px;margin-top:16px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,0.15)}
+.card:hover{border-color:var(--border2)}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.card-head-text{flex:1;min-width:200px}
+.card h2{font-size:16px;font-weight:800;margin-bottom:5px;background:linear-gradient(135deg,var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.card .card-sub{color:var(--text3);font-size:11px}
+.card .card-note{color:var(--text3);font-size:11px;margin-top:16px;font-style:italic;padding-top:14px;border-top:1px dashed var(--border);line-height:1.6}
+.sec-date-wrap{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:4px 10px;flex-shrink:0}
+.sec-date-wrap label{font-size:10px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;font-weight:700}
+.sec-date{background:transparent;color:var(--text);border:none;font-family:inherit;font-size:12px;cursor:pointer;padding:4px;min-width:130px}
+.sec-date:focus{outline:none}
+.sec-date option{background:var(--bg3);color:var(--text)}
+.top-list{display:flex;flex-direction:column;gap:5px}
+.top-item{display:grid;grid-template-columns:44px 1fr auto auto;gap:12px;align-items:center;padding:12px 16px;background:var(--bg3);border-radius:8px;border-left:3px solid transparent;cursor:pointer}
+.top-item:hover{transform:translateX(3px);border-color:var(--accent);background:var(--bg4)}
+.top-item.r1{border-left-color:var(--accent);background:linear-gradient(90deg,var(--accent-glow),transparent 55%)}
+.top-item.r2{border-left-color:var(--accent2);background:linear-gradient(90deg,var(--accent-glow),transparent 55%)}
+.top-item.r3{border-left-color:var(--accent3);background:linear-gradient(90deg,var(--accent-glow),transparent 55%)}
+.rank{font-size:16px;font-weight:800;color:var(--text2);text-align:center}
+.r1 .rank{color:var(--accent)}
+.r2 .rank{color:var(--accent2)}
+.r3 .rank{color:var(--accent3)}
+.name-wrap{display:flex;flex-direction:column;gap:1px;min-width:0}
+.name{font-size:14px;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.name .sub-note{color:var(--purple);font-size:10px;font-weight:600;margin-left:4px;font-style:italic}
+.mayor-line{font-size:10px;color:var(--text3)}
+.mayor-line b{color:var(--accent2);font-weight:600}
+.value{font-size:14px;font-weight:800;color:var(--accent2);text-align:right;white-space:nowrap}
+.value .unit{color:var(--text3);font-weight:400;font-size:11px;margin-left:3px}
+.arrow{font-size:12px;font-weight:700;padding:2px 8px;border-radius:5px;min-width:46px;text-align:center}
+.arrow.up{color:var(--accent);background:var(--accent-glow)}
+.arrow.down{color:var(--red);background:rgba(239,68,68,.15)}
+.arrow.same{color:var(--text3);background:rgba(92,92,106,.15)}
+.arrow.new{color:var(--purple);background:rgba(167,139,250,.18);font-size:10px}
+.arrow.dash{color:var(--text3);background:transparent}
+.chart-wrap{background:var(--bg3);border-radius:8px;padding:16px;margin-top:8px;border:1px solid var(--border)}
+.chart-wrap svg{width:100%;height:220px;display:block;overflow:visible}
+.chart-labels{display:flex;justify-content:space-between;margin-top:10px;font-size:10px;color:var(--text3)}
+.chart-single{background:var(--bg3);border-radius:8px;padding:28px 16px;text-align:center;border:1px dashed var(--border2)}
+.chart-single .val{font-size:32px;font-weight:900;color:var(--accent2);margin-bottom:4px}
+.chart-single .date{font-size:11px;color:var(--text3);letter-spacing:1px;text-transform:uppercase}
+.chart-single .wait{font-size:11px;color:var(--text3);margin-top:10px;font-style:italic}
+.war-item{background:var(--bg3);border-radius:10px;padding:16px 20px;margin-bottom:10px;border-left:4px solid var(--accent)}
+.war-item:hover{transform:translateX(4px);border-left-color:var(--accent2)}
+.war-item.ongoing{border-left-color:var(--gold)}
+.war-item.cancelled{border-left-color:var(--text3);opacity:0.75}
+.war-date{font-size:11px;color:var(--text3);letter-spacing:1px;margin-bottom:10px;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:6px}
+.war-date::before{content:'';display:inline-block;width:6px;height:6px;background:var(--accent);border-radius:50%}
+.war-item.ongoing .war-date::before{background:var(--gold)}
+.war-item.cancelled .war-date::before{background:var(--text3)}
+.war-teams{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:15px;font-weight:700;margin-bottom:8px}
+.war-team.winner{color:var(--win)}
+.war-team.loser{color:var(--text2);opacity:0.7}
+.war-vs{color:var(--text3);font-size:12px;letter-spacing:2px;opacity:0.7}
+.war-result{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.war-result .trophy{color:var(--gold);font-size:13px}
+.war-result .faction{background:var(--bg2);color:var(--accent2);padding:2px 10px;border-radius:4px;font-size:10px;font-weight:700;border:1px solid var(--border2)}
+.war-result .status{padding:2px 10px;border-radius:4px;font-size:10px;font-weight:800}
+.war-result .status.ongoing{background:rgba(251,191,36,.15);color:var(--gold);border:1px solid var(--gold)}
+.war-result .status.cancelled{background:rgba(92,92,106,.2);color:var(--text3);border:1px solid var(--border2)}
+@media (max-width:820px){.top-item{grid-template-columns:36px 1fr auto}.arrow{display:none}h1{font-size:24px}.version-badge{font-size:10px;padding:3px 10px}.tabs{overflow-x:auto;flex-wrap:nowrap}.top-controls{top:12px;right:12px}.header-inner{padding:0 90px 0 20px}.ads-row{grid-template-columns:1fr}.sec-date-wrap label{display:none}.sec-date{min-width:110px;font-size:11px}.color-grid{grid-template-columns:repeat(2,1fr)}}
+footer{max-width:1100px;margin:60px auto 0;padding:32px 24px;border-top:1px solid var(--border);color:var(--text3);font-size:12px;text-align:center;line-height:2}
+footer a{color:var(--accent2);text-decoration:none;font-weight:600}
+footer .sep{margin:10px 0;color:var(--border)}
+footer .tg-note{color:var(--accent2);font-size:13px;line-height:1.7;max-width:780px;margin:14px auto 0;padding:14px 20px;background:linear-gradient(135deg,var(--accent-glow),transparent);border-left:3px solid var(--accent);border-radius:6px;text-align:left}
+.empty{text-align:center;padding:50px 20px;color:var(--text3);font-size:13px;font-style:italic}
+.badge-alltime{display:inline-block;font-size:9px;background:linear-gradient(135deg,var(--accent3),var(--accent2));color:#fff;padding:2px 8px;border-radius:3px;font-weight:800;margin-left:8px}
 </style>
 </head>
 <body>
@@ -179,7 +140,7 @@ footer .tg-note { color:var(--accent2); font-size:13px; line-height:1.7; max-wid
 <div class="top-controls">
   <button id="settings-btn" title="Настройки">⚙</button>
   <div class="music-row">
-    <button id="music-btn" title="Вкл/выкл музыку">🔊</button>
+    <button id="music-btn">🔊</button>
     <input type="range" id="vol-slider" min="0" max="1" step="0.05" value="0.35">
   </div>
 </div>
@@ -195,7 +156,7 @@ footer .tg-note { color:var(--accent2); font-size:13px; line-height:1.7; max-wid
     <div class="subtitle">статистика timetoplay с помощью просмотра прошлого с помощью разных дат и других разных интересных функций — ttpstats</div>
     <div class="telegram-line">📢 телеграм канал — <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></div>
     <div class="soon-line">🚀 скоро будут другие сайты и игры про timetoplay — все анонсы в канале <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></div>
-    <div class="creator">создатель xxspk · made in arbuzovsk <span class="hint-tip">💡 кликни — график · правый клик — редактировать (только для тебя)</span></div>
+    <div class="creator">создатель xxspk · made in arbuzovsk <span class="hint-tip">💡 кликни — график · правый клик — редактировать</span></div>
   </div>
 </header>
 
@@ -206,18 +167,12 @@ footer .tg-note { color:var(--accent2); font-size:13px; line-height:1.7; max-wid
     <div class="ad-slot filled" onclick="openAd('arena')">
       <span class="ad-badge">РЕКЛАМА</span>
       <div class="ad-emoji">⚔️</div>
-      <div class="ad-body">
-        <div class="ad-title">ПВП Арена Арбузовска</div>
-        <div class="ad-desc">нажми чтобы узнать больше</div>
-      </div>
+      <div class="ad-body"><div class="ad-title">ПВП Арена Арбузовска</div><div class="ad-desc">нажми чтобы узнать больше</div></div>
     </div>
     <div class="ad-slot filled" onclick="openAd('nato')">
       <span class="ad-badge">РЕКЛАМА</span>
       <div class="ad-emoji">🛡️</div>
-      <div class="ad-body">
-        <div class="ad-title">Нация НАТО</div>
-        <div class="ad-desc">лучшая нация по прокачке</div>
-      </div>
+      <div class="ad-body"><div class="ad-title">Нация НАТО</div><div class="ad-desc">лучшая нация по прокачке</div></div>
     </div>
     <div class="ad-slot empty"></div>
   </div>
@@ -227,24 +182,17 @@ footer .tg-note { color:var(--accent2); font-size:13px; line-height:1.7; max-wid
 <footer>
   <div>если хотите добавить свой город сюда пишите <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></div>
   <div class="sep">·</div>
-  <div>возможно тут появится больше параметров помимо экономики и больше функций</div>
-  <div class="tg-note">
-    📢 <b>telegram <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></b> — подпишитесь, тут новости, разное, можно предложить че либо или пообщаться, скоро будут делаться новые ии-сайты про ттп или че то интересное
-  </div>
+  <div>возможно тут появится больше параметров помимо экономики</div>
+  <div class="tg-note">📢 <b>telegram <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></b> — подпишитесь, тут новости, можно предложить что-то или пообщаться</div>
 </footer>
 
 <div id="ad-modal-arena" class="ad-modal">
   <div class="ad-modal-inner">
     <button class="panel-close" onclick="closeAd('arena')">✕</button>
     <h2>⚔️ ПВП Арена Арбузовска</h2>
-    <p>На <b>/t spawn арбузовск</b> есть прикольная пвп арена на <b>4 чанка</b> — она не плоская, интересная, прикольная.</p>
-    <ul>
-      <li>Правил нет</li>
-      <li>Можно заказать арену на время для пвп с кем-то</li>
-      <li>Приходи и сражайся!</li>
-    </ul>
+    <p>На <b>/t spawn арбузовск</b> есть прикольная пвп арена на <b>4 чанка</b>.</p>
+    <ul><li>Правил нет</li><li>Можно заказать арену на время</li><li>Приходи и сражайся!</li></ul>
     <div class="ad-highlight">🛒 Скоро тут же откроется магазин</div>
-    <div class="ad-highlight" style="margin-top:10px">⬇️ А также скоро откроется <b>ПВП подвал под ареной</b> — там будет сложно отлиться, и не будет никаких препятствий.</div>
   </div>
 </div>
 
@@ -252,14 +200,9 @@ footer .tg-note { color:var(--accent2); font-size:13px; line-height:1.7; max-wid
   <div class="ad-modal-inner">
     <button class="panel-close" onclick="closeAd('nato')">✕</button>
     <h2>🛡️ Вступайте в нацию НАТО</h2>
-    <p>Хочешь вступить в лучшую нацию на сервере? НАТО ждёт именно тебя.</p>
-    <ul>
-      <li>У нас много фармилок</li>
-      <li>Красивый <b>/n spawn</b></li>
-      <li>Куча разных приколюшек</li>
-      <li>Лучшая нация в целом по прокачке</li>
-    </ul>
-    <div class="ad-highlight">🎯 Присоединяйся к НАТО — прокачивайся быстрее всех!</div>
+    <p>Хочешь в лучшую нацию? НАТО ждёт тебя.</p>
+    <ul><li>Много фармилок</li><li>Красивый <b>/n spawn</b></li><li>Куча приколюшек</li></ul>
+    <div class="ad-highlight">🎯 Присоединяйся!</div>
   </div>
 </div>
 
@@ -275,13 +218,11 @@ footer .tg-note { color:var(--accent2); font-size:13px; line-height:1.7; max-wid
   <div class="panel-box">
     <button class="panel-close" onclick="closeSettings()">✕</button>
     <h2>⚙️ Настройки</h2>
-    <div class="sub">настройки сохраняются в этом браузере</div>
+    <div class="sub">сохраняются в этом браузере</div>
     <div class="setting-group">
-      <span class="setting-label">🔊 Громкость музыки</span>
+      <span class="setting-label">🔊 Громкость</span>
       <input type="range" id="settings-vol" min="0" max="1" step="0.05" value="0.35">
-      <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:11px; color:var(--text3);">
-        <span>0%</span><span id="settings-vol-val">35%</span><span>100%</span>
-      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--text3)"><span>0%</span><span id="settings-vol-val">35%</span><span>100%</span></div>
     </div>
     <div class="setting-group">
       <span class="setting-label">🎨 Цвет меню</span>
@@ -292,9 +233,27 @@ footer .tg-note { color:var(--accent2); font-size:13px; line-height:1.7; max-wid
 
 <script src="data.js"></script>
 <script>
-const DATA = window.DATA || { cities:{balance:{snapshots:{}},population:{},size:{}}, players:{balance:{},active:{},shards:{},rubies:{}}, nations:{balance:{},size:{},citizens:{}}, wars:{list:[]}, other:{} };
+// ===== Данные =====
+var DATA = window.DATA || {};
+if (!DATA.cities) DATA.cities = {};
+if (!DATA.cities.balance) DATA.cities.balance = { snapshots: {} };
+if (!DATA.cities.balance.snapshots) DATA.cities.balance.snapshots = {};
+if (!DATA.cities.population) DATA.cities.population = {};
+if (!DATA.cities.size) DATA.cities.size = {};
+if (!DATA.players) DATA.players = {};
+if (!DATA.players.balance) DATA.players.balance = {};
+if (!DATA.players.active) DATA.players.active = {};
+if (!DATA.players.shards) DATA.players.shards = {};
+if (!DATA.players.rubies) DATA.players.rubies = {};
+if (!DATA.nations) DATA.nations = {};
+if (!DATA.nations.balance) DATA.nations.balance = {};
+if (!DATA.nations.size) DATA.nations.size = {};
+if (!DATA.nations.citizens) DATA.nations.citizens = {};
+if (!DATA.wars) DATA.wars = { list: [] };
+if (!DATA.wars.list) DATA.wars.list = [];
 
-const MAYORS = {
+// ===== Мэры =====
+var MAYORS = {
   'рига':'Frasie','рим':'MrRatix','лазурный_стокгольм':'lepepesha228',
   'иокогама':'Dotamamamuiui','макондо':'El_diablo','seapure':'n1zzyx',
   'французкая_империя':'Nikita2010','французская_империя':'Nikita2010',
@@ -303,11 +262,12 @@ const MAYORS = {
   'шмаледуйск':'h9nje','кривой_рог':'h9nje',
   'томская_империя':'gverti','ufa':'jek3482','los_angeles':'celestiallove',
   'германская_империя':'gordon_12356','ворона':'toxic22222',
-  'клан_китайцев':'kaba_day','великие_нидерланды':'bechenok','бенилюкс':'toxic22222',
+  'клан_китайцев':'kaba_day','великие_нидерланды':'bechenok','бенилюкс':'toxic22222'
 };
-function getMayor(name) { return MAYORS[name.toLowerCase().trim()] || null; }
+function getMayor(name){ try { return MAYORS[String(name).toLowerCase().trim()] || null; } catch(e){ return null; } }
 
-const PALETTES = {
+// ===== Палитры =====
+var PALETTES = {
   blue:{name:'Синий',dot:'#3b82f6',accent:'#3b82f6',accent2:'#60a5fa',accent3:'#2563eb',glow:'rgba(59,130,246,0.25)'},
   red:{name:'Красный',dot:'#ef4444',accent:'#ef4444',accent2:'#f87171',accent3:'#dc2626',glow:'rgba(239,68,68,0.25)'},
   white:{name:'Белый',dot:'#e5e7eb',accent:'#e5e7eb',accent2:'#f9fafb',accent3:'#9ca3af',glow:'rgba(229,231,235,0.2)'},
@@ -316,67 +276,138 @@ const PALETTES = {
   yellow:{name:'Жёлтый',dot:'#eab308',accent:'#eab308',accent2:'#facc15',accent3:'#ca8a04',glow:'rgba(234,179,8,0.25)'},
   orange:{name:'Оранжевый',dot:'#f97316',accent:'#f97316',accent2:'#fb923c',accent3:'#ea580c',glow:'rgba(249,115,22,0.25)'},
   pink:{name:'Розовый',dot:'#ec4899',accent:'#ec4899',accent2:'#f472b6',accent3:'#db2777',glow:'rgba(236,72,153,0.25)'},
-  cyan:{name:'Голубой',dot:'#06b6d4',accent:'#06b6d4',accent2:'#22d3ee',accent3:'#0891b2',glow:'rgba(6,182,212,0.25)'},
+  cyan:{name:'Голубой',dot:'#06b6d4',accent:'#06b6d4',accent2:'#22d3ee',accent3:'#0891b2',glow:'rgba(6,182,212,0.25)'}
 };
-
-function applyPalette(name) {
-  const p = PALETTES[name] || PALETTES.blue;
-  const root = document.documentElement;
+function applyPalette(name){
+  var p = PALETTES[name] || PALETTES.blue;
+  var root = document.documentElement;
   root.style.setProperty('--accent', p.accent);
   root.style.setProperty('--accent2', p.accent2);
   root.style.setProperty('--accent3', p.accent3);
   root.style.setProperty('--accent-glow', p.glow);
   root.style.setProperty('--win', p.accent);
-  root.style.setProperty('--ad-border', p.accent);
   localStorage.setItem('ttp_palette', name);
-  document.querySelectorAll('.color-opt').forEach(el => {
-    el.classList.toggle('active', el.dataset.color === name);
-  });
+  document.querySelectorAll('.color-opt').forEach(function(el){ el.classList.toggle('active', el.dataset.color === name); });
 }
 
-const OVERLAY = { edits: {} };
-function getEditedKey(s, sub, name) { return s + '.' + sub + '.' + name; }
-function applyEdits(s, sub, item) {
-  const key = getEditedKey(s, sub, item.name);
-  const e = OVERLAY.edits[key];
+// ===== Утилиты =====
+var NAME_ALIASES = { 'merrqq':'merqq','merrq':'merqq','merq':'merqq','cartez_ru1':'cartez_ru' };
+var NO_NEW_NAMES = ['gotopot753'];
+function normalizeKey(n){
+  var k = String(n).toLowerCase().replace('французкая','французская').trim();
+  if (NAME_ALIASES[k]) k = NAME_ALIASES[k];
+  return k;
+}
+function fmtDate(d){
+  try {
+    var p = d.split(' '); var dp = p[0], tp = p[1] || '00:00';
+    var dd = dp.split('-'); var tt = tp.split(':');
+    return dd[2] + '.' + dd[1] + '.' + dd[0] + ' ' + parseInt(tt[0]) + ':' + tt[1];
+  } catch(e){ return d; }
+}
+function fmtNumber(v){
+  if (typeof v !== 'number') return String(v);
+  var hd = v % 1 !== 0;
+  return v.toLocaleString('ru-RU', { minimumFractionDigits: hd ? 2 : 0, maximumFractionDigits: 2 });
+}
+function sortByValue(list){ return list.slice().sort(function(a,b){ return b.value - a.value; }); }
+function computeArrow(cur, prev){
+  var map = {};
+  if (prev) prev.forEach(function(it, i){ map[normalizeKey(it.name)] = i + 1; });
+  var res = {};
+  cur.forEach(function(it, i){
+    var cr = i + 1, nk = normalizeKey(it.name), pr = map[nk];
+    if (pr === undefined) res[it.name] = NO_NEW_NAMES.indexOf(nk) !== -1 ? {type:'dash',text:''} : {type:'new',text:'NEW'};
+    else if (pr > cr) res[it.name] = {type:'up',text:'▲ ' + (pr - cr)};
+    else if (pr < cr) res[it.name] = {type:'down',text:'▼ ' + (cr - pr)};
+    else res[it.name] = {type:'same',text:'—'};
+  });
+  return res;
+}
+function collectAllTime(snap){
+  var best = {};
+  Object.keys(snap).sort().forEach(function(date){
+    snap[date].forEach(function(it){
+      var nk = normalizeKey(it.name);
+      if (!best[nk] || it.value > best[nk].value) best[nk] = Object.assign({}, it);
+    });
+  });
+  return Object.values(best).sort(function(a,b){ return b.value - a.value; });
+}
+
+// ===== Даты из data.js =====
+function getSectionDates(key){
+  try {
+    var parts = key.split('.');
+    var sec = DATA[parts[0]];
+    if (!sec) return [];
+    var d = sec[parts[1]];
+    if (!d) return [];
+    if (d.snapshots) d = d.snapshots;
+    return Object.keys(d).sort();
+  } catch(e){ return []; }
+}
+function sectionHasAllTime(k){ return k === 'cities.balance' || k === 'players.active'; }
+
+// ===== История =====
+function getEntityHistory(s, sub, nm){
+  try {
+    var sec = DATA[s]; if (!sec) return [];
+    var d = sec[sub]; if (!d) return [];
+    if (d.snapshots) d = d.snapshots;
+    var nk = normalizeKey(nm), pts = [];
+    Object.keys(d).sort().forEach(function(date){
+      var arr = d[date];
+      if (!Array.isArray(arr)) return;
+      var f = arr.find(function(it){ return normalizeKey(it.name) === nk; });
+      if (f) pts.push({ date: date, value: f.value });
+    });
+    return pts;
+  } catch(e){ return []; }
+}
+
+// ===== Оверлей редактирования =====
+var OVERLAY = { edits: {} };
+function getEditedKey(s, sub, name){ return s + '.' + sub + '.' + name; }
+function applyEdits(s, sub, item){
+  var key = getEditedKey(s, sub, item.name);
+  var e = OVERLAY.edits[key];
   if (!e) return Object.assign({}, item, { _edited: false });
   return Object.assign({}, item, {
     name: e.name || item.name,
     value: e.value !== undefined ? e.value : item.value,
-    _edited: true, _originalName: item.name, _mayorOverride: e.mayor,
+    _edited: true, _originalName: item.name, _mayorOverride: e.mayor
   });
 }
-
-window.editEntity = function(s, sub, name) {
-  const key = getEditedKey(s, sub, name);
-  const ex = OVERLAY.edits[key] || {};
-  const nn = prompt('✏️ Новое название:', ex.name || name); if (nn === null) return;
-  const nv = prompt('💰 Новое значение:', ex.value !== undefined ? ex.value : ''); if (nv === null) return;
-  let nm = null;
+window.editEntity = function(s, sub, name){
+  var key = getEditedKey(s, sub, name);
+  var ex = OVERLAY.edits[key] || {};
+  var nn = prompt('✏️ Новое название:', ex.name || name); if (nn === null) return;
+  var nv = prompt('💰 Новое значение:', ex.value !== undefined ? ex.value : ''); if (nv === null) return;
+  var nm = null;
   if (s === 'cities') { nm = prompt('👑 Новый мэр:', ex.mayor || getMayor(name) || ''); if (nm === null) return; }
-  const ed = {};
+  var ed = {};
   if (nn.trim() && nn.trim() !== name) ed.name = nn.trim();
-  if (nv.trim() !== '') { const num = parseFloat(nv.replace(',', '.')); if (!isNaN(num)) ed.value = num; }
-  if (nm !== null) { const m = nm.trim(); const o = getMayor(name) || ''; if (m && m !== o) ed.mayor = m; else if (!m) ed.mayor = ''; }
+  if (nv.trim() !== '') { var num = parseFloat(nv.replace(',', '.')); if (!isNaN(num)) ed.value = num; }
+  if (nm !== null) { var m = nm.trim(), o = getMayor(name) || ''; if (m && m !== o) ed.mayor = m; else if (!m) ed.mayor = ''; }
   if (Object.keys(ed).length === 0) delete OVERLAY.edits[key]; else OVERLAY.edits[key] = ed;
   render();
 };
-
-document.addEventListener('contextmenu', e => {
-  const it = e.target.closest('.top-item');
+document.addEventListener('contextmenu', function(e){
+  var it = e.target.closest('.top-item');
   if (!it || !it.dataset.section) return;
   e.preventDefault();
   editEntity(it.dataset.section, it.dataset.sub, it.dataset.name);
 });
 
-const TAB_ORDER = [
+// ===== Табы и state =====
+var TAB_ORDER = [
   { id:'cities', icon:'🏙️', label:'Города' },
   { id:'players', icon:'🎮', label:'Игроки' },
   { id:'nations', icon:'🏛️', label:'Нации' },
-  { id:'wars', icon:'⚔️', label:'Масштабные войны вайпа' },
+  { id:'wars', icon:'⚔️', label:'Масштабные войны вайпа' }
 ];
-
-const sectionState = {
+var sectionState = {
   'cities.balance':{date:null,allTime:false},
   'cities.population':{date:null,allTime:false},
   'cities.size':{date:null,allTime:false},
@@ -386,287 +417,243 @@ const sectionState = {
   'players.rubies':{date:null,allTime:false},
   'nations.balance':{date:null,allTime:false},
   'nations.size':{date:null,allTime:false},
-  'nations.citizens':{date:null,allTime:false},
+  'nations.citizens':{date:null,allTime:false}
 };
+var state = { tab:'cities' };
 
-// ✅ даты берутся прямо из data.js
-function getSectionDates(key) {
-  const parts = key.split('.');
-  const sec = DATA[parts[0]]; if (!sec) return [];
-  let d = sec[parts[1]]; if (!d) return [];
-  if (d.snapshots) d = d.snapshots;
-  return Object.keys(d).sort();
-}
-function sectionHasAllTime(k) { return k === 'cities.balance' || k === 'players.active'; }
-
-let state = { tab:'cities' };
-
-function fmtDate(d) {
-  const p = d.split(' '); const dp = p[0], tp = p[1];
-  const dd = dp.split('-'); const tt = tp.split(':');
-  return dd[2] + '.' + dd[1] + '.' + dd[0] + ' ' + parseInt(tt[0]) + ':' + tt[1];
-}
-function fmtNumber(v) {
-  if (typeof v !== 'number') return String(v);
-  const hd = v % 1 !== 0;
-  return v.toLocaleString('ru-RU', { minimumFractionDigits: hd ? 2 : 0, maximumFractionDigits: 2 });
-}
-const NAME_ALIASES = { 'merrqq':'merqq','merrq':'merqq','merq':'merqq','cartez_ru1':'cartez_ru' };
-const NO_NEW_NAMES = ['gotopot753'];
-function normalizeKey(n) {
-  let k = n.toLowerCase().replace('французкая', 'французская').trim();
-  if (NAME_ALIASES[k]) k = NAME_ALIASES[k];
-  return k;
-}
-function computeArrow(cur, prev) {
-  const map = {};
-  if (prev) prev.forEach((it, i) => { map[normalizeKey(it.name)] = i + 1; });
-  const res = {};
-  cur.forEach((it, i) => {
-    const cr = i + 1; const nk = normalizeKey(it.name); const pr = map[nk];
-    if (pr === undefined) res[it.name] = NO_NEW_NAMES.indexOf(nk) !== -1 ? { type:'dash', text:'' } : { type:'new', text:'NEW' };
-    else if (pr > cr) res[it.name] = { type:'up', text:'▲ ' + (pr - cr) };
-    else if (pr < cr) res[it.name] = { type:'down', text:'▼ ' + (cr - pr) };
-    else res[it.name] = { type:'same', text:'—' };
-  });
-  return res;
-}
-function collectAllTime(snap) {
-  const best = {};
-  Object.keys(snap).sort().forEach(date => {
-    snap[date].forEach(it => {
-      const nk = normalizeKey(it.name);
-      if (!best[nk] || it.value > best[nk].value) best[nk] = Object.assign({}, it);
-    });
-  });
-  return Object.values(best).sort((a, b) => b.value - a.value);
-}
-function sortByValue(l) { return l.slice().sort((a, b) => b.value - a.value); }
-
-function getEntityHistory(s, sub, nm) {
-  const sec = DATA[s]; if (!sec) return [];
-  let d = sec[sub]; if (!d) return [];
-  if (d.snapshots) d = d.snapshots;
-  const nk = normalizeKey(nm); const pts = [];
-  Object.keys(d).sort().forEach(date => {
-    const arr = d[date];
-    if (!Array.isArray(arr)) return;
-    const f = arr.find(it => normalizeKey(it.name) === nk);
-    if (f) pts.push({ date, value: f.value });
-  });
-  return pts;
-}
-
-function sectionPickerHTML(key) {
-  const dates = getSectionDates(key);
-  const hasAll = sectionHasAllTime(key);
-  const st = sectionState[key];
-  const curDate = st.date || (dates.length ? dates[dates.length - 1] : '');
-  const opts = dates.map(d => '<option value="' + d + '" ' + ((!st.allTime && curDate === d) ? 'selected' : '') + '>' + fmtDate(d) + '</option>').join('');
-  const allOpt = hasAll ? '<option value="__ALL__" ' + (st.allTime ? 'selected' : '') + '>🏆 За всё время</option>' : '';
+// ===== Рендер хедера карточки =====
+function sectionPickerHTML(key){
+  var dates = getSectionDates(key);
+  var hasAll = sectionHasAllTime(key);
+  var st = sectionState[key];
+  var curDate = st.date || (dates.length ? dates[dates.length-1] : '');
+  var opts = dates.map(function(d){
+    return '<option value="' + d + '"' + ((!st.allTime && curDate === d) ? ' selected' : '') + '>' + fmtDate(d) + '</option>';
+  }).join('');
+  var allOpt = hasAll ? '<option value="__ALL__"' + (st.allTime ? ' selected' : '') + '>🏆 За всё время</option>' : '';
   return '<div class="sec-date-wrap"><label>📅 Дата</label><select class="sec-date" data-section="' + key + '">' + opts + allOpt + '</select></div>';
 }
-function attachSectionPickers() {
-  document.querySelectorAll('.sec-date').forEach(sel => {
-    sel.onchange = (e) => {
-      const k = e.target.dataset.section;
-      if (e.target.value === '__ALL__') sectionState[k].allTime = true;
-      else { sectionState[k].allTime = false; sectionState[k].date = e.target.value; }
-      render();
-    };
-  });
-}
-function renderTabs() {
-  const tabs = document.getElementById('tabs'); tabs.innerHTML = '';
-  TAB_ORDER.forEach(t => {
-    const b = document.createElement('button');
-    b.textContent = t.icon + ' ' + t.label;
-    if (state.tab === t.id) b.classList.add('active');
-    b.onclick = () => { state.tab = t.id; render(); };
-    tabs.appendChild(b);
-  });
-}
-function makeListItem(rank, item, unit, arrow, s, sub) {
-  const rc = rank <= 3 ? ' r' + rank : '';
-  const edc = item._edited ? ' edited' : '';
-  let arrHTML = arrow ? '<span class="arrow ' + arrow.type + '">' + arrow.text + '</span>' : '<span class="arrow dash"></span>';
-  const sn = item.sub ? '<span class="sub-note"> ' + item.sub + '</span>' : '';
-  const mayor = s === 'cities' ? (item._mayorOverride || getMayor(item._originalName || item.name)) : null;
-  const mHTML = mayor ? '<div class="mayor-line">👑 мэр: <b>' + mayor + '</b></div>' : '';
-  const eHTML = item._edited ? '<div class="edited-badge">✏️ изменено игроком</div>' : '';
-  let vHTML;
-  if (typeof item.display === 'string') vHTML = item.display;
-  else vHTML = fmtNumber(item.value) + '<span class="unit">' + (unit || '') + '</span>';
-  const safeName = (item._originalName || item.name).replace(/'/g, "\\'");
-  return '<div class="top-item' + rc + edc + '" data-section="' + (s || '') + '" data-sub="' + (sub || '') + '" data-name="' + (item._originalName || item.name) + '" onclick="openEntityChart(\'' + (s || '') + '\',\'' + (sub || '') + '\',\'' + safeName + '\',\'' + (unit || '') + '\')">' +
-    '<span class="rank">#' + rank + '</span>' +
-    '<div class="name-wrap"><span class="name">' + item.name + sn + '</span>' + mHTML + eHTML + '</div>' +
-    '<span class="value">' + vHTML + '</span>' + arrHTML + '</div>';
-}
-function renderTopList(list, unit, arrows, s, sub) {
-  if (!list || list.length === 0) return '<div class="empty">Нет данных</div>';
-  const proc = list.map(it => applyEdits(s || '', sub || '', it));
-  const sorted = sortByValue(proc);
-  return '<div class="top-list">' + sorted.map((it, i) => makeListItem(i + 1, it, unit || '', arrows ? arrows[it.name] : null, s, sub)).join('') + '</div>';
-}
-function cardHeader(key, title, subText, badge) {
+function cardHeader(key, title, subText, badge){
   badge = badge || '';
   return '<div class="card-head"><div class="card-head-text"><h2>' + title + ' ' + badge + '</h2><div class="card-sub">' + subText + '</div></div>' + sectionPickerHTML(key) + '</div>';
 }
-function renderLineChart(hist, unit) {
+
+// ===== Рендер списка =====
+function makeListItem(rank, item, unit, arrow, s, sub){
+  var rc = rank <= 3 ? ' r' + rank : '';
+  var arrHTML = arrow ? '<span class="arrow ' + arrow.type + '">' + arrow.text + '</span>' : '<span class="arrow dash"></span>';
+  var sn = item.sub ? '<span class="sub-note"> ' + item.sub + '</span>' : '';
+  var mayor = s === 'cities' ? (item._mayorOverride || getMayor(item._originalName || item.name)) : null;
+  var mHTML = mayor ? '<div class="mayor-line">👑 мэр: <b>' + mayor + '</b></div>' : '';
+  var vHTML;
+  if (typeof item.display === 'string') vHTML = item.display;
+  else vHTML = fmtNumber(item.value) + '<span class="unit">' + (unit || '') + '</span>';
+  var safeName = String(item._originalName || item.name).replace(/'/g, "\\'");
+  return '<div class="top-item' + rc + '" data-section="' + (s || '') + '" data-sub="' + (sub || '') + '" data-name="' + String(item._originalName || item.name).replace(/"/g,'&quot;') + '" onclick="openEntityChart(\'' + (s || '') + '\',\'' + (sub || '') + '\',\'' + safeName + '\',\'' + (unit || '') + '\')">' +
+    '<span class="rank">#' + rank + '</span>' +
+    '<div class="name-wrap"><span class="name">' + item.name + sn + '</span>' + mHTML + '</div>' +
+    '<span class="value">' + vHTML + '</span>' + arrHTML + '</div>';
+}
+function renderTopList(list, unit, arrows, s, sub){
+  if (!list || list.length === 0) return '<div class="empty">Нет данных</div>';
+  var proc = list.map(function(it){ return applyEdits(s || '', sub || '', it); });
+  var sorted = sortByValue(proc);
+  return '<div class="top-list">' + sorted.map(function(it, i){
+    return makeListItem(i + 1, it, unit || '', arrows ? arrows[it.name] : null, s, sub);
+  }).join('') + '</div>';
+}
+
+// ===== График =====
+function renderLineChart(hist, unit){
   if (!hist || hist.length === 0) return '<div class="empty">Нет данных</div>';
   if (hist.length === 1) {
     return '<div class="chart-single"><div class="val">' + fmtNumber(hist[0].value) + ' ' + (unit || '') + '</div>' +
       '<div class="date">' + fmtDate(hist[0].date) + ' МСК</div>' +
-      '<div class="wait">⚡ ожидание следующих обновлений</div></div>';
+      '<div class="wait">⚡ нужно 2+ точки для графика</div></div>';
   }
-  const W = 800, H = 220, PAD = 30;
-  const vals = hist.map(h => h.value);
-  const minV = Math.min.apply(null, vals), maxV = Math.max.apply(null, vals);
-  const rangeV = maxV - minV || 1;
-  const stepX = (W - PAD*2) / (hist.length - 1);
-  const pts = hist.map((h, i) => {
-    const x = PAD + i * stepX;
-    const y = H - PAD - ((h.value - minV) / rangeV) * (H - PAD*2);
-    return Object.assign({ x, y }, h);
+  var W = 800, H = 220, PAD = 30;
+  var vals = hist.map(function(h){ return h.value; });
+  var minV = Math.min.apply(null, vals), maxV = Math.max.apply(null, vals);
+  var rangeV = maxV - minV || 1;
+  var stepX = (W - PAD*2) / (hist.length - 1);
+  var pts = hist.map(function(h, i){
+    var x = PAD + i * stepX;
+    var y = H - PAD - ((h.value - minV) / rangeV) * (H - PAD*2);
+    return { x: x, y: y, date: h.date, value: h.value };
   });
-  const pathD = pts.map((p, i) => (i === 0 ? 'M' : 'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' ');
-  const areaD = pathD + ' L' + pts[pts.length-1].x.toFixed(1) + ',' + (H-PAD) + ' L' + pts[0].x.toFixed(1) + ',' + (H-PAD) + ' Z';
-  let grid = '';
-  for (let i = 0; i <= 4; i++) {
-    const y = PAD + (H - PAD*2) * (i/4);
-    grid += '<line x1="' + PAD + '" y1="' + y + '" x2="' + (W-PAD) + '" y2="' + y + '" stroke="var(--gridline)" stroke-width="1" stroke-dasharray="2,4"/>';
+  var pathD = pts.map(function(p, i){ return (i === 0 ? 'M' : 'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1); }).join(' ');
+  var areaD = pathD + ' L' + pts[pts.length-1].x.toFixed(1) + ',' + (H-PAD) + ' L' + pts[0].x.toFixed(1) + ',' + (H-PAD) + ' Z';
+  var grid = '';
+  for (var i = 0; i <= 4; i++) {
+    var yy = PAD + (H - PAD*2) * (i/4);
+    grid += '<line x1="' + PAD + '" y1="' + yy + '" x2="' + (W-PAD) + '" y2="' + yy + '" stroke="var(--gridline)" stroke-width="1" stroke-dasharray="2,4"/>';
   }
-  const dots = pts.map(p => '<circle cx="' + p.x + '" cy="' + p.y + '" r="4" fill="var(--accent)" stroke="var(--bg2)" stroke-width="2"/>').join('');
-  const labels = pts.map((p, i) => {
+  var dots = pts.map(function(p){ return '<circle cx="' + p.x + '" cy="' + p.y + '" r="4" fill="var(--accent)" stroke="var(--bg2)" stroke-width="2"/>'; }).join('');
+  var labels = pts.map(function(p, i){
     if (hist.length > 5 && i !== 0 && i !== pts.length-1 && i % 2 !== 0) return '';
     return '<text x="' + p.x + '" y="' + (p.y-10) + '" fill="var(--accent2)" font-size="10" text-anchor="middle" font-weight="700">' + fmtNumber(p.value) + '</text>';
   }).join('');
-  const xL = pts.map(p => '<text x="' + p.x + '" y="' + (H-8) + '" fill="var(--text3)" font-size="9" text-anchor="middle">' + fmtDate(p.date).split(' ')[0] + '</text>').join('');
+  var xL = pts.map(function(p){ return '<text x="' + p.x + '" y="' + (H-8) + '" fill="var(--text3)" font-size="9" text-anchor="middle">' + fmtDate(p.date).split(' ')[0] + '</text>'; }).join('');
   return '<div class="chart-wrap"><svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">' +
     grid + '<path d="' + areaD + '" fill="var(--accent-glow)"/><path d="' + pathD + '" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>' +
     dots + labels + xL + '</svg>' +
     '<div class="chart-labels"><span>мин: ' + fmtNumber(minV) + '</span><span>макс: ' + fmtNumber(maxV) + '</span><span>Δ: ' + fmtNumber(vals[vals.length-1] - vals[0]) + '</span></div></div>';
 }
-
-window.openEntityChart = function(s, sub, name, unit) {
-  const modal = document.getElementById('chart-modal');
-  const title = document.getElementById('chart-title');
-  const content = document.getElementById('chart-content');
-  const labels = {
+window.openEntityChart = function(s, sub, name, unit){
+  var modal = document.getElementById('chart-modal');
+  var title = document.getElementById('chart-title');
+  var content = document.getElementById('chart-content');
+  var labels = {
     cities:{balance:'баланса',population:'населения',size:'размера'},
     players:{balance:'баланса',active:'игрового времени',shards:'осколков',rubies:'рубинов'},
-    nations:{balance:'баланса',size:'размера',citizens:'граждан'},
+    nations:{balance:'баланса',size:'размера',citizens:'граждан'}
   };
-  const l = (labels[s] && labels[s][sub]) || '';
+  var l = (labels[s] && labels[s][sub]) || '';
   title.innerHTML = '📈 ' + name + ' — история ' + l;
-  const hist = getEntityHistory(s, sub, name);
-  if (hist.length === 0) content.innerHTML = '<div class="empty">Нет графика</div>';
-  else content.innerHTML = renderLineChart(hist, unit);
+  var hist = getEntityHistory(s, sub, name);
+  content.innerHTML = hist.length === 0 ? '<div class="empty">Нет графика</div>' : renderLineChart(hist, unit);
   modal.classList.add('open');
 };
-window.closeChart = function() { document.getElementById('chart-modal').classList.remove('open'); };
-document.getElementById('chart-modal').addEventListener('click', e => { if (e.target.id === 'chart-modal') window.closeChart(); });
+window.closeChart = function(){ document.getElementById('chart-modal').classList.remove('open'); };
+document.getElementById('chart-modal').addEventListener('click', function(e){ if (e.target.id === 'chart-modal') window.closeChart(); });
 
-function renderCities() {
-  let html = '';
-  const bk = 'cities.balance'; const bst = sectionState[bk]; const bdates = getSectionDates(bk);
-  let blist, bhead, bbadge = '', barrows = null;
-  if (bst.allTime) { blist = collectAllTime(DATA.cities.balance.snapshots).slice(0,10); bhead = 'за всё время наблюдений'; bbadge = '<span class="badge-alltime">ЗА ВСЁ ВРЕМЯ</span>'; }
-  else {
-    const cd = bst.date || bdates[bdates.length-1];
-    blist = sortByValue(DATA.cities.balance.snapshots[cd] || []).slice(0,10);
-    const idx = bdates.indexOf(cd);
+// ===== Рендер ГОРОДА =====
+function renderCities(){
+  var html = '';
+  var bk = 'cities.balance';
+  var bst = sectionState[bk];
+  var bdates = getSectionDates(bk);
+  var blist, bhead, bbadge = '', barrows = null;
+  if (bst.allTime) {
+    blist = collectAllTime(DATA.cities.balance.snapshots).slice(0, 10);
+    bhead = 'за всё время наблюдений';
+    bbadge = '<span class="badge-alltime">ЗА ВСЁ ВРЕМЯ</span>';
+  } else {
+    var cd = bst.date || (bdates.length ? bdates[bdates.length-1] : '');
+    blist = cd ? sortByValue(DATA.cities.balance.snapshots[cd] || []).slice(0, 10) : [];
+    var idx = bdates.indexOf(cd);
     if (idx > 0) barrows = computeArrow(blist, sortByValue(DATA.cities.balance.snapshots[bdates[idx-1]] || []));
-    bhead = fmtDate(cd) + ' МСК · 💡 клик — график · правый клик — изменить';
+    bhead = cd ? fmtDate(cd) + ' МСК · 💡 клик — график · правый клик — изменить' : 'нет данных';
   }
-  html += '<div class="card">' + cardHeader(bk, '📊 Топ городов по балансу', bhead, bbadge) +
-    renderTopList(blist, ' ₽', barrows, 'cities', 'balance') +
-    (DATA.cities.balance.note ? '<div class="card-note">' + DATA.cities.balance.note + '</div>' : '') + '</div>';
+  html += '<div class="card">' + cardHeader(bk, '📊 Топ городов по балансу', bhead, bbadge) + renderTopList(blist, ' ₽', barrows, 'cities', 'balance') + (DATA.cities.balance.note ? '<div class="card-note">' + DATA.cities.balance.note + '</div>' : '') + '</div>';
 
-  const pk = 'cities.population'; const pdates = getSectionDates(pk); const pd = sectionState[pk].date || pdates[pdates.length-1];
-  const pl = sortByValue(DATA.cities.population[pd] || []).slice(0,10);
-  let parr = null; const pidx = pdates.indexOf(pd);
+  var pk = 'cities.population';
+  var pdates = getSectionDates(pk);
+  var pd = sectionState[pk].date || (pdates.length ? pdates[pdates.length-1] : '');
+  var pl = pd ? sortByValue(DATA.cities.population[pd] || []).slice(0, 10) : [];
+  var parr = null, pidx = pdates.indexOf(pd);
   if (pidx > 0) parr = computeArrow(pl, sortByValue(DATA.cities.population[pdates[pidx-1]] || []));
-  html += '<div class="card">' + cardHeader(pk, '👥 Топ городов по населению', fmtDate(pd) + ' МСК') + renderTopList(pl, ' 👤', parr, 'cities', 'population') + '</div>';
+  html += '<div class="card">' + cardHeader(pk, '👥 Топ городов по населению', pd ? fmtDate(pd) + ' МСК' : 'нет данных') + renderTopList(pl, ' 👤', parr, 'cities', 'population') + '</div>';
 
-  const sk = 'cities.size'; const sdates = getSectionDates(sk); const sd = sectionState[sk].date || sdates[sdates.length-1];
-  const sl = sortByValue(DATA.cities.size[sd] || []).slice(0,10);
-  let sarr = null; const sidx = sdates.indexOf(sd);
+  var sk = 'cities.size';
+  var sdates = getSectionDates(sk);
+  var sd = sectionState[sk].date || (sdates.length ? sdates[sdates.length-1] : '');
+  var sl = sd ? sortByValue(DATA.cities.size[sd] || []).slice(0, 10) : [];
+  var sarr = null, sidx = sdates.indexOf(sd);
   if (sidx > 0) sarr = computeArrow(sl, sortByValue(DATA.cities.size[sdates[sidx-1]] || []));
-  html += '<div class="card">' + cardHeader(sk, '📏 Топ городов по размеру', fmtDate(sd) + ' МСК') + renderTopList(sl, ' ⬛', sarr, 'cities', 'size') + '</div>';
+  html += '<div class="card">' + cardHeader(sk, '📏 Топ городов по размеру', sd ? fmtDate(sd) + ' МСК' : 'нет данных') + renderTopList(sl, ' ⬛', sarr, 'cities', 'size') + '</div>';
   return html;
 }
 
-function renderPlayers() {
-  let html = '';
-  const bk = 'players.balance'; const bdates = getSectionDates(bk); const bd = sectionState[bk].date || bdates[bdates.length-1];
-  const bl = sortByValue(DATA.players.balance[bd] || []).slice(0,10);
-  let barr = null; const bidx = bdates.indexOf(bd);
-  if (bidx > 0) barr = computeArrow(bl, sortByValue(DATA.players.balance[bdates[bidx-1]] || []));
-  html += '<div class="card">' + cardHeader(bk, '💰 Топ по балансу игрока', fmtDate(bd) + ' МСК') + renderTopList(bl, ' ₽', barr, 'players', 'balance') + '</div>';
+// ===== Рендер ИГРОКИ =====
+function renderPlayers(){
+  var html = '';
 
-  const ak = 'players.active'; const a = DATA.players.active; const ast = sectionState[ak]; const adates = Object.keys(a).sort();
-  let alist, ahead, abadge = '', aarr = null;
+  // 1. Баланс
+  var bk = 'players.balance';
+  var bdates = getSectionDates(bk);
+  var bd = sectionState[bk].date || (bdates.length ? bdates[bdates.length-1] : '');
+  var bl = bd ? sortByValue(DATA.players.balance[bd] || []).slice(0, 10) : [];
+  var barr = null, bidx = bdates.indexOf(bd);
+  if (bidx > 0) barr = computeArrow(bl, sortByValue(DATA.players.balance[bdates[bidx-1]] || []));
+  html += '<div class="card">' + cardHeader(bk, '💰 Топ по балансу игрока', bd ? fmtDate(bd) + ' МСК' : 'нет данных') + renderTopList(bl, ' ₽', barr, 'players', 'balance') + '</div>';
+
+  // 2. Актив
+  var ak = 'players.active';
+  var a = DATA.players.active || {};
+  var ast = sectionState[ak];
+  var adates = Object.keys(a).sort();
+  var alist = [], ahead = 'нет данных', abadge = '', aarr = null;
   if (ast.allTime) {
-    const best = {};
-    Object.values(a).forEach(snap => { snap.forEach(it => { const nk = normalizeKey(it.name); if (!best[nk] || it.value > best[nk].value) best[nk] = Object.assign({}, it); }); });
-    alist = Object.values(best).sort((x, y) => y.value - x.value).slice(0,10);
-    ahead = 'за всё время наблюдений'; abadge = '<span class="badge-alltime">ЗА ВСЁ ВРЕМЯ</span>';
-  } else {
-    const cd = ast.date || adates[adates.length-1];
+    var best = {};
+    Object.values(a).forEach(function(snap){
+      snap.forEach(function(it){
+        var nk = normalizeKey(it.name);
+        if (!best[nk] || it.value > best[nk].value) best[nk] = Object.assign({}, it);
+      });
+    });
+    alist = Object.values(best).sort(function(x, y){ return y.value - x.value; }).slice(0, 10);
+    ahead = 'за всё время наблюдений';
+    abadge = '<span class="badge-alltime">ЗА ВСЁ ВРЕМЯ</span>';
+  } else if (adates.length) {
+    var cd = ast.date || adates[adates.length-1];
     alist = a[cd] || [];
-    const idx = adates.indexOf(cd);
+    var idx = adates.indexOf(cd);
     if (idx > 0) aarr = computeArrow(alist, a[adates[idx-1]]);
     ahead = fmtDate(cd) + ' МСК · по игровому времени';
   }
   html += '<div class="card">' + cardHeader(ak, '🎮 Топ самых активных игроков', ahead, abadge) + renderTopList(alist, '', aarr, 'players', 'active') + '</div>';
 
-  const rk = 'players.rubies'; const rdates = getSectionDates(rk); const rd = sectionState[rk].date || rdates[rdates.length-1];
-  const rl = sortByValue(DATA.players.rubies[rd] || []).slice(0,10);
-  let rarr = null; const ridx = rdates.indexOf(rd);
+  // 3. Рубины
+  var rk = 'players.rubies';
+  var rdates = getSectionDates(rk);
+  var rd = sectionState[rk].date || (rdates.length ? rdates[rdates.length-1] : '');
+  var rl = rd ? sortByValue(DATA.players.rubies[rd] || []).slice(0, 10) : [];
+  var rarr = null, ridx = rdates.indexOf(rd);
   if (ridx > 0) rarr = computeArrow(rl, sortByValue(DATA.players.rubies[rdates[ridx-1]] || []));
-  html += '<div class="card">' + cardHeader(rk, '💎 Топ по рубинам', fmtDate(rd) + ' МСК') + renderTopList(rl, ' 💎', rarr, 'players', 'rubies') +
-    (DATA.players.rubies.note ? '<div class="card-note">' + DATA.players.rubies.note + '</div>' : '') + '</div>';
+  html += '<div class="card">' + cardHeader(rk, '💎 Топ по рубинам', rd ? fmtDate(rd) + ' МСК' : 'нет данных') + renderTopList(rl, ' 💎', rarr, 'players', 'rubies') + (DATA.players.rubies.note ? '<div class="card-note">' + DATA.players.rubies.note + '</div>' : '') + '</div>';
 
-  const shk = 'players.shards'; const shdates = getSectionDates(shk); const shd = sectionState[shk].date || shdates[shdates.length-1];
-  const shl = sortByValue(DATA.players.shards[shd] || []).slice(0,10);
-  let sharr = null; const shidx = shdates.indexOf(shd);
+  // 4. Осколки
+  var shk = 'players.shards';
+  var shdates = getSectionDates(shk);
+  var shd = sectionState[shk].date || (shdates.length ? shdates[shdates.length-1] : '');
+  var shl = shd ? sortByValue(DATA.players.shards[shd] || []).slice(0, 10) : [];
+  var sharr = null, shidx = shdates.indexOf(shd);
   if (shidx > 0) sharr = computeArrow(shl, sortByValue(DATA.players.shards[shdates[shidx-1]] || []));
-  html += '<div class="card">' + cardHeader(shk, '◆ Топ по осколкам', fmtDate(shd) + ' МСК') + renderTopList(shl, ' ◆', sharr, 'players', 'shards') + '</div>';
+  html += '<div class="card">' + cardHeader(shk, '◆ Топ по осколкам', shd ? fmtDate(shd) + ' МСК' : 'нет данных') + renderTopList(shl, ' ◆', sharr, 'players', 'shards') + '</div>';
+
   return html;
 }
 
-function renderNations() {
-  let html = '';
-  const sk = 'nations.size'; const sdates = getSectionDates(sk); const sd = sectionState[sk].date || sdates[sdates.length-1];
-  const sl = sortByValue(DATA.nations.size[sd] || []).slice(0,10);
-  let sarr = null; const sidx = sdates.indexOf(sd);
+// ===== Рендер НАЦИИ =====
+function renderNations(){
+  var html = '';
+
+  var sk = 'nations.size';
+  var sdates = getSectionDates(sk);
+  var sd = sectionState[sk].date || (sdates.length ? sdates[sdates.length-1] : '');
+  var sl = sd ? sortByValue(DATA.nations.size[sd] || []).slice(0, 10) : [];
+  var sarr = null, sidx = sdates.indexOf(sd);
   if (sidx > 0) sarr = computeArrow(sl, sortByValue(DATA.nations.size[sdates[sidx-1]] || []));
-  html += '<div class="card">' + cardHeader(sk, '📏 Топ наций по размеру', fmtDate(sd) + ' МСК') + renderTopList(sl, ' ⬛', sarr, 'nations', 'size') + '</div>';
+  html += '<div class="card">' + cardHeader(sk, '📏 Топ наций по размеру', sd ? fmtDate(sd) + ' МСК' : 'нет данных') + renderTopList(sl, ' ⬛', sarr, 'nations', 'size') + '</div>';
 
-  const bk = 'nations.balance'; const bdates = getSectionDates(bk); const bd = sectionState[bk].date || bdates[bdates.length-1];
-  const bl = sortByValue(DATA.nations.balance[bd] || []).slice(0,10);
-  let barr = null; const bidx = bdates.indexOf(bd);
+  var bk = 'nations.balance';
+  var bdates = getSectionDates(bk);
+  var bd = sectionState[bk].date || (bdates.length ? bdates[bdates.length-1] : '');
+  var bl = bd ? sortByValue(DATA.nations.balance[bd] || []).slice(0, 10) : [];
+  var barr = null, bidx = bdates.indexOf(bd);
   if (bidx > 0) barr = computeArrow(bl, sortByValue(DATA.nations.balance[bdates[bidx-1]] || []));
-  html += '<div class="card">' + cardHeader(bk, '💰 Топ наций по балансу', fmtDate(bd) + ' МСК') + renderTopList(bl, ' ₽', barr, 'nations', 'balance') + '</div>';
+  html += '<div class="card">' + cardHeader(bk, '💰 Топ наций по балансу', bd ? fmtDate(bd) + ' МСК' : 'нет данных') + renderTopList(bl, ' ₽', barr, 'nations', 'balance') + '</div>';
 
-  const ck = 'nations.citizens'; const cdates = getSectionDates(ck); const cd = sectionState[ck].date || cdates[cdates.length-1];
-  const cl = sortByValue(DATA.nations.citizens[cd] || []).slice(0,10);
-  let carr = null; const cidx = cdates.indexOf(cd);
+  var ck = 'nations.citizens';
+  var cdates = getSectionDates(ck);
+  var cd = sectionState[ck].date || (cdates.length ? cdates[cdates.length-1] : '');
+  var cl = cd ? sortByValue(DATA.nations.citizens[cd] || []).slice(0, 10) : [];
+  var carr = null, cidx = cdates.indexOf(cd);
   if (cidx > 0) carr = computeArrow(cl, sortByValue(DATA.nations.citizens[cdates[cidx-1]] || []));
-  html += '<div class="card">' + cardHeader(ck, '👥 Топ наций по гражданам', fmtDate(cd) + ' МСК') + renderTopList(cl, ' 👤', carr, 'nations', 'citizens') + '</div>';
+  html += '<div class="card">' + cardHeader(ck, '👥 Топ наций по гражданам', cd ? fmtDate(cd) + ' МСК' : 'нет данных') + renderTopList(cl, ' 👤', carr, 'nations', 'citizens') + '</div>';
+
   return html;
 }
 
-function renderWars() {
-  const wars = DATA.wars.list;
-  let html = '<div class="card"><div class="card-head"><div class="card-head-text"><h2>⚔️ Масштабные войны вайпа</h2>' +
-    '<div class="card-sub">история крупных военных конфликтов · ' + wars.length + ' ' + (wars.length < 5 ? 'войны' : 'войн') + '</div></div></div>';
-  wars.forEach(w => {
-    const t1 = w.winner === 1, t2 = w.winner === 2;
-    const sc = w.status === 'ongoing' ? ' ongoing' : (w.status === 'cancelled' ? ' cancelled' : '');
-    let rHTML = '';
+// ===== Рендер ВОЙНЫ =====
+function renderWars(){
+  var wars = (DATA.wars && DATA.wars.list) ? DATA.wars.list : [];
+  var html = '<div class="card"><div class="card-head"><div class="card-head-text"><h2>⚔️ Масштабные войны вайпа</h2><div class="card-sub">история крупных военных конфликтов · ' + wars.length + ' ' + (wars.length < 5 ? 'войны' : 'войн') + '</div></div></div>';
+  wars.forEach(function(w){
+    var t1 = w.winner === 1, t2 = w.winner === 2;
+    var sc = w.status === 'ongoing' ? ' ongoing' : (w.status === 'cancelled' ? ' cancelled' : '');
+    var rHTML = '';
     if (w.status === 'ongoing') rHTML = '<span class="status ongoing">⚔️ ВОЙНА ЕЩЁ ИДЁТ</span>';
     else if (w.status === 'cancelled') rHTML = '<span class="status cancelled">✖ ВОЙНА ОТМЕНЕНА</span>';
     else rHTML = '<span class="trophy">🏆</span><span>Победа: <b style="color:var(--win)">' + (w.winner === 1 ? w.team1 : w.team2) + '</b></span>' + (w.faction ? '<span class="faction">' + w.faction + '</span>' : '');
@@ -680,70 +667,120 @@ function renderWars() {
   return html;
 }
 
-const RENDERERS = { cities:renderCities, players:renderPlayers, nations:renderNations, wars:renderWars };
+// ===== Главный рендер =====
+var RENDERERS = { cities: renderCities, players: renderPlayers, nations: renderNations, wars: renderWars };
 
-function render() {
-  Object.keys(sectionState).forEach(key => {
-    const dts = getSectionDates(key);
-    const st = sectionState[key];
-    if (dts.length && (!st.date || dts.indexOf(st.date) === -1)) st.date = dts[dts.length-1];
+function renderTabs(){
+  var tabsEl = document.getElementById('tabs');
+  tabsEl.innerHTML = '';
+  TAB_ORDER.forEach(function(t){
+    var b = document.createElement('button');
+    b.textContent = t.icon + ' ' + t.label;
+    if (state.tab === t.id) b.classList.add('active');
+    b.onclick = function(){ state.tab = t.id; render(); };
+    tabsEl.appendChild(b);
   });
-  renderTabs();
-  document.getElementById('content').innerHTML = RENDERERS[state.tab] ? RENDERERS[state.tab]() : '<div class="empty">В разработке</div>';
-  attachSectionPickers();
 }
 
-function renderColorGrid() {
-  const g = document.getElementById('color-grid'); if (!g) return;
-  const cur = localStorage.getItem('ttp_palette') || 'blue';
+function render(){
+  try {
+    // подтягиваем валидные даты
+    Object.keys(sectionState).forEach(function(key){
+      var dts = getSectionDates(key);
+      var st = sectionState[key];
+      if (dts.length && (!st.date || dts.indexOf(st.date) === -1)) st.date = dts[dts.length-1];
+    });
+    renderTabs();
+    var contentEl = document.getElementById('content');
+    var fn = RENDERERS[state.tab];
+    contentEl.innerHTML = fn ? fn() : '<div class="empty">В разработке</div>';
+    // привязка дат
+    document.querySelectorAll('.sec-date').forEach(function(sel){
+      sel.onchange = function(e){
+        var k = e.target.dataset.section;
+        if (e.target.value === '__ALL__') sectionState[k].allTime = true;
+        else { sectionState[k].allTime = false; sectionState[k].date = e.target.value; }
+        render();
+      };
+    });
+  } catch (err) {
+    console.error('Render error:', err);
+    document.getElementById('content').innerHTML =
+      '<div class="empty" style="color:#ef4444">⚠ Ошибка: ' + (err.message || err) + '<br>' +
+      '<span style="font-size:11px;color:#8f9bb0">Скинь скриншот админу</span></div>';
+  }
+}
+
+// ===== Настройки =====
+function renderColorGrid(){
+  var g = document.getElementById('color-grid');
+  if (!g) return;
+  var cur = localStorage.getItem('ttp_palette') || 'blue';
   g.innerHTML = '';
-  Object.entries(PALETTES).forEach(([k, p]) => {
-    const b = document.createElement('button');
+  Object.keys(PALETTES).forEach(function(k){
+    var p = PALETTES[k];
+    var b = document.createElement('button');
     b.className = 'color-opt' + (k === cur ? ' active' : '');
     b.dataset.color = k;
-    b.innerHTML = '<span class="color-dot" style="background:' + p.dot + '; color:' + p.dot + '"></span>' + p.name;
-    b.onclick = () => applyPalette(k);
+    b.innerHTML = '<span class="color-dot" style="background:' + p.dot + '"></span>' + p.name;
+    b.onclick = function(){ applyPalette(k); };
     g.appendChild(b);
   });
 }
-
-window.openSettings = function() {
+window.openSettings = function(){
   document.getElementById('settings-modal').classList.add('open');
   renderColorGrid();
-  const v = parseFloat(localStorage.getItem('ttp_vol') || '0.35');
+  var v = parseFloat(localStorage.getItem('ttp_vol') || '0.35');
   document.getElementById('settings-vol').value = v;
   document.getElementById('settings-vol-val').textContent = Math.round(v*100) + '%';
 };
-window.closeSettings = function() { document.getElementById('settings-modal').classList.remove('open'); };
-document.getElementById('settings-modal').addEventListener('click', e => { if (e.target.id === 'settings-modal') window.closeSettings(); });
+window.closeSettings = function(){ document.getElementById('settings-modal').classList.remove('open'); };
+document.getElementById('settings-modal').addEventListener('click', function(e){ if (e.target.id === 'settings-modal') window.closeSettings(); });
 document.getElementById('settings-btn').onclick = window.openSettings;
 
-document.getElementById('settings-vol').oninput = (e) => {
-  const v = parseFloat(e.target.value);
+document.getElementById('settings-vol').oninput = function(e){
+  var v = parseFloat(e.target.value);
   document.getElementById('settings-vol-val').textContent = Math.round(v*100) + '%';
-  music.volume = v; volSlider.value = v; localStorage.setItem('ttp_vol', v);
+  var m = document.getElementById('bg-music');
+  if (m) m.volume = v;
+  var vs = document.getElementById('vol-slider');
+  if (vs) vs.value = v;
+  localStorage.setItem('ttp_vol', v);
 };
 
-window.openAd = function(t) { document.getElementById('ad-modal-' + t).classList.add('open'); };
-window.closeAd = function(t) { document.getElementById('ad-modal-' + t).classList.remove('open'); };
-document.querySelectorAll('.ad-modal').forEach(m => { m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); }); });
+// ===== Реклама =====
+window.openAd = function(t){ document.getElementById('ad-modal-' + t).classList.add('open'); };
+window.closeAd = function(t){ document.getElementById('ad-modal-' + t).classList.remove('open'); };
+document.querySelectorAll('.ad-modal').forEach(function(m){
+  m.addEventListener('click', function(e){ if (e.target === m) m.classList.remove('open'); });
+});
 
-const music = document.getElementById('bg-music');
-const musicBtn = document.getElementById('music-btn');
-const volSlider = document.getElementById('vol-slider');
-let savedVol = parseFloat(localStorage.getItem('ttp_vol') || '0.35');
-volSlider.value = savedVol; music.volume = savedVol;
-let musicPlaying = false, musicStarted = false;
-function tryStartMusic() { if (musicStarted) return; music.play().then(() => { musicPlaying = true; musicStarted = true; musicBtn.textContent = '🔊'; }).catch(() => { musicBtn.textContent = '🔇'; }); }
+// ===== Музыка =====
+var music = document.getElementById('bg-music');
+var musicBtn = document.getElementById('music-btn');
+var volSlider = document.getElementById('vol-slider');
+var savedVol = parseFloat(localStorage.getItem('ttp_vol') || '0.35');
+volSlider.value = savedVol;
+music.volume = savedVol;
+var musicPlaying = false, musicStarted = false;
+function tryStartMusic(){
+  if (musicStarted) return;
+  music.play().then(function(){ musicPlaying = true; musicStarted = true; musicBtn.textContent = '🔊'; }).catch(function(){ musicBtn.textContent = '🔇'; });
+}
 tryStartMusic();
-document.addEventListener('click', () => { if (!musicStarted) tryStartMusic(); }, { once: false });
-musicBtn.onclick = () => {
+document.addEventListener('click', function(){ if (!musicStarted) tryStartMusic(); });
+musicBtn.onclick = function(){
   if (musicPlaying) { music.pause(); musicPlaying = false; musicBtn.textContent = '🔇'; }
-  else { music.play().then(() => { musicPlaying = true; musicStarted = true; musicBtn.textContent = '🔊'; }).catch(() => {}); }
+  else { music.play().then(function(){ musicPlaying = true; musicStarted = true; musicBtn.textContent = '🔊'; }).catch(function(){}); }
 };
-volSlider.oninput = () => { const v = parseFloat(volSlider.value); music.volume = v; localStorage.setItem('ttp_vol', v); };
+volSlider.oninput = function(){
+  var v = parseFloat(volSlider.value);
+  music.volume = v;
+  localStorage.setItem('ttp_vol', v);
+};
 
-const savedPalette = localStorage.getItem('ttp_palette') || 'blue';
+// ===== Старт =====
+var savedPalette = localStorage.getItem('ttp_palette') || 'blue';
 applyPalette(savedPalette);
 render();
 </script>
