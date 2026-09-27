@@ -233,24 +233,25 @@ footer .tg-note{color:var(--accent2);font-size:13px;line-height:1.7;max-width:78
 
 <script src="data.js"></script>
 <script>
-// ===== Данные =====
+// ===== Гарантируем структуру =====
 var DATA = window.DATA || {};
-if (!DATA.cities) DATA.cities = {};
-if (!DATA.cities.balance) DATA.cities.balance = { snapshots: {} };
-if (!DATA.cities.balance.snapshots) DATA.cities.balance.snapshots = {};
-if (!DATA.cities.population) DATA.cities.population = {};
-if (!DATA.cities.size) DATA.cities.size = {};
-if (!DATA.players) DATA.players = {};
-if (!DATA.players.balance) DATA.players.balance = {};
-if (!DATA.players.active) DATA.players.active = {};
-if (!DATA.players.shards) DATA.players.shards = {};
-if (!DATA.players.rubies) DATA.players.rubies = {};
-if (!DATA.nations) DATA.nations = {};
-if (!DATA.nations.balance) DATA.nations.balance = {};
-if (!DATA.nations.size) DATA.nations.size = {};
-if (!DATA.nations.citizens) DATA.nations.citizens = {};
-if (!DATA.wars) DATA.wars = { list: [] };
-if (!DATA.wars.list) DATA.wars.list = [];
+function ensureArr(obj, key){ if (!obj[key] || typeof obj[key] !== 'object') obj[key] = {}; }
+DATA.cities = DATA.cities || {};
+DATA.cities.balance = DATA.cities.balance || {};
+DATA.cities.balance.snapshots = DATA.cities.balance.snapshots || {};
+DATA.cities.population = DATA.cities.population || {};
+DATA.cities.size = DATA.cities.size || {};
+DATA.players = DATA.players || {};
+DATA.players.balance = DATA.players.balance || {};
+DATA.players.active = DATA.players.active || {};
+DATA.players.shards = DATA.players.shards || {};
+DATA.players.rubies = DATA.players.rubies || {};
+DATA.nations = DATA.nations || {};
+DATA.nations.balance = DATA.nations.balance || {};
+DATA.nations.size = DATA.nations.size || {};
+DATA.nations.citizens = DATA.nations.citizens || {};
+DATA.wars = DATA.wars || {};
+DATA.wars.list = Array.isArray(DATA.wars.list) ? DATA.wars.list : [];
 
 // ===== Мэры =====
 var MAYORS = {
@@ -264,7 +265,7 @@ var MAYORS = {
   'германская_империя':'gordon_12356','ворона':'toxic22222',
   'клан_китайцев':'kaba_day','великие_нидерланды':'bechenok','бенилюкс':'toxic22222'
 };
-function getMayor(name){ try { return MAYORS[String(name).toLowerCase().trim()] || null; } catch(e){ return null; } }
+function getMayor(name){ try { return MAYORS[String(name||'').toLowerCase().trim()] || null; } catch(e){ return null; } }
 
 // ===== Палитры =====
 var PALETTES = {
@@ -294,28 +295,33 @@ function applyPalette(name){
 var NAME_ALIASES = { 'merrqq':'merqq','merrq':'merqq','merq':'merqq','cartez_ru1':'cartez_ru' };
 var NO_NEW_NAMES = ['gotopot753'];
 function normalizeKey(n){
-  var k = String(n).toLowerCase().replace('французкая','французская').trim();
+  var k = String(n || '').toLowerCase().replace('французкая','французская').trim();
   if (NAME_ALIASES[k]) k = NAME_ALIASES[k];
   return k;
 }
 function fmtDate(d){
   try {
-    var p = d.split(' '); var dp = p[0], tp = p[1] || '00:00';
+    var p = String(d).split(' '); var dp = p[0] || '', tp = p[1] || '00:00';
     var dd = dp.split('-'); var tt = tp.split(':');
-    return dd[2] + '.' + dd[1] + '.' + dd[0] + ' ' + parseInt(tt[0]) + ':' + tt[1];
-  } catch(e){ return d; }
+    return (dd[2]||'?') + '.' + (dd[1]||'?') + '.' + (dd[0]||'?') + ' ' + parseInt(tt[0]||0) + ':' + (tt[1]||'00');
+  } catch(e){ return String(d); }
 }
 function fmtNumber(v){
-  if (typeof v !== 'number') return String(v);
+  if (typeof v !== 'number' || isNaN(v)) return String(v);
   var hd = v % 1 !== 0;
   return v.toLocaleString('ru-RU', { minimumFractionDigits: hd ? 2 : 0, maximumFractionDigits: 2 });
 }
-function sortByValue(list){ return list.slice().sort(function(a,b){ return b.value - a.value; }); }
+function sortByValue(list){
+  if (!Array.isArray(list)) return [];
+  return list.slice().sort(function(a,b){ return (b.value || 0) - (a.value || 0); });
+}
 function computeArrow(cur, prev){
   var map = {};
-  if (prev) prev.forEach(function(it, i){ map[normalizeKey(it.name)] = i + 1; });
+  if (Array.isArray(prev)) prev.forEach(function(it, i){ if (it && it.name) map[normalizeKey(it.name)] = i + 1; });
   var res = {};
+  if (!Array.isArray(cur)) return res;
   cur.forEach(function(it, i){
+    if (!it || !it.name) return;
     var cr = i + 1, nk = normalizeKey(it.name), pr = map[nk];
     if (pr === undefined) res[it.name] = NO_NEW_NAMES.indexOf(nk) !== -1 ? {type:'dash',text:''} : {type:'new',text:'NEW'};
     else if (pr > cr) res[it.name] = {type:'up',text:'▲ ' + (pr - cr)};
@@ -326,16 +332,20 @@ function computeArrow(cur, prev){
 }
 function collectAllTime(snap){
   var best = {};
+  if (!snap || typeof snap !== 'object') return [];
   Object.keys(snap).sort().forEach(function(date){
-    snap[date].forEach(function(it){
+    var arr = snap[date];
+    if (!Array.isArray(arr)) return;
+    arr.forEach(function(it){
+      if (!it || typeof it.name === 'undefined') return;
       var nk = normalizeKey(it.name);
       if (!best[nk] || it.value > best[nk].value) best[nk] = Object.assign({}, it);
     });
   });
-  return Object.values(best).sort(function(a,b){ return b.value - a.value; });
+  return Object.values(best).sort(function(a,b){ return (b.value || 0) - (a.value || 0); });
 }
 
-// ===== Даты из data.js =====
+// ===== Даты =====
 function getSectionDates(key){
   try {
     var parts = key.split('.');
@@ -359,7 +369,7 @@ function getEntityHistory(s, sub, nm){
     Object.keys(d).sort().forEach(function(date){
       var arr = d[date];
       if (!Array.isArray(arr)) return;
-      var f = arr.find(function(it){ return normalizeKey(it.name) === nk; });
+      var f = arr.find(function(it){ return it && normalizeKey(it.name) === nk; });
       if (f) pts.push({ date: date, value: f.value });
     });
     return pts;
@@ -421,7 +431,7 @@ var sectionState = {
 };
 var state = { tab:'cities' };
 
-// ===== Рендер хедера карточки =====
+// ===== Хедер карточки =====
 function sectionPickerHTML(key){
   var dates = getSectionDates(key);
   var hasAll = sectionHasAllTime(key);
@@ -438,7 +448,7 @@ function cardHeader(key, title, subText, badge){
   return '<div class="card-head"><div class="card-head-text"><h2>' + title + ' ' + badge + '</h2><div class="card-sub">' + subText + '</div></div>' + sectionPickerHTML(key) + '</div>';
 }
 
-// ===== Рендер списка =====
+// ===== Список =====
 function makeListItem(rank, item, unit, arrow, s, sub){
   var rc = rank <= 3 ? ' r' + rank : '';
   var arrHTML = arrow ? '<span class="arrow ' + arrow.type + '">' + arrow.text + '</span>' : '<span class="arrow dash"></span>';
@@ -455,7 +465,7 @@ function makeListItem(rank, item, unit, arrow, s, sub){
     '<span class="value">' + vHTML + '</span>' + arrHTML + '</div>';
 }
 function renderTopList(list, unit, arrows, s, sub){
-  if (!list || list.length === 0) return '<div class="empty">Нет данных</div>';
+  if (!Array.isArray(list) || list.length === 0) return '<div class="empty">Нет данных</div>';
   var proc = list.map(function(it){ return applyEdits(s || '', sub || '', it); });
   var sorted = sortByValue(proc);
   return '<div class="top-list">' + sorted.map(function(it, i){
@@ -465,7 +475,7 @@ function renderTopList(list, unit, arrows, s, sub){
 
 // ===== График =====
 function renderLineChart(hist, unit){
-  if (!hist || hist.length === 0) return '<div class="empty">Нет данных</div>';
+  if (!Array.isArray(hist) || hist.length === 0) return '<div class="empty">Нет данных</div>';
   if (hist.length === 1) {
     return '<div class="chart-single"><div class="val">' + fmtNumber(hist[0].value) + ' ' + (unit || '') + '</div>' +
       '<div class="date">' + fmtDate(hist[0].date) + ' МСК</div>' +
@@ -517,7 +527,27 @@ window.openEntityChart = function(s, sub, name, unit){
 window.closeChart = function(){ document.getElementById('chart-modal').classList.remove('open'); };
 document.getElementById('chart-modal').addEventListener('click', function(e){ if (e.target.id === 'chart-modal') window.closeChart(); });
 
-// ===== Рендер ГОРОДА =====
+// ===== Универсальный рендер карточки с датой =====
+function renderDateCard(key, title, unit, subSection){
+  var dates = getSectionDates(key);
+  var st = sectionState[key];
+  var cd = st.date || (dates.length ? dates[dates.length-1] : '');
+  if (!cd) return '<div class="card">' + cardHeader(key, title, 'нет данных') + '<div class="empty">Нет данных</div></div>';
+  var parts = key.split('.');
+  var sec = DATA[parts[0]];
+  var d = sec[parts[1]];
+  if (d.snapshots) d = d.snapshots;
+  var list = sortByValue(d[cd] || []).slice(0, 10);
+  var arr = null;
+  var idx = dates.indexOf(cd);
+  if (idx > 0) {
+    var prev = d[dates[idx-1]];
+    if (Array.isArray(prev)) arr = computeArrow(list, sortByValue(prev));
+  }
+  return '<div class="card">' + cardHeader(key, title, fmtDate(cd) + ' МСК') + renderTopList(list, unit, arr, parts[0], parts[1]) + '</div>';
+}
+
+// ===== ГОРОДА =====
 function renderCities(){
   var html = '';
   var bk = 'cities.balance';
@@ -536,119 +566,62 @@ function renderCities(){
     bhead = cd ? fmtDate(cd) + ' МСК · 💡 клик — график · правый клик — изменить' : 'нет данных';
   }
   html += '<div class="card">' + cardHeader(bk, '📊 Топ городов по балансу', bhead, bbadge) + renderTopList(blist, ' ₽', barrows, 'cities', 'balance') + (DATA.cities.balance.note ? '<div class="card-note">' + DATA.cities.balance.note + '</div>' : '') + '</div>';
-
-  var pk = 'cities.population';
-  var pdates = getSectionDates(pk);
-  var pd = sectionState[pk].date || (pdates.length ? pdates[pdates.length-1] : '');
-  var pl = pd ? sortByValue(DATA.cities.population[pd] || []).slice(0, 10) : [];
-  var parr = null, pidx = pdates.indexOf(pd);
-  if (pidx > 0) parr = computeArrow(pl, sortByValue(DATA.cities.population[pdates[pidx-1]] || []));
-  html += '<div class="card">' + cardHeader(pk, '👥 Топ городов по населению', pd ? fmtDate(pd) + ' МСК' : 'нет данных') + renderTopList(pl, ' 👤', parr, 'cities', 'population') + '</div>';
-
-  var sk = 'cities.size';
-  var sdates = getSectionDates(sk);
-  var sd = sectionState[sk].date || (sdates.length ? sdates[sdates.length-1] : '');
-  var sl = sd ? sortByValue(DATA.cities.size[sd] || []).slice(0, 10) : [];
-  var sarr = null, sidx = sdates.indexOf(sd);
-  if (sidx > 0) sarr = computeArrow(sl, sortByValue(DATA.cities.size[sdates[sidx-1]] || []));
-  html += '<div class="card">' + cardHeader(sk, '📏 Топ городов по размеру', sd ? fmtDate(sd) + ' МСК' : 'нет данных') + renderTopList(sl, ' ⬛', sarr, 'cities', 'size') + '</div>';
+  html += renderDateCard('cities.population', '👥 Топ городов по населению', ' 👤');
+  html += renderDateCard('cities.size', '📏 Топ городов по размеру', ' ⬛');
   return html;
 }
 
-// ===== Рендер ИГРОКИ =====
+// ===== ИГРОКИ =====
 function renderPlayers(){
   var html = '';
+  html += renderDateCard('players.balance', '💰 Топ по балансу игрока', ' ₽');
 
-  // 1. Баланс
-  var bk = 'players.balance';
-  var bdates = getSectionDates(bk);
-  var bd = sectionState[bk].date || (bdates.length ? bdates[bdates.length-1] : '');
-  var bl = bd ? sortByValue(DATA.players.balance[bd] || []).slice(0, 10) : [];
-  var barr = null, bidx = bdates.indexOf(bd);
-  if (bidx > 0) barr = computeArrow(bl, sortByValue(DATA.players.balance[bdates[bidx-1]] || []));
-  html += '<div class="card">' + cardHeader(bk, '💰 Топ по балансу игрока', bd ? fmtDate(bd) + ' МСК' : 'нет данных') + renderTopList(bl, ' ₽', barr, 'players', 'balance') + '</div>';
-
-  // 2. Актив
+  // Актив
   var ak = 'players.active';
-  var a = DATA.players.active || {};
+  var a = DATA.players.active;
   var ast = sectionState[ak];
   var adates = Object.keys(a).sort();
   var alist = [], ahead = 'нет данных', abadge = '', aarr = null;
   if (ast.allTime) {
     var best = {};
     Object.values(a).forEach(function(snap){
+      if (!Array.isArray(snap)) return;
       snap.forEach(function(it){
+        if (!it || typeof it.name === 'undefined') return;
         var nk = normalizeKey(it.name);
         if (!best[nk] || it.value > best[nk].value) best[nk] = Object.assign({}, it);
       });
     });
-    alist = Object.values(best).sort(function(x, y){ return y.value - x.value; }).slice(0, 10);
+    alist = Object.values(best).sort(function(x, y){ return (y.value||0) - (x.value||0); }).slice(0, 10);
     ahead = 'за всё время наблюдений';
     abadge = '<span class="badge-alltime">ЗА ВСЁ ВРЕМЯ</span>';
   } else if (adates.length) {
     var cd = ast.date || adates[adates.length-1];
     alist = a[cd] || [];
+    if (!Array.isArray(alist)) alist = [];
     var idx = adates.indexOf(cd);
     if (idx > 0) aarr = computeArrow(alist, a[adates[idx-1]]);
     ahead = fmtDate(cd) + ' МСК · по игровому времени';
   }
   html += '<div class="card">' + cardHeader(ak, '🎮 Топ самых активных игроков', ahead, abadge) + renderTopList(alist, '', aarr, 'players', 'active') + '</div>';
 
-  // 3. Рубины
-  var rk = 'players.rubies';
-  var rdates = getSectionDates(rk);
-  var rd = sectionState[rk].date || (rdates.length ? rdates[rdates.length-1] : '');
-  var rl = rd ? sortByValue(DATA.players.rubies[rd] || []).slice(0, 10) : [];
-  var rarr = null, ridx = rdates.indexOf(rd);
-  if (ridx > 0) rarr = computeArrow(rl, sortByValue(DATA.players.rubies[rdates[ridx-1]] || []));
-  html += '<div class="card">' + cardHeader(rk, '💎 Топ по рубинам', rd ? fmtDate(rd) + ' МСК' : 'нет данных') + renderTopList(rl, ' 💎', rarr, 'players', 'rubies') + (DATA.players.rubies.note ? '<div class="card-note">' + DATA.players.rubies.note + '</div>' : '') + '</div>';
-
-  // 4. Осколки
-  var shk = 'players.shards';
-  var shdates = getSectionDates(shk);
-  var shd = sectionState[shk].date || (shdates.length ? shdates[shdates.length-1] : '');
-  var shl = shd ? sortByValue(DATA.players.shards[shd] || []).slice(0, 10) : [];
-  var sharr = null, shidx = shdates.indexOf(shd);
-  if (shidx > 0) sharr = computeArrow(shl, sortByValue(DATA.players.shards[shdates[shidx-1]] || []));
-  html += '<div class="card">' + cardHeader(shk, '◆ Топ по осколкам', shd ? fmtDate(shd) + ' МСК' : 'нет данных') + renderTopList(shl, ' ◆', sharr, 'players', 'shards') + '</div>';
-
+  html += renderDateCard('players.rubies', '💎 Топ по рубинам', ' 💎');
+  html += renderDateCard('players.shards', '◆ Топ по осколкам', ' ◆');
   return html;
 }
 
-// ===== Рендер НАЦИИ =====
+// ===== НАЦИИ =====
 function renderNations(){
   var html = '';
-
-  var sk = 'nations.size';
-  var sdates = getSectionDates(sk);
-  var sd = sectionState[sk].date || (sdates.length ? sdates[sdates.length-1] : '');
-  var sl = sd ? sortByValue(DATA.nations.size[sd] || []).slice(0, 10) : [];
-  var sarr = null, sidx = sdates.indexOf(sd);
-  if (sidx > 0) sarr = computeArrow(sl, sortByValue(DATA.nations.size[sdates[sidx-1]] || []));
-  html += '<div class="card">' + cardHeader(sk, '📏 Топ наций по размеру', sd ? fmtDate(sd) + ' МСК' : 'нет данных') + renderTopList(sl, ' ⬛', sarr, 'nations', 'size') + '</div>';
-
-  var bk = 'nations.balance';
-  var bdates = getSectionDates(bk);
-  var bd = sectionState[bk].date || (bdates.length ? bdates[bdates.length-1] : '');
-  var bl = bd ? sortByValue(DATA.nations.balance[bd] || []).slice(0, 10) : [];
-  var barr = null, bidx = bdates.indexOf(bd);
-  if (bidx > 0) barr = computeArrow(bl, sortByValue(DATA.nations.balance[bdates[bidx-1]] || []));
-  html += '<div class="card">' + cardHeader(bk, '💰 Топ наций по балансу', bd ? fmtDate(bd) + ' МСК' : 'нет данных') + renderTopList(bl, ' ₽', barr, 'nations', 'balance') + '</div>';
-
-  var ck = 'nations.citizens';
-  var cdates = getSectionDates(ck);
-  var cd = sectionState[ck].date || (cdates.length ? cdates[cdates.length-1] : '');
-  var cl = cd ? sortByValue(DATA.nations.citizens[cd] || []).slice(0, 10) : [];
-  var carr = null, cidx = cdates.indexOf(cd);
-  if (cidx > 0) carr = computeArrow(cl, sortByValue(DATA.nations.citizens[cdates[cidx-1]] || []));
-  html += '<div class="card">' + cardHeader(ck, '👥 Топ наций по гражданам', cd ? fmtDate(cd) + ' МСК' : 'нет данных') + renderTopList(cl, ' 👤', carr, 'nations', 'citizens') + '</div>';
-
+  html += renderDateCard('nations.size', '📏 Топ наций по размеру', ' ⬛');
+  html += renderDateCard('nations.balance', '💰 Топ наций по балансу', ' ₽');
+  html += renderDateCard('nations.citizens', '👥 Топ наций по гражданам', ' 👤');
   return html;
 }
 
-// ===== Рендер ВОЙНЫ =====
+// ===== ВОЙНЫ =====
 function renderWars(){
-  var wars = (DATA.wars && DATA.wars.list) ? DATA.wars.list : [];
+  var wars = DATA.wars.list;
   var html = '<div class="card"><div class="card-head"><div class="card-head-text"><h2>⚔️ Масштабные войны вайпа</h2><div class="card-sub">история крупных военных конфликтов · ' + wars.length + ' ' + (wars.length < 5 ? 'войны' : 'войн') + '</div></div></div>';
   wars.forEach(function(w){
     var t1 = w.winner === 1, t2 = w.winner === 2;
@@ -684,7 +657,6 @@ function renderTabs(){
 
 function render(){
   try {
-    // подтягиваем валидные даты
     Object.keys(sectionState).forEach(function(key){
       var dts = getSectionDates(key);
       var st = sectionState[key];
@@ -694,7 +666,6 @@ function render(){
     var contentEl = document.getElementById('content');
     var fn = RENDERERS[state.tab];
     contentEl.innerHTML = fn ? fn() : '<div class="empty">В разработке</div>';
-    // привязка дат
     document.querySelectorAll('.sec-date').forEach(function(sel){
       sel.onchange = function(e){
         var k = e.target.dataset.section;
@@ -706,8 +677,7 @@ function render(){
   } catch (err) {
     console.error('Render error:', err);
     document.getElementById('content').innerHTML =
-      '<div class="empty" style="color:#ef4444">⚠ Ошибка: ' + (err.message || err) + '<br>' +
-      '<span style="font-size:11px;color:#8f9bb0">Скинь скриншот админу</span></div>';
+      '<div class="empty" style="color:#ef4444">⚠ Ошибка: ' + (err.message || err) + '</div>';
   }
 }
 
@@ -737,7 +707,6 @@ window.openSettings = function(){
 window.closeSettings = function(){ document.getElementById('settings-modal').classList.remove('open'); };
 document.getElementById('settings-modal').addEventListener('click', function(e){ if (e.target.id === 'settings-modal') window.closeSettings(); });
 document.getElementById('settings-btn').onclick = window.openSettings;
-
 document.getElementById('settings-vol').oninput = function(e){
   var v = parseFloat(e.target.value);
   document.getElementById('settings-vol-val').textContent = Math.round(v*100) + '%';
