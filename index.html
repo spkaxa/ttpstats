@@ -152,7 +152,7 @@ footer .tg-note{color:var(--accent2);font-size:13px;line-height:1.7;max-width:78
 <header>
   <div class="header-inner">
     <h1>timetoplay stats</h1>
-    <div class="version-badge">v1.1.0 · release</div>
+    <div class="version-badge">v1.1.1 · release</div>
     <div class="subtitle">статистика timetoplay с помощью просмотра прошлого с помощью разных дат и других разных интересных функций — ttpstats</div>
     <div class="telegram-line">📢 телеграм канал — <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></div>
     <div class="soon-line">🚀 скоро будут другие сайты и игры про timetoplay — все анонсы в канале <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></div>
@@ -235,7 +235,6 @@ footer .tg-note{color:var(--accent2);font-size:13px;line-height:1.7;max-width:78
 <script>
 // ===== Гарантируем структуру =====
 var DATA = window.DATA || {};
-function ensureArr(obj, key){ if (!obj[key] || typeof obj[key] !== 'object') obj[key] = {}; }
 DATA.cities = DATA.cities || {};
 DATA.cities.balance = DATA.cities.balance || {};
 DATA.cities.balance.snapshots = DATA.cities.balance.snapshots || {};
@@ -330,7 +329,22 @@ function computeArrow(cur, prev){
   });
   return res;
 }
-function collectAllTime(snap){
+
+// ✅ УНИВЕРСАЛЬНАЯ функция — работает и со snapshots, и с прямым объектом дат
+function getDataMap(key){
+  try {
+    var parts = key.split('.');
+    var sec = DATA[parts[0]];
+    if (!sec) return {};
+    var d = sec[parts[1]];
+    if (!d) return {};
+    if (d.snapshots) return d.snapshots;
+    return d;
+  } catch(e){ return {}; }
+}
+
+function collectAllTime(key){
+  var snap = getDataMap(key);
   var best = {};
   if (!snap || typeof snap !== 'object') return [];
   Object.keys(snap).sort().forEach(function(date){
@@ -347,17 +361,11 @@ function collectAllTime(snap){
 
 // ===== Даты =====
 function getSectionDates(key){
-  try {
-    var parts = key.split('.');
-    var sec = DATA[parts[0]];
-    if (!sec) return [];
-    var d = sec[parts[1]];
-    if (!d) return [];
-    if (d.snapshots) d = d.snapshots;
-    return Object.keys(d).sort();
-  } catch(e){ return []; }
+  var d = getDataMap(key);
+  return Object.keys(d).sort();
 }
-function sectionHasAllTime(k){ return k === 'cities.balance' || k === 'players.active'; }
+// ✅ теперь у ВСЕХ секций есть "За всё время"
+function sectionHasAllTime(){ return true; }
 
 // ===== История =====
 function getEntityHistory(s, sub, nm){
@@ -376,7 +384,7 @@ function getEntityHistory(s, sub, nm){
   } catch(e){ return []; }
 }
 
-// ===== Оверлей редактирования =====
+// ===== Оверлей =====
 var OVERLAY = { edits: {} };
 function getEditedKey(s, sub, name){ return s + '.' + sub + '.' + name; }
 function applyEdits(s, sub, item){
@@ -410,7 +418,7 @@ document.addEventListener('contextmenu', function(e){
   editEntity(it.dataset.section, it.dataset.sub, it.dataset.name);
 });
 
-// ===== Табы и state =====
+// ===== Табы =====
 var TAB_ORDER = [
   { id:'cities', icon:'🏙️', label:'Города' },
   { id:'players', icon:'🎮', label:'Игроки' },
@@ -527,96 +535,52 @@ window.openEntityChart = function(s, sub, name, unit){
 window.closeChart = function(){ document.getElementById('chart-modal').classList.remove('open'); };
 document.getElementById('chart-modal').addEventListener('click', function(e){ if (e.target.id === 'chart-modal') window.closeChart(); });
 
-// ===== Универсальный рендер карточки с датой =====
-function renderDateCard(key, title, unit, subSection){
-  var dates = getSectionDates(key);
-  var st = sectionState[key];
-  var cd = st.date || (dates.length ? dates[dates.length-1] : '');
-  if (!cd) return '<div class="card">' + cardHeader(key, title, 'нет данных') + '<div class="empty">Нет данных</div></div>';
+// ===== УНИВЕРСАЛЬНАЯ карточка с датой И "за всё время" =====
+function renderDateCard(key, title, unit){
   var parts = key.split('.');
-  var sec = DATA[parts[0]];
-  var d = sec[parts[1]];
-  if (d.snapshots) d = d.snapshots;
-  var list = sortByValue(d[cd] || []).slice(0, 10);
-  var arr = null;
-  var idx = dates.indexOf(cd);
-  if (idx > 0) {
-    var prev = d[dates[idx-1]];
-    if (Array.isArray(prev)) arr = computeArrow(list, sortByValue(prev));
+  var section = parts[0], sub = parts[1];
+  var st = sectionState[key];
+  var dates = getSectionDates(key);
+
+  var list, heading, badge = '', arrows = null;
+  if (st.allTime) {
+    // 🏆 ТОП ЗА ВСЁ ВРЕМЯ
+    list = collectAllTime(key).slice(0, 10);
+    heading = 'за всё время наблюдений';
+    badge = '<span class="badge-alltime">ЗА ВСЁ ВРЕМЯ</span>';
+  } else {
+    var cd = st.date || (dates.length ? dates[dates.length-1] : '');
+    if (!cd) return '<div class="card">' + cardHeader(key, title, 'нет данных') + '<div class="empty">Нет данных</div></div>';
+    var d = getDataMap(key);
+    list = sortByValue(d[cd] || []).slice(0, 10);
+    var idx = dates.indexOf(cd);
+    if (idx > 0) arrows = computeArrow(list, sortByValue(d[dates[idx-1]] || []));
+    heading = fmtDate(cd) + ' МСК · 💡 клик — график · правый клик — изменить';
   }
-  return '<div class="card">' + cardHeader(key, title, fmtDate(cd) + ' МСК') + renderTopList(list, unit, arr, parts[0], parts[1]) + '</div>';
+
+  return '<div class="card">' + cardHeader(key, title, heading, badge) + renderTopList(list, unit, arrows, section, sub) + '</div>';
 }
 
 // ===== ГОРОДА =====
 function renderCities(){
-  var html = '';
-  var bk = 'cities.balance';
-  var bst = sectionState[bk];
-  var bdates = getSectionDates(bk);
-  var blist, bhead, bbadge = '', barrows = null;
-  if (bst.allTime) {
-    blist = collectAllTime(DATA.cities.balance.snapshots).slice(0, 10);
-    bhead = 'за всё время наблюдений';
-    bbadge = '<span class="badge-alltime">ЗА ВСЁ ВРЕМЯ</span>';
-  } else {
-    var cd = bst.date || (bdates.length ? bdates[bdates.length-1] : '');
-    blist = cd ? sortByValue(DATA.cities.balance.snapshots[cd] || []).slice(0, 10) : [];
-    var idx = bdates.indexOf(cd);
-    if (idx > 0) barrows = computeArrow(blist, sortByValue(DATA.cities.balance.snapshots[bdates[idx-1]] || []));
-    bhead = cd ? fmtDate(cd) + ' МСК · 💡 клик — график · правый клик — изменить' : 'нет данных';
-  }
-  html += '<div class="card">' + cardHeader(bk, '📊 Топ городов по балансу', bhead, bbadge) + renderTopList(blist, ' ₽', barrows, 'cities', 'balance') + (DATA.cities.balance.note ? '<div class="card-note">' + DATA.cities.balance.note + '</div>' : '') + '</div>';
-  html += renderDateCard('cities.population', '👥 Топ городов по населению', ' 👤');
-  html += renderDateCard('cities.size', '📏 Топ городов по размеру', ' ⬛');
-  return html;
+  return renderDateCard('cities.balance', '📊 Топ городов по балансу', ' ₽') +
+         renderDateCard('cities.population', '👥 Топ городов по населению', ' 👤') +
+         renderDateCard('cities.size', '📏 Топ городов по размеру', ' ⬛');
 }
 
 // ===== ИГРОКИ =====
 function renderPlayers(){
-  var html = '';
-  html += renderDateCard('players.balance', '💰 Топ по балансу игрока', ' ₽');
-
-  // Актив
-  var ak = 'players.active';
-  var a = DATA.players.active;
-  var ast = sectionState[ak];
-  var adates = Object.keys(a).sort();
-  var alist = [], ahead = 'нет данных', abadge = '', aarr = null;
-  if (ast.allTime) {
-    var best = {};
-    Object.values(a).forEach(function(snap){
-      if (!Array.isArray(snap)) return;
-      snap.forEach(function(it){
-        if (!it || typeof it.name === 'undefined') return;
-        var nk = normalizeKey(it.name);
-        if (!best[nk] || it.value > best[nk].value) best[nk] = Object.assign({}, it);
-      });
-    });
-    alist = Object.values(best).sort(function(x, y){ return (y.value||0) - (x.value||0); }).slice(0, 10);
-    ahead = 'за всё время наблюдений';
-    abadge = '<span class="badge-alltime">ЗА ВСЁ ВРЕМЯ</span>';
-  } else if (adates.length) {
-    var cd = ast.date || adates[adates.length-1];
-    alist = a[cd] || [];
-    if (!Array.isArray(alist)) alist = [];
-    var idx = adates.indexOf(cd);
-    if (idx > 0) aarr = computeArrow(alist, a[adates[idx-1]]);
-    ahead = fmtDate(cd) + ' МСК · по игровому времени';
-  }
-  html += '<div class="card">' + cardHeader(ak, '🎮 Топ самых активных игроков', ahead, abadge) + renderTopList(alist, '', aarr, 'players', 'active') + '</div>';
-
-  html += renderDateCard('players.rubies', '💎 Топ по рубинам', ' 💎');
-  html += renderDateCard('players.shards', '◆ Топ по осколкам', ' ◆');
-  return html;
+  return renderDateCard('players.balance', '💰 Топ по балансу игрока', ' ₽') +
+         renderDateCard('players.active', '🎮 Топ самых активных игроков', '') +
+         renderDateCard('players.rubies', '💎 Топ по рубинам', ' 💎') +
+         renderDateCard('players.shards', '◆ Топ по осколкам', ' ◆');
 }
 
 // ===== НАЦИИ =====
 function renderNations(){
-  var html = '';
-  html += renderDateCard('nations.size', '📏 Топ наций по размеру', ' ⬛');
-  html += renderDateCard('nations.balance', '💰 Топ наций по балансу', ' ₽');
-  html += renderDateCard('nations.citizens', '👥 Топ наций по гражданам', ' 👤');
-  return html;
+  return renderDateCard('nations.size', '📏 Топ наций по размеру', ' ⬛') +
+         renderDateCard('nations.balance', '💰 Топ наций по балансу', ' ₽') +
+         renderDateCard('nations.citizens', '👥 Топ наций по гражданам', ' 👤');
 }
 
 // ===== ВОЙНЫ =====
@@ -660,7 +624,7 @@ function render(){
     Object.keys(sectionState).forEach(function(key){
       var dts = getSectionDates(key);
       var st = sectionState[key];
-      if (dts.length && (!st.date || dts.indexOf(st.date) === -1)) st.date = dts[dts.length-1];
+      if (!st.allTime && dts.length && (!st.date || dts.indexOf(st.date) === -1)) st.date = dts[dts.length-1];
     });
     renderTabs();
     var contentEl = document.getElementById('content');
@@ -669,7 +633,7 @@ function render(){
     document.querySelectorAll('.sec-date').forEach(function(sel){
       sel.onchange = function(e){
         var k = e.target.dataset.section;
-        if (e.target.value === '__ALL__') sectionState[k].allTime = true;
+        if (e.target.value === '__ALL__') { sectionState[k].allTime = true; }
         else { sectionState[k].allTime = false; sectionState[k].date = e.target.value; }
         render();
       };
