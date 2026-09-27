@@ -359,10 +359,12 @@ function collectAllTime(key){
   return Object.values(best).sort(function(a,b){ return (b.value || 0) - (a.value || 0); });
 }
 
-// ===== Даты =====
 function getSectionDates(key){
   var d = getDataMap(key);
-  return Object.keys(d).sort();
+  // ✅ фильтруем только настоящие даты (типа "2026-09-27 16:10"), убираем note и прочее
+  return Object.keys(d).filter(function(k){
+    return /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(k);
+  }).sort();
 }
 // ✅ теперь у ВСЕХ секций есть "За всё время"
 function sectionHasAllTime(){ return true; }
