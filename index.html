@@ -485,8 +485,9 @@ footer .tg-note {
   </div>
 </div>
 
+<script src="data.js"></script>
 <script>
-let DATA = { cities:{balance:{snapshots:{}},population:{},size:{}}, players:{balance:{},active:{},shards:{},rubies:{}}, nations:{balance:{},size:{},citizens:{}}, wars:{list:[]}, other:{} };
+const DATA = window.DATA || { cities:{balance:{snapshots:{}},population:{},size:{}}, players:{balance:{},active:{},shards:{},rubies:{}}, nations:{balance:{},size:{},citizens:{}}, wars:{list:[]}, other:{} };
 
 const MAYORS = {
   'рига': 'Frasie', 'рим': 'MrRatix', 'лазурный_стокгольм': 'lepepesha228',
@@ -1060,23 +1061,8 @@ volSlider.oninput = () => {
 const savedPalette = localStorage.getItem('ttp_palette') || 'blue';
 applyPalette(savedPalette);
 
-// Загрузка данных из data.json
-fetch('./data.json')
-  .then(r => {
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    return r.json();
-  })
-  .then(json => {
-    DATA = json;
-    render();
-  })
-  .catch(e => {
-    console.error('data.json error:', e);
-    document.getElementById('content').innerHTML =
-      '<div class="empty" style="color:var(--red)">⚠ Не удалось загрузить data.json<br>' +
-      '<span style="font-size:11px;color:var(--text3)">' + e.message + '</span><br><br>' +
-      '<span style="font-size:11px;color:var(--text3)">Проверь, что файл data.json лежит рядом с index.html</span></div>';
-  });
+// Данные уже загружены из data.js (window.DATA). Просто рендерим.
+render();
 </script>
 </body>
 </html>
