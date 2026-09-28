@@ -260,12 +260,12 @@ window.DATA = {
       "2026-09-28 10:22": [
         { "name": "timoxa_pistol", "value": 2019374, "display": "23д 8ч 56м 14с" },
         { "name": "afarsic", "value": 1779376, "display": "20д 14ч 16м 16с" },
-        { "name": "ZapadnyeZemliEz", "value": 1519466, "display": "17д 14ч 4м 26с" },
+        { "name": "gotopot753", "value": 1519466, "display": "17д 14ч 4м 26с" },
         { "name": "cartez_ru", "value": 1390260, "display": "16д 2ч 11м" },
         { "name": "Frasie", "value": 1367595, "display": "15д 19ч 53м 15с" },
         { "name": "Georg_23", "value": 1305375, "display": "15д 2ч 36м 15с" },
         { "name": "shanci", "value": 1272499, "display": "14д 17ч 28м 19с" },
-        { "name": "KomiK0", "value": 1217777, "display": "14д 2ч 16м 17с" },
+        { "name": "El_diablo", "value": 1217777, "display": "14д 2ч 16м 17с" },
         { "name": "Deekrush", "value": 1136093, "display": "13д 3ч 34м 53с" },
         { "name": "Vlolo", "value": 1084397, "display": "12д 13ч 13м 17с" }
       ]
