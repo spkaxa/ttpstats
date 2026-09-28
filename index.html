@@ -233,7 +233,6 @@ footer .tg-note{color:var(--accent2);font-size:13px;line-height:1.7;max-width:78
 
 <script src="data.js"></script>
 <script>
-// ===== Гарантируем структуру =====
 var DATA = window.DATA || {};
 DATA.cities = DATA.cities || {};
 DATA.cities.balance = DATA.cities.balance || {};
@@ -262,7 +261,9 @@ var MAYORS = {
   'шмаледуйск':'h9nje','кривой_рог':'h9nje',
   'томская_империя':'gverti','ufa':'jek3482','los_angeles':'celestiallove',
   'германская_империя':'gordon_12356','ворона':'toxic22222',
-  'клан_китайцев':'kaba_day','великие_нидерланды':'bechenok','бенилюкс':'toxic22222'
+  'клан_китайцев':'kaba_day','великие_нидерланды':'bechenok',
+  'бенилюкс':'toxic22222','бабушкины_ногти':'toxic22222',
+  'вдохновение': null
 };
 function getMayor(name){ try { return MAYORS[String(name||'').toLowerCase().trim()] || null; } catch(e){ return null; } }
 
@@ -291,8 +292,13 @@ function applyPalette(name){
 }
 
 // ===== Утилиты =====
-var NAME_ALIASES = { 'merrqq':'merqq','merrq':'merqq','merq':'merqq','cartez_ru1':'cartez_ru' };
-var NO_NEW_NAMES = ['gotopot753'];
+var NAME_ALIASES = {
+  'merrqq':'merqq','merrq':'merqq','merq':'merqq',
+  'cartez_ru1':'cartez_ru',
+  'zapadnyezemliez':'gotopot753',
+  'komik0':'el_diablo'
+};
+var NO_NEW_NAMES = ['gotopot753','el_diablo'];
 var DATE_RE = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/;
 
 function normalizeKey(n){
@@ -384,7 +390,6 @@ function getEntityHistory(s, sub, nm){
   } catch(e){ return []; }
 }
 
-// ===== Оверлей =====
 var OVERLAY = { edits: {} };
 function getEditedKey(s, sub, name){ return s + '.' + sub + '.' + name; }
 function applyEdits(s, sub, item){
@@ -418,7 +423,6 @@ document.addEventListener('contextmenu', function(e){
   editEntity(it.dataset.section, it.dataset.sub, it.dataset.name);
 });
 
-// ===== Табы =====
 var TAB_ORDER = [
   { id:'cities', icon:'🏙️', label:'Города' },
   { id:'players', icon:'🎮', label:'Игроки' },
@@ -479,7 +483,6 @@ function renderTopList(list, unit, arrows, s, sub){
   }).join('') + '</div>';
 }
 
-// ===== График — все точки с подписями =====
 function renderLineChart(hist, unit){
   if (!Array.isArray(hist) || hist.length === 0) return '<div class="empty">Нет данных</div>';
   if (hist.length === 1) {
@@ -487,7 +490,6 @@ function renderLineChart(hist, unit){
       '<div class="date">' + fmtDate(hist[0].date) + ' МСК</div>' +
       '<div class="wait">⚡ нужно 2+ точки для графика</div></div>';
   }
-  // Размеры с запасом сверху и снизу
   var W = 900, H = 320;
   var PAD_X = 60, PAD_TOP = 75, PAD_BOT = 55;
   var vals = hist.map(function(h){ return h.value; });
@@ -508,7 +510,6 @@ function renderLineChart(hist, unit){
     grid += '<line x1="' + PAD_X + '" y1="' + yy + '" x2="' + (W-PAD_X) + '" y2="' + yy + '" stroke="var(--gridline)" stroke-width="1" stroke-dasharray="2,4"/>';
   }
   var dots = pts.map(function(p){ return '<circle cx="' + p.x + '" cy="' + p.y + '" r="5" fill="var(--accent)" stroke="var(--bg2)" stroke-width="2"/>'; }).join('');
-  // ВСЕ подписи, авторазмер шрифта
   var fs = hist.length > 10 ? 9 : (hist.length > 7 ? 10 : 11);
   var labels = pts.map(function(p){
     return '<text x="' + p.x + '" y="' + (p.y - 15) + '" fill="var(--accent2)" font-size="' + fs + '" text-anchor="middle" font-weight="700">' + fmtNumber(p.value) + '</text>';
