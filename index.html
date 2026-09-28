@@ -9,10 +9,10 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5;background-image:radial-gradient(ellipse 80% 60% at 50% 0%,var(--accent-glow),transparent 70%),radial-gradient(ellipse 60% 40% at 80% 100%,var(--accent-glow),transparent 70%);background-attachment:fixed}
 .top-controls{position:fixed;top:18px;right:18px;z-index:999;display:flex;flex-direction:column;gap:10px;align-items:flex-end}
-#settings-btn{width:44px;height:44px;border-radius:50%;background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;font-weight:700}
+#settings-btn{width:44px;height:44px;border-radius:50%;background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;transition:all .15s}
 #settings-btn:hover{transform:scale(1.08);border-color:var(--accent);color:var(--accent)}
 .music-row{background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:6px 10px;display:flex;align-items:center;gap:8px}
-#music-btn{width:30px;height:30px;border-radius:50%;background:transparent;border:none;cursor:pointer;color:var(--text);font-size:15px;display:flex;align-items:center;justify-content:center;font-family:inherit;font-weight:700}
+#music-btn{width:30px;height:30px;border-radius:50%;background:transparent;border:none;cursor:pointer;color:var(--text);font-size:15px;display:flex;align-items:center;justify-content:center;font-family:inherit;transition:color .15s}
 #music-btn:hover{color:var(--accent)}
 #vol-slider{width:80px;accent-color:var(--accent)}
 #settings-modal,.ad-modal{position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px}
@@ -26,16 +26,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .panel-close:hover{background:var(--red);color:#fff}
 .setting-group{margin-bottom:22px}
 .setting-label{font-size:11px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-bottom:10px;display:block}
-.color-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.color-opt{padding:10px;border-radius:8px;cursor:pointer;border:2px solid transparent;background:var(--bg3);display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;font-weight:600;font-family:inherit;color:var(--text);transition:all .15s}
-.color-opt:hover{transform:translateY(-1px);border-color:var(--border2)}
-.color-opt.active{border-color:#fff;background:var(--bg4)}
-.color-preview{width:100%;height:22px;border-radius:5px;box-shadow:0 2px 8px rgba(0,0,0,0.3)}
-.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.mode-opt{padding:14px;border-radius:8px;cursor:pointer;border:2px solid transparent;background:var(--bg3);display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;font-weight:700;font-family:inherit;color:var(--text);transition:all .15s}
-.mode-opt:hover{border-color:var(--border2)}
-.mode-opt.active{border-color:var(--accent);background:var(--bg4);color:var(--accent2)}
-.mode-icon{font-size:22px;font-weight:900}
+.view-switch{display:flex;gap:6px;background:var(--bg3);padding:4px;border-radius:10px}
+.view-btn{flex:1;padding:11px;border:none;background:transparent;color:var(--text2);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;border-radius:7px;transition:all .15s}
+.view-btn.active{background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff}
+.view-btn:hover:not(.active){color:var(--text)}
+.color-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.color-opt{padding:10px 8px;border-radius:8px;cursor:pointer;border:2px solid transparent;background:var(--bg3);display:flex;flex-direction:column;align-items:center;gap:6px;font-size:10px;font-weight:700;font-family:inherit;color:var(--text);text-align:center;line-height:1.2}
+.color-opt.active{border-color:var(--accent);background:var(--bg4)}
+.color-opt:hover:not(.active){border-color:var(--border2)}
+.color-dot{width:22px;height:22px;border-radius:50%;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.3)}
 input[type="range"]{width:100%;accent-color:var(--accent)}
 header{padding:44px 24px 26px;border-bottom:1px solid var(--border);background:var(--header-bg);position:relative}
 header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,var(--accent) 50%,transparent 100%);opacity:0.5}
@@ -48,23 +47,22 @@ h1{font-size:38px;font-weight:900;letter-spacing:-0.8px;margin-bottom:10px;backg
 .soon-line{color:var(--gold);font-size:13px;margin-bottom:10px;font-weight:600;padding:10px 14px;background:linear-gradient(135deg,rgba(251,191,36,0.12),transparent);border-left:3px solid var(--gold);border-radius:6px;max-width:780px;line-height:1.6}
 .soon-line a{color:var(--gold);text-decoration:none;border-bottom:1px dashed var(--gold);font-weight:700}
 .creator{color:var(--text3);font-size:12px}
-.creator .hint-tip{color:var(--accent2);font-size:11px;margin-left:6px;opacity:0.85}
 .tabs{max-width:1100px;margin:0 auto;padding:24px 24px 0;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
-.tabs button{background:transparent;border:none;color:var(--text2);padding:13px 18px;font-size:14px;font-weight:700;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;font-family:inherit;white-space:nowrap;border-radius:6px 6px 0 0}
+.tabs button{background:transparent;border:none;color:var(--text2);padding:13px 18px;font-size:14px;font-weight:700;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;font-family:inherit;white-space:nowrap;border-radius:6px 6px 0 0;transition:all .15s}
 .tabs button:hover{color:var(--text);background:var(--accent-glow)}
 .tabs button.active{color:var(--accent2);border-bottom-color:var(--accent);background:linear-gradient(180deg,transparent 0%,var(--accent-glow) 100%)}
 main{max-width:1100px;margin:0 auto;padding:24px}
 .ads-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px}
 .ad-slot{height:82px;border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:12px;overflow:hidden;position:relative;border:1px dashed var(--border);background:var(--bg2)}
 .ad-slot.empty{opacity:0.4}
-.ad-slot.empty::before{content:'Реклама';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;font-weight:700}
+.ad-slot.empty::before{content:'РЕКЛАМА';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:11px;color:var(--text3);letter-spacing:2px}
 .ad-slot.filled{background:var(--ad-bg);border:1px solid var(--accent);cursor:pointer;box-shadow:0 4px 20px var(--accent-glow)}
 .ad-slot.filled:hover{transform:translateY(-2px)}
 .ad-badge{position:absolute;top:6px;right:8px;font-size:9px;font-weight:800;letter-spacing:1px;background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;padding:2px 8px;border-radius:3px}
 .ad-body{flex:1;min-width:0}
 .ad-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:3px}
 .ad-desc{font-size:11px;color:var(--text2)}
-.ad-emoji{font-size:28px;flex-shrink:0;font-weight:900;color:var(--accent2)}
+.ad-mark{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--accent3),var(--accent));flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:16px}
 .ad-modal .ad-modal-inner{background:var(--bg2);border:1px solid var(--accent);border-radius:14px;padding:32px 36px;max-width:580px;width:100%;position:relative;animation:slideUp .3s;max-height:90vh;overflow-y:auto}
 .ad-modal h2{font-size:22px;font-weight:800;margin-bottom:16px;background:linear-gradient(135deg,var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .ad-modal p{font-size:14px;line-height:1.7;color:var(--text);margin-bottom:14px}
@@ -85,7 +83,7 @@ main{max-width:1100px;margin:0 auto;padding:24px}
 .sec-date:focus{outline:none}
 .sec-date option{background:var(--bg3);color:var(--text)}
 .top-list{display:flex;flex-direction:column;gap:5px}
-.top-item{display:grid;grid-template-columns:44px 1fr auto auto;gap:12px;align-items:center;padding:12px 16px;background:var(--bg3);border-radius:8px;border-left:3px solid transparent;cursor:pointer}
+.top-item{display:grid;grid-template-columns:44px 1fr auto auto;gap:12px;align-items:center;padding:12px 16px;background:var(--bg3);border-radius:8px;border-left:3px solid transparent;cursor:pointer;transition:all .15s}
 .top-item:hover{transform:translateX(3px);border-color:var(--accent);background:var(--bg4)}
 .top-item.r1{border-left-color:var(--accent);background:linear-gradient(90deg,var(--accent-glow),transparent 55%)}
 .top-item.r2{border-left-color:var(--accent2);background:linear-gradient(90deg,var(--accent-glow),transparent 55%)}
@@ -114,7 +112,7 @@ main{max-width:1100px;margin:0 auto;padding:24px}
 .chart-single .val{font-size:32px;font-weight:900;color:var(--accent2);margin-bottom:4px}
 .chart-single .date{font-size:11px;color:var(--text3);letter-spacing:1px;text-transform:uppercase}
 .chart-single .wait{font-size:11px;color:var(--text3);margin-top:10px;font-style:italic}
-.war-item{background:var(--bg3);border-radius:10px;padding:16px 20px;margin-bottom:10px;border-left:4px solid var(--accent)}
+.war-item{background:var(--bg3);border-radius:10px;padding:16px 20px;margin-bottom:10px;border-left:4px solid var(--accent);transition:all .15s}
 .war-item:hover{transform:translateX(4px);border-left-color:var(--accent2)}
 .war-item.ongoing{border-left-color:var(--gold)}
 .war-item.cancelled{border-left-color:var(--text3);opacity:0.75}
@@ -127,15 +125,14 @@ main{max-width:1100px;margin:0 auto;padding:24px}
 .war-team.loser{color:var(--text2);opacity:0.7}
 .war-vs{color:var(--text3);font-size:12px;letter-spacing:2px;opacity:0.7}
 .war-result{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.war-result .trophy{color:var(--gold);font-size:13px;font-weight:800}
 .war-result .faction{background:var(--bg2);color:var(--accent2);padding:2px 10px;border-radius:4px;font-size:10px;font-weight:700;border:1px solid var(--border2)}
 .war-result .status{padding:2px 10px;border-radius:4px;font-size:10px;font-weight:800}
 .war-result .status.ongoing{background:rgba(251,191,36,.15);color:var(--gold);border:1px solid var(--gold)}
 .war-result .status.cancelled{background:rgba(92,92,106,.2);color:var(--text3);border:1px solid var(--border2)}
 .seller-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
-.seller-item{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;transition:all .15s}
+.seller-item{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:18px;transition:all .15s}
 .seller-item:hover{border-color:var(--accent);transform:translateY(-2px)}
-.seller-name{font-size:15px;font-weight:800;color:var(--text);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px}
+.seller-name{font-size:15px;font-weight:800;color:var(--text);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
 .seller-prices{text-align:left;font-size:12px}
 .seller-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border)}
 .seller-row:last-child{border-bottom:none}
@@ -150,39 +147,34 @@ main{max-width:1100px;margin:0 auto;padding:24px}
 .calc-select optgroup{background:var(--bg2);color:var(--accent2);font-weight:800}
 .calc-result{background:linear-gradient(135deg,var(--accent-glow),transparent);border-left:3px solid var(--accent);padding:16px 20px;border-radius:6px;font-size:14px;color:var(--text2);margin-top:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
 .calc-result b{color:var(--accent2);font-size:22px;font-weight:900;font-variant-numeric:tabular-nums}
-body.phone-mode .header-inner{padding:0 90px 0 16px}
-body.phone-mode h1{font-size:26px}
-body.phone-mode .version-badge{font-size:10px;padding:4px 12px}
-body.phone-mode .tabs{overflow-x:auto;flex-wrap:nowrap;padding-bottom:0;padding-left:16px;padding-right:16px}
-body.phone-mode .tabs::-webkit-scrollbar{height:0}
-body.phone-mode main{padding:16px}
-body.phone-mode .ads-row{grid-template-columns:1fr}
-body.phone-mode .top-item{grid-template-columns:36px 1fr auto;padding:10px 12px}
-body.phone-mode .arrow{display:none}
-body.phone-mode .card{padding:16px}
-body.phone-mode .seller-grid{grid-template-columns:1fr 1fr}
-body.phone-mode .calc-row{flex-direction:column;align-items:stretch;gap:6px}
-body.phone-mode .calc-label{min-width:0}
-body.phone-mode .calc-select,body.phone-mode .calc-input{min-width:100%}
-body.phone-mode .chart-wrap{padding:10px}
-body.phone-mode .chart-wrap svg{height:340px}
-body.phone-mode .color-grid{grid-template-columns:repeat(2,1fr)}
-body.phone-mode .sec-date-wrap label{display:none}
-body.phone-mode .sec-date{min-width:110px;font-size:11px}
-body.phone-mode .top-controls{top:12px;right:12px;gap:6px}
-body.phone-mode #settings-btn{width:38px;height:38px;font-size:16px}
-body.phone-mode #vol-slider{width:60px}
-body.phone-mode .war-teams{font-size:13px;gap:8px}
-body.phone-mode .war-team{word-break:break-word}
-body.phone-mode .name{white-space:normal;word-break:break-word}
-body.phone-mode .sec-date-wrap{padding:3px 8px}
-@media (max-width:820px){body:not(.force-pc) .header-inner{padding:0 90px 0 16px}body:not(.force-pc) h1{font-size:26px}body:not(.force-pc) .tabs{overflow-x:auto;flex-wrap:nowrap}body:not(.force-pc) main{padding:16px}body:not(.force-pc) .ads-row{grid-template-columns:1fr}body:not(.force-pc) .top-item{grid-template-columns:36px 1fr auto}body:not(.force-pc) .arrow{display:none}body:not(.force-pc) .seller-grid{grid-template-columns:1fr 1fr}body:not(.force-pc) .calc-select,body:not(.force-pc) .calc-input{min-width:100%}body:not(.force-pc) .chart-wrap svg{height:340px}body:not(.force-pc) .color-grid{grid-template-columns:repeat(2,1fr)}body:not(.force-pc) .sec-date-wrap label{display:none}body:not(.force-pc) .header-inner{padding:0 90px 0 16px}}
+@media (max-width:820px){.top-item{grid-template-columns:36px 1fr auto}.arrow{display:none}h1{font-size:24px}.version-badge{font-size:10px;padding:3px 10px}.tabs{overflow-x:auto;flex-wrap:nowrap}.top-controls{top:12px;right:12px}.header-inner{padding:0 90px 0 20px}.ads-row{grid-template-columns:1fr}.sec-date-wrap label{display:none}.sec-date{min-width:110px;font-size:11px}.color-grid{grid-template-columns:repeat(2,1fr)}.seller-grid{grid-template-columns:1fr}.calc-label{min-width:100%}.calc-select,.calc-input{min-width:100%}.chart-wrap svg{height:200px}}
+/* принудительный мобильный режим */
+body.mobile-view .top-item{grid-template-columns:36px 1fr auto}
+body.mobile-view .arrow{display:none}
+body.mobile-view h1{font-size:24px}
+body.mobile-view .version-badge{font-size:10px;padding:3px 10px}
+body.mobile-view .tabs{overflow-x:auto;flex-wrap:nowrap}
+body.mobile-view .tabs::-webkit-scrollbar{height:0}
+body.mobile-view .top-controls{top:12px;right:12px;gap:6px}
+body.mobile-view #settings-btn{width:38px;height:38px;font-size:16px}
+body.mobile-view #vol-slider{width:60px}
+body.mobile-view .header-inner{padding:0 90px 0 20px}
+body.mobile-view .ads-row{grid-template-columns:1fr}
+body.mobile-view .ad-slot{height:70px}
+body.mobile-view .sec-date-wrap label{display:none}
+body.mobile-view .sec-date{min-width:110px;font-size:11px}
+body.mobile-view .color-grid{grid-template-columns:repeat(2,1fr)}
+body.mobile-view .seller-grid{grid-template-columns:1fr}
+body.mobile-view .calc-label{min-width:100%}
+body.mobile-view .calc-select,body.mobile-view .calc-input{min-width:100%}
+body.mobile-view .chart-wrap svg{height:200px}
+body.mobile-view main{padding:16px}
 footer{max-width:1100px;margin:60px auto 0;padding:32px 24px;border-top:1px solid var(--border);color:var(--text3);font-size:12px;text-align:center;line-height:2}
 footer a{color:var(--accent2);text-decoration:none;font-weight:600}
 footer .sep{margin:10px 0;color:var(--border)}
 footer .tg-note{color:var(--accent2);font-size:13px;line-height:1.7;max-width:780px;margin:14px auto 0;padding:14px 20px;background:linear-gradient(135deg,var(--accent-glow),transparent);border-left:3px solid var(--accent);border-radius:6px;text-align:left}
 .empty{text-align:center;padding:50px 20px;color:var(--text3);font-size:13px;font-style:italic}
-.badge-alltime{display:inline-block;font-size:9px;background:linear-gradient(135deg,var(--accent3),var(--accent2));color:#fff !important;-webkit-text-fill-color:#fff !important;background-clip:padding-box !important;-webkit-background-clip:padding-box !important;padding:2px 8px;border-radius:3px;font-weight:800;margin-left:8px;vertical-align:middle}
+.badge-alltime{display:inline-block;font-size:9px;background:linear-gradient(135deg,var(--accent3),var(--accent2));color:#fff !important;-webkit-text-fill-color:#fff !important;background-clip:padding-box !important;-webkit-background-clip:padding-box !important;padding:2px 8px;border-radius:3px;font-weight:800;margin-left:8px;vertical-align:middle;letter-spacing:0.5px}
 </style>
 </head>
 <body>
@@ -190,7 +182,7 @@ footer .tg-note{color:var(--accent2);font-size:13px;line-height:1.7;max-width:78
 <div class="top-controls">
   <button id="settings-btn" title="Настройки">⚙</button>
   <div class="music-row">
-    <button id="music-btn">II</button>
+    <button id="music-btn">♪</button>
     <input type="range" id="vol-slider" min="0" max="1" step="0.05" value="0.35">
   </div>
 </div>
@@ -206,7 +198,7 @@ footer .tg-note{color:var(--accent2);font-size:13px;line-height:1.7;max-width:78
     <div class="subtitle">статистика timetoplay с помощью просмотра прошлого с помощью разных дат и других разных интересных функций — ttpstats</div>
     <div class="telegram-line">телеграм канал — <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></div>
     <div class="soon-line">скоро будут другие сайты и игры про timetoplay — все анонсы в канале <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></div>
-    <div class="creator">создатель xxspk · made in arbuzovsk <span class="hint-tip">клик — график · правый клик — редактировать</span></div>
+    <div class="creator">создатель xxspk · made in arbuzovsk <span style="color:var(--accent2);font-size:11px;margin-left:6px;opacity:0.85">кликни — график · правый клик — редактировать</span></div>
   </div>
 </header>
 
@@ -216,12 +208,12 @@ footer .tg-note{color:var(--accent2);font-size:13px;line-height:1.7;max-width:78
   <div class="ads-row">
     <div class="ad-slot filled" onclick="openAd('arena')">
       <span class="ad-badge">РЕКЛАМА</span>
-      <div class="ad-emoji">⚔</div>
+      <div class="ad-mark">A</div>
       <div class="ad-body"><div class="ad-title">ПВП Арена Арбузовска</div><div class="ad-desc">нажми чтобы узнать больше</div></div>
     </div>
     <div class="ad-slot filled" onclick="openAd('nato')">
       <span class="ad-badge">РЕКЛАМА</span>
-      <div class="ad-emoji">⛨</div>
+      <div class="ad-mark">N</div>
       <div class="ad-body"><div class="ad-title">Нация НАТО</div><div class="ad-desc">лучшая нация по прокачке</div></div>
     </div>
     <div class="ad-slot empty"></div>
@@ -238,7 +230,7 @@ footer .tg-note{color:var(--accent2);font-size:13px;line-height:1.7;max-width:78
 
 <div id="ad-modal-arena" class="ad-modal">
   <div class="ad-modal-inner">
-    <button class="panel-close" onclick="closeAd('arena')">X</button>
+    <button class="panel-close" onclick="closeAd('arena')">✕</button>
     <h2>ПВП Арена Арбузовска</h2>
     <p>На <b>/t spawn арбузовск</b> есть прикольная пвп арена на <b>4 чанка</b>.</p>
     <ul><li>Правил нет</li><li>Можно заказать арену на время</li><li>Приходи и сражайся!</li></ul>
@@ -248,7 +240,7 @@ footer .tg-note{color:var(--accent2);font-size:13px;line-height:1.7;max-width:78
 
 <div id="ad-modal-nato" class="ad-modal">
   <div class="ad-modal-inner">
-    <button class="panel-close" onclick="closeAd('nato')">X</button>
+    <button class="panel-close" onclick="closeAd('nato')">✕</button>
     <h2>Вступайте в нацию НАТО</h2>
     <p>Хочешь в лучшую нацию? НАТО ждёт тебя.</p>
     <ul><li>Много фармилок</li><li>Красивый <b>/n spawn</b></li><li>Куча приколюшек</li></ul>
@@ -258,7 +250,7 @@ footer .tg-note{color:var(--accent2);font-size:13px;line-height:1.7;max-width:78
 
 <div id="chart-modal" class="ad-modal">
   <div class="ad-modal-inner" style="max-width:900px">
-    <button class="panel-close" onclick="closeChart()">X</button>
+    <button class="panel-close" onclick="closeChart()">✕</button>
     <h2 id="chart-title">График</h2>
     <div id="chart-content"></div>
   </div>
@@ -266,28 +258,24 @@ footer .tg-note{color:var(--accent2);font-size:13px;line-height:1.7;max-width:78
 
 <div id="settings-modal">
   <div class="panel-box">
-    <button class="panel-close" onclick="closeSettings()">X</button>
+    <button class="panel-close" onclick="closeSettings()">✕</button>
     <h2>Настройки</h2>
     <div class="sub">сохраняются в этом браузере</div>
+
     <div class="setting-group">
-      <span class="setting-label">Громкость</span>
+      <span class="setting-label">Режим интерфейса</span>
+      <div class="view-switch" id="view-switch">
+        <button class="view-btn" data-view="pc">ПК</button>
+        <button class="view-btn" data-view="mobile">Телефон</button>
+      </div>
+    </div>
+
+    <div class="setting-group">
+      <span class="setting-label">Громкость музыки</span>
       <input type="range" id="settings-vol" min="0" max="1" step="0.05" value="0.35">
       <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--text3)"><span>0%</span><span id="settings-vol-val">35%</span><span>100%</span></div>
     </div>
-    <div class="setting-group">
-      <span class="setting-label">Режим интерфейса</span>
-      <div class="mode-grid">
-        <button class="mode-opt" data-mode="pc" onclick="setMode('pc')">
-          <span class="mode-icon">▭</span>
-          <span>Компьютер</span>
-        </button>
-        <button class="mode-opt" data-mode="phone" onclick="setMode('phone')">
-          <span class="mode-icon">▯</span>
-          <span>Телефон</span>
-        </button>
-      </div>
-      <div style="font-size:11px;color:var(--text3);margin-top:8px;line-height:1.5">на телефоне графики разбиваются на мобильную вёрстку — выбирай сам как удобно</div>
-    </div>
+
     <div class="setting-group">
       <span class="setting-label">Цвет меню</span>
       <div class="color-grid" id="color-grid"></div>
@@ -330,24 +318,26 @@ var MAYORS = {
 };
 function getMayor(name){ try { return MAYORS[String(name||'').toLowerCase().trim()] || null; } catch(e){ return null; } }
 
+// 9 одноцветных + 7 градиентных = 16 тем
 var PALETTES = {
-  blue:{name:'Синий',accent:'#3b82f6',accent2:'#60a5fa',accent3:'#2563eb',glow:'rgba(59,130,246,0.25)',preview:'linear-gradient(135deg,#2563eb,#60a5fa)'},
-  red:{name:'Красный',accent:'#ef4444',accent2:'#f87171',accent3:'#dc2626',glow:'rgba(239,68,68,0.25)',preview:'linear-gradient(135deg,#dc2626,#f87171)'},
-  white:{name:'Белый',accent:'#e5e7eb',accent2:'#f9fafb',accent3:'#9ca3af',glow:'rgba(229,231,235,0.2)',preview:'linear-gradient(135deg,#9ca3af,#f9fafb)'},
-  black:{name:'Чёрный',accent:'#6b7280',accent2:'#9ca3af',accent3:'#374151',glow:'rgba(107,114,128,0.25)',preview:'linear-gradient(135deg,#374151,#9ca3af)'},
-  green:{name:'Зелёный',accent:'#22c55e',accent2:'#4ade80',accent3:'#16a34a',glow:'rgba(34,197,94,0.25)',preview:'linear-gradient(135deg,#16a34a,#4ade80)'},
-  yellow:{name:'Жёлтый',accent:'#eab308',accent2:'#facc15',accent3:'#ca8a04',glow:'rgba(234,179,8,0.25)',preview:'linear-gradient(135deg,#ca8a04,#facc15)'},
-  orange:{name:'Оранжевый',accent:'#f97316',accent2:'#fb923c',accent3:'#ea580c',glow:'rgba(249,115,22,0.25)',preview:'linear-gradient(135deg,#ea580c,#fb923c)'},
-  pink:{name:'Розовый',accent:'#ec4899',accent2:'#f472b6',accent3:'#db2777',glow:'rgba(236,72,153,0.25)',preview:'linear-gradient(135deg,#db2777,#f472b6)'},
-  cyan:{name:'Голубой',accent:'#06b6d4',accent2:'#22d3ee',accent3:'#0891b2',glow:'rgba(6,182,212,0.25)',preview:'linear-gradient(135deg,#0891b2,#22d3ee)'},
-  blueRed:{name:'Синий + Красный',accent:'#6366f1',accent2:'#f43f5e',accent3:'#4338ca',glow:'rgba(99,102,241,0.3)',preview:'linear-gradient(135deg,#2563eb 0%,#ef4444 100%)'},
-  whiteBlue:{name:'Белый + Синий',accent:'#93c5fd',accent2:'#ffffff',accent3:'#3b82f6',glow:'rgba(147,197,253,0.3)',preview:'linear-gradient(135deg,#ffffff 0%,#2563eb 100%)'},
-  purplePink:{name:'Фиолет + Розовый',accent:'#a855f7',accent2:'#f472b6',accent3:'#7c3aed',glow:'rgba(168,85,247,0.3)',preview:'linear-gradient(135deg,#7c3aed 0%,#ec4899 100%)'},
-  cyanBlue:{name:'Голубой + Синий',accent:'#06b6d4',accent2:'#60a5fa',accent3:'#0891b2',glow:'rgba(6,182,212,0.3)',preview:'linear-gradient(135deg,#0891b2 0%,#2563eb 100%)'},
-  greenYellow:{name:'Зелёный + Жёлтый',accent:'#22c55e',accent2:'#facc15',accent3:'#16a34a',glow:'rgba(34,197,94,0.3)',preview:'linear-gradient(135deg,#16a34a 0%,#facc15 100%)'},
-  orangePink:{name:'Оранж + Розовый',accent:'#f97316',accent2:'#f472b6',accent3:'#ea580c',glow:'rgba(249,115,22,0.3)',preview:'linear-gradient(135deg,#ea580c 0%,#ec4899 100%)'},
-  redYellow:{name:'Красный + Жёлтый',accent:'#ef4444',accent2:'#facc15',accent3:'#dc2626',glow:'rgba(239,68,68,0.3)',preview:'linear-gradient(135deg,#dc2626 0%,#facc15 100%)'}
+  blue:{name:'Синий',dot:'#3b82f6',accent:'#3b82f6',accent2:'#60a5fa',accent3:'#2563eb',glow:'rgba(59,130,246,0.25)'},
+  red:{name:'Красный',dot:'#ef4444',accent:'#ef4444',accent2:'#f87171',accent3:'#dc2626',glow:'rgba(239,68,68,0.25)'},
+  green:{name:'Зелёный',dot:'#22c55e',accent:'#22c55e',accent2:'#4ade80',accent3:'#16a34a',glow:'rgba(34,197,94,0.25)'},
+  yellow:{name:'Жёлтый',dot:'#eab308',accent:'#eab308',accent2:'#facc15',accent3:'#ca8a04',glow:'rgba(234,179,8,0.25)'},
+  orange:{name:'Оранжевый',dot:'#f97316',accent:'#f97316',accent2:'#fb923c',accent3:'#ea580c',glow:'rgba(249,115,22,0.25)'},
+  pink:{name:'Розовый',dot:'#ec4899',accent:'#ec4899',accent2:'#f472b6',accent3:'#db2777',glow:'rgba(236,72,153,0.25)'},
+  purple:{name:'Фиолетовый',dot:'#a855f7',accent:'#a855f7',accent2:'#c084fc',accent3:'#9333ea',glow:'rgba(168,85,247,0.25)'},
+  cyan:{name:'Голубой',dot:'#06b6d4',accent:'#06b6d4',accent2:'#22d3ee',accent3:'#0891b2',glow:'rgba(6,182,212,0.25)'},
+  white:{name:'Белый',dot:'#e5e7eb',accent:'#e5e7eb',accent2:'#f9fafb',accent3:'#9ca3af',glow:'rgba(229,231,235,0.2)'},
+  gBlueRed:{name:'Синий+Красный',dot:'linear-gradient(135deg,#3b82f6 45%,#ef4444 55%)',accent:'#a855f7',accent2:'#60a5fa',accent3:'#ef4444',glow:'rgba(140,90,220,0.28)'},
+  gWhiteBlue:{name:'Белый+Синий',dot:'linear-gradient(135deg,#e5e7eb 45%,#3b82f6 55%)',accent:'#3b82f6',accent2:'#f9fafb',accent3:'#2563eb',glow:'rgba(140,180,240,0.25)'},
+  gPurplePink:{name:'Фиолетовый+Розовый',dot:'linear-gradient(135deg,#a855f7 45%,#ec4899 55%)',accent:'#d946ef',accent2:'#c084fc',accent3:'#ec4899',glow:'rgba(220,90,200,0.28)'},
+  gGreenCyan:{name:'Зелёный+Голубой',dot:'linear-gradient(135deg,#22c55e 45%,#06b6d4 55%)',accent:'#10b981',accent2:'#4ade80',accent3:'#06b6d4',glow:'rgba(30,200,150,0.25)'},
+  gOrangeYellow:{name:'Оранжевый+Жёлтый',dot:'linear-gradient(135deg,#f97316 45%,#eab308 55%)',accent:'#f59e0b',accent2:'#fb923c',accent3:'#eab308',glow:'rgba(245,158,11,0.28)'},
+  gRedOrange:{name:'Красный+Оранжевый',dot:'linear-gradient(135deg,#ef4444 45%,#f97316 55%)',accent:'#f43f5e',accent2:'#f87171',accent3:'#f97316',glow:'rgba(240,90,70,0.28)'},
+  gCyanBlue:{name:'Голубой+Синий',dot:'linear-gradient(135deg,#06b6d4 45%,#3b82f6 55%)',accent:'#0ea5e9',accent2:'#22d3ee',accent3:'#3b82f6',glow:'rgba(14,165,233,0.28)'}
 };
+
 function applyPalette(name){
   var p = PALETTES[name] || PALETTES.blue;
   var root = document.documentElement;
@@ -357,14 +347,9 @@ function applyPalette(name){
   root.style.setProperty('--accent-glow', p.glow);
   root.style.setProperty('--win', p.accent);
   localStorage.setItem('ttp_palette', name);
-  document.querySelectorAll('.color-opt').forEach(function(el){ el.classList.toggle('active', el.dataset.color === name); });
-}
-
-function setMode(mode){
-  if (mode === 'phone') document.body.classList.add('phone-mode');
-  else document.body.classList.remove('phone-mode');
-  document.querySelectorAll('.mode-opt').forEach(function(b){ b.classList.toggle('active', b.dataset.mode === mode); });
-  localStorage.setItem('ttp_mode', mode);
+  document.querySelectorAll('.color-opt').forEach(function(el){
+    el.classList.toggle('active', el.dataset.color === name);
+  });
 }
 
 var NAME_ALIASES = {
@@ -410,26 +395,21 @@ function computeArrow(cur, prev){
   });
   return res;
 }
-
 function getDataMap(key){
   try {
     var parts = key.split('.');
-    var sec = DATA[parts[0]];
-    if (!sec) return {};
-    var d = sec[parts[1]];
-    if (!d) return {};
+    var sec = DATA[parts[0]]; if (!sec) return {};
+    var d = sec[parts[1]]; if (!d) return {};
     if (d.snapshots) return d.snapshots;
     return d;
   } catch(e){ return {}; }
 }
 function collectAllTime(key){
-  var snap = getDataMap(key);
-  var best = {};
+  var snap = getDataMap(key); var best = {};
   if (!snap || typeof snap !== 'object') return [];
   Object.keys(snap).sort().forEach(function(date){
     if (!DATE_RE.test(date)) return;
-    var arr = snap[date];
-    if (!Array.isArray(arr)) return;
+    var arr = snap[date]; if (!Array.isArray(arr)) return;
     arr.forEach(function(it){
       if (!it || typeof it.name === 'undefined') return;
       var nk = normalizeKey(it.name);
@@ -443,7 +423,6 @@ function getSectionDates(key){
   return Object.keys(d).filter(function(k){ return DATE_RE.test(k); }).sort();
 }
 function sectionHasAllTime(){ return true; }
-
 function getEntityHistory(s, sub, nm){
   try {
     var sec = DATA[s]; if (!sec) return [];
@@ -452,8 +431,7 @@ function getEntityHistory(s, sub, nm){
     var nk = normalizeKey(nm), pts = [];
     Object.keys(d).sort().forEach(function(date){
       if (!DATE_RE.test(date)) return;
-      var arr = d[date];
-      if (!Array.isArray(arr)) return;
+      var arr = d[date]; if (!Array.isArray(arr)) return;
       var f = arr.find(function(it){ return it && normalizeKey(it.name) === nk; });
       if (f) pts.push({ date: date, value: f.value });
     });
@@ -628,13 +606,13 @@ function renderDateCard(key, title, unit){
 function renderCities(){
   return renderDateCard('cities.balance', 'Топ городов по балансу', ' ₽') +
          renderDateCard('cities.population', 'Топ городов по населению', ' чел') +
-         renderDateCard('cities.size', 'Топ городов по размеру', ' бл');
+         renderDateCard('cities.size', 'Топ городов по размеру', ' бл') ;
 }
 function renderPlayers(){
   return renderDateCard('players.balance', 'Топ по балансу игрока', ' ₽') +
          renderDateCard('players.active', 'Топ самых активных игроков', '') +
-         renderDateCard('players.rubies', 'Топ по рубинам', ' рубин') +
-         renderDateCard('players.shards', 'Топ по осколкам', ' оск');
+         renderDateCard('players.rubies', 'Топ по рубинам', ' руб') +
+         renderDateCard('players.shards', 'Топ по осколкам', ' шт');
 }
 function renderNations(){
   return renderDateCard('nations.size', 'Топ наций по размеру', ' бл') +
@@ -650,7 +628,7 @@ function renderWars(){
     var rHTML = '';
     if (w.status === 'ongoing') rHTML = '<span class="status ongoing">ВОЙНА ЕЩЁ ИДЁТ</span>';
     else if (w.status === 'cancelled') rHTML = '<span class="status cancelled">ВОЙНА ОТМЕНЕНА</span>';
-    else rHTML = '<span class="trophy">[W]</span><span>Победа: <b style="color:var(--win)">' + (w.winner === 1 ? w.team1 : w.team2) + '</b></span>' + (w.faction ? '<span class="faction">' + w.faction + '</span>' : '');
+    else rHTML = '<span>Победа: <b style="color:var(--win)">' + (w.winner === 1 ? w.team1 : w.team2) + '</b></span>' + (w.faction ? '<span class="faction">' + w.faction + '</span>' : '');
     html += '<div class="war-item' + sc + '"><div class="war-date">' + w.date + '</div>' +
       '<div class="war-teams"><span class="war-team ' + (t1 ? 'winner' : '') + '">' + w.team1 + '</span>' +
       '<span class="war-vs">VS</span>' +
@@ -764,6 +742,7 @@ function render(){
   }
 }
 
+// ===== Настройки =====
 function renderColorGrid(){
   var g = document.getElementById('color-grid');
   if (!g) return;
@@ -774,23 +753,36 @@ function renderColorGrid(){
     var b = document.createElement('button');
     b.className = 'color-opt' + (k === cur ? ' active' : '');
     b.dataset.color = k;
-    b.innerHTML = '<div class="color-preview" style="background:' + p.preview + '"></div><span>' + p.name + '</span>';
+    b.innerHTML = '<span class="color-dot" style="background:' + p.dot + '"></span>' + p.name;
     b.onclick = function(){ applyPalette(k); };
     g.appendChild(b);
   });
 }
+function renderViewSwitch(){
+  var cur = localStorage.getItem('ttp_view') || 'pc';
+  document.querySelectorAll('.view-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.view === cur);
+  });
+}
+function applyView(v){
+  localStorage.setItem('ttp_view', v);
+  document.body.classList.toggle('mobile-view', v === 'mobile');
+  renderViewSwitch();
+}
 window.openSettings = function(){
   document.getElementById('settings-modal').classList.add('open');
   renderColorGrid();
+  renderViewSwitch();
   var v = parseFloat(localStorage.getItem('ttp_vol') || '0.35');
   document.getElementById('settings-vol').value = v;
   document.getElementById('settings-vol-val').textContent = Math.round(v*100) + '%';
-  var mode = localStorage.getItem('ttp_mode') || 'pc';
-  document.querySelectorAll('.mode-opt').forEach(function(b){ b.classList.toggle('active', b.dataset.mode === mode); });
 };
 window.closeSettings = function(){ document.getElementById('settings-modal').classList.remove('open'); };
 document.getElementById('settings-modal').addEventListener('click', function(e){ if (e.target.id === 'settings-modal') window.closeSettings(); });
 document.getElementById('settings-btn').onclick = window.openSettings;
+document.querySelectorAll('.view-btn').forEach(function(b){
+  b.onclick = function(){ applyView(b.dataset.view); };
+});
 document.getElementById('settings-vol').oninput = function(e){
   var v = parseFloat(e.target.value);
   document.getElementById('settings-vol-val').textContent = Math.round(v*100) + '%';
@@ -813,16 +805,15 @@ var volSlider = document.getElementById('vol-slider');
 var savedVol = parseFloat(localStorage.getItem('ttp_vol') || '0.35');
 volSlider.value = savedVol; music.volume = savedVol;
 var musicPlaying = false, musicStarted = false;
-musicBtn.textContent = 'PLAY';
 function tryStartMusic(){
   if (musicStarted) return;
-  music.play().then(function(){ musicPlaying = true; musicStarted = true; musicBtn.textContent = 'STOP'; }).catch(function(){ musicBtn.textContent = 'MUTE'; });
+  music.play().then(function(){ musicPlaying = true; musicStarted = true; musicBtn.textContent = '♪'; }).catch(function(){ musicBtn.textContent = '×'; });
 }
 tryStartMusic();
 document.addEventListener('click', function(){ if (!musicStarted) tryStartMusic(); });
 musicBtn.onclick = function(){
-  if (musicPlaying) { music.pause(); musicPlaying = false; musicBtn.textContent = 'PLAY'; }
-  else { music.play().then(function(){ musicPlaying = true; musicStarted = true; musicBtn.textContent = 'STOP'; }).catch(function(){}); }
+  if (musicPlaying) { music.pause(); musicPlaying = false; musicBtn.textContent = '×'; }
+  else { music.play().then(function(){ musicPlaying = true; musicStarted = true; musicBtn.textContent = '♪'; }).catch(function(){}); }
 };
 volSlider.oninput = function(){
   var v = parseFloat(volSlider.value);
@@ -830,10 +821,11 @@ volSlider.oninput = function(){
   localStorage.setItem('ttp_vol', v);
 };
 
+// ===== Старт =====
 var savedPalette = localStorage.getItem('ttp_palette') || 'blue';
 applyPalette(savedPalette);
-var savedMode = localStorage.getItem('ttp_mode') || 'pc';
-setMode(savedMode);
+var savedView = localStorage.getItem('ttp_view') || 'pc';
+if (savedView === 'mobile') document.body.classList.add('mobile-view');
 render();
 </script>
 </body>
