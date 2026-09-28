@@ -489,6 +489,16 @@ window.DATA = {
       ]
     }
   },
+    "seller": {
+    "date": "2026-09-29 01:30",
+    "items": [
+      { "id": "gold", "name": "Золото", "emoji": "🥇", "unit_label": "слиток", "stack_size": 64, "base_price": 0.01, "stack_price": 0.77 },
+      { "id": "diamond", "name": "Алмаз", "emoji": "💎", "unit_label": "алмаз", "stack_size": 64, "base_price": 0.02, "stack_price": 1.13 },
+      { "id": "iron", "name": "Железо", "emoji": "⛓️", "unit_label": "слиток", "stack_size": 64, "base_price": 0.01, "stack_price": 0.45 },
+      { "id": "cake", "name": "Торты", "emoji": "🎂", "unit_label": "торт", "stack_size": 7, "base_price": 0.68, "stack_price": 4.78 },
+      { "id": "honeycomb", "name": "Пчелиные соты", "emoji": "🍯", "unit_label": "сота", "stack_size": 64, "base_price": 0.07, "stack_price": 4.37 }
+    ]
+  },
   "wars": {
     "list": [
       { "date": "21:00 25.09.2026", "team1": "военная_спецоперация", "team2": "лагалище", "winner": 1, "faction": null },
