@@ -259,7 +259,7 @@ window.DATA = {
       ],
       "2026-09-28 10:22": [
         { "name": "timoxa_pistol", "value": 2019374, "display": "23д 8ч 56м 14с" },
-        { "name": "afarsic", "value": 1779376, "display": "20д 14ч 16м 16с" },
+        { "name": "afarstic", "value": 1779376, "display": "20д 14ч 16м 16с" },
         { "name": "gotopot753", "value": 1519466, "display": "17д 14ч 4м 26с" },
         { "name": "cartez_ru", "value": 1390260, "display": "16д 2ч 11м" },
         { "name": "Frasie", "value": 1367595, "display": "15д 19ч 53м 15с" },
