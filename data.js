@@ -46,6 +46,13 @@ window.DATA = {
           { "name": "Лазурный_Стокгольм", "value": 6770.91 }, { "name": "Seapure", "value": 6112.25 },
           { "name": "Иокогама", "value": 5681.15 }, { "name": "mimika", "value": 4034.80 },
           { "name": "Французкая_Империя", "value": 3570.13 }, { "name": "Вдохновение", "value": 3408.70 }
+        ],
+        "2026-09-28 21:55": [
+          { "name": "Рим", "value": 14001.78 }, { "name": "Рига", "value": 13389.35 },
+          { "name": "Клан_Китайцев", "value": 9836.23 }, { "name": "Макондо", "value": 7216.27 },
+          { "name": "Лазурный_Стокгольм", "value": 6933.13 }, { "name": "Иокогама", "value": 5619.59 },
+          { "name": "mimika", "value": 4053.02 }, { "name": "Seapure", "value": 3670.18 },
+          { "name": "Французкая_Империя", "value": 3628.09 }, { "name": "Вдохновение", "value": 3410.91 }
         ]
       },
       "note": "за всё время был восторг с ~100000, но дата отсчёта — сегодня, так что не считается"
@@ -92,6 +99,13 @@ window.DATA = {
         { "name": "Кривой_Рог", "value": 106 }, { "name": "Томская_Империя", "value": 77 },
         { "name": "Лазурный_Стокгольм", "value": 60 }, { "name": "Los_Angeles", "value": 57 },
         { "name": "Германская_Империя", "value": 57 }, { "name": "Seapure", "value": 55 }
+      ],
+      "2026-09-28 21:55": [
+        { "name": "Рим", "value": 164 }, { "name": "Рига", "value": 146 },
+        { "name": "Кавказский_Халифат", "value": 118 }, { "name": "Ульяновск", "value": 114 },
+        { "name": "Кривой_Рог", "value": 109 }, { "name": "Томская_Империя", "value": 77 },
+        { "name": "Лазурный_Стокгольм", "value": 60 }, { "name": "Los_Angeles", "value": 57 },
+        { "name": "Германская_Империя", "value": 57 }, { "name": "Ufa", "value": 54 }
       ]
     },
     "size": {
@@ -136,6 +150,13 @@ window.DATA = {
         { "name": "Бабушкины_Ногти", "value": 3193 }, { "name": "Seapure", "value": 2882 },
         { "name": "Клан_Китайцев", "value": 2807 }, { "name": "Лазурный_Стокгольм", "value": 2318 },
         { "name": "Французкая_Империя", "value": 1931 }, { "name": "Великие_Нидерланды", "value": 1831 }
+      ],
+      "2026-09-28 21:55": [
+        { "name": "Рига", "value": 8327 }, { "name": "Рим", "value": 7962 },
+        { "name": "Кавказский_Халифат", "value": 3899 }, { "name": "Иокогама", "value": 3582 },
+        { "name": "Бабушкины_Ногти", "value": 3193 }, { "name": "Seapure", "value": 2847 },
+        { "name": "Клан_Китайцев", "value": 2807 }, { "name": "Лазурный_Стокгольм", "value": 2201 },
+        { "name": "Французская_Империя", "value": 1931 }, { "name": "Великие_Нидерланды", "value": 1831 }
       ]
     }
   },
@@ -177,6 +198,13 @@ window.DATA = {
         { "name": "UrbosIndustries", "value": 3111.00 }, { "name": "makph", "value": 3065.00 }
       ],
       "2026-09-28 10:22": [
+        { "name": "MerrQQ", "value": 51655.87 }, { "name": "5ekas", "value": 18197.60 },
+        { "name": "Deekrush", "value": 14631.86 }, { "name": "Ivan3754", "value": 12046.83 },
+        { "name": "cartez_ru", "value": 8914.72 }, { "name": "Elena3e3", "value": 8056.07 },
+        { "name": "LaGGeZ", "value": 3509.01 }, { "name": "Butterfly", "value": 3378.64 },
+        { "name": "UrbosIndustries", "value": 3111.00 }, { "name": "makph", "value": 3065.00 }
+      ],
+      "2026-09-28 21:55": [
         { "name": "MerrQQ", "value": 51655.87 }, { "name": "5ekas", "value": 18197.60 },
         { "name": "Deekrush", "value": 14631.86 }, { "name": "Ivan3754", "value": 12046.83 },
         { "name": "cartez_ru", "value": 8914.72 }, { "name": "Elena3e3", "value": 8056.07 },
@@ -259,15 +287,27 @@ window.DATA = {
       ],
       "2026-09-28 10:22": [
         { "name": "timoxa_pistol", "value": 2019374, "display": "23д 8ч 56м 14с" },
-        { "name": "afarstic", "value": 1779376, "display": "20д 14ч 16м 16с" },
-        { "name": "gotopot753", "value": 1519466, "display": "17д 14ч 4м 26с" },
+        { "name": "afarsic", "value": 1779376, "display": "20д 14ч 16м 16с" },
+        { "name": "ZapadnyeZemliEz", "value": 1519466, "display": "17д 14ч 4м 26с" },
         { "name": "cartez_ru", "value": 1390260, "display": "16д 2ч 11м" },
         { "name": "Frasie", "value": 1367595, "display": "15д 19ч 53м 15с" },
         { "name": "Georg_23", "value": 1305375, "display": "15д 2ч 36м 15с" },
         { "name": "shanci", "value": 1272499, "display": "14д 17ч 28м 19с" },
-        { "name": "El_diablo", "value": 1217777, "display": "14д 2ч 16м 17с" },
+        { "name": "KomiK0", "value": 1217777, "display": "14д 2ч 16м 17с" },
         { "name": "Deekrush", "value": 1136093, "display": "13д 3ч 34м 53с" },
         { "name": "Vlolo", "value": 1084397, "display": "12д 13ч 13м 17с" }
+      ],
+      "2026-09-28 21:55": [
+        { "name": "timoxa_pistol", "value": 2029139, "display": "23д 13ч 47м 15с" },
+        { "name": "afarstic", "value": 1793688, "display": "20д 19ч 52м 40с" },
+        { "name": "Gotopot753", "value": 1538688, "display": "17д 19ч 57м 51с" },
+        { "name": "cartez_ru", "value": 1426849, "display": "16д 10ч 42м 49с" },
+        { "name": "Frasie", "value": 1382095, "display": "15д 20ч 46м 18с" },
+        { "name": "Georg_23", "value": 1310998, "display": "15д 5ч 6м 25с" },
+        { "name": "shanci", "value": 1278210, "display": "14д 22ч 12м 43с" },
+        { "name": "KomiK0", "value": 1234170, "display": "14д 6ч 46м 10с" },
+        { "name": "Deekrush", "value": 1145426, "display": "13д 6ч 14м 9с" },
+        { "name": "Vlolo", "value": 1098237, "display": "12д 17ч 42с" }
       ]
     },
     "shards": {
@@ -304,6 +344,13 @@ window.DATA = {
         { "name": "Streifka", "value": 13 }, { "name": "HyperSuper", "value": 12 }, { "name": "MrRatix", "value": 4 },
         { "name": "Vlad4631", "value": 4 }, { "name": "Toxic22222", "value": 4 }, { "name": "Kise156567", "value": 3 },
         { "name": "HE_3adrot", "value": 2 }
+      ],
+      "2026-09-28 21:55": [
+        { "name": "Toxic22222", "value": 72 }, { "name": "kaba_day", "value": 56 },
+        { "name": "shanci", "value": 24 }, { "name": "HyperSuper", "value": 11 },
+        { "name": "MrRatix", "value": 4 }, { "name": "Vlad4631", "value": 4 },
+        { "name": "e666yn40", "value": 2 }, { "name": "Streifka", "value": 1 },
+        { "name": "kqkqha", "value": 1 }, { "name": "Miloman", "value": 1 }
       ]
     },
     "rubies": {
@@ -340,6 +387,13 @@ window.DATA = {
         { "name": "TheTheTher", "value": 95067 }, { "name": "Myro_Okada", "value": 67920 }, { "name": "Toxic22222", "value": 60966 },
         { "name": "vk2409", "value": 48020 }
       ],
+      "2026-09-28 21:55": [
+        { "name": "El_Diablo", "value": 255021 }, { "name": "chonka221", "value": 164633 },
+        { "name": "triadamc", "value": 161456 }, { "name": "Elena3e3", "value": 144577 },
+        { "name": "OkoscheiO", "value": 116505 }, { "name": "LaGGeZ", "value": 106571 },
+        { "name": "TheTheTher", "value": 95067 }, { "name": "Myro_Okada", "value": 67920 },
+        { "name": "Toxic22222", "value": 60966 }, { "name": "vk2409", "value": 48020 }
+      ],
       "note": "за всё время был kaba_day с ~450000, но дата отсчёта — сегодня, так что не считается"
     }
   },
@@ -368,6 +422,10 @@ window.DATA = {
       "2026-09-28 10:22": [
         { "name": "SPQR", "value": 1362.20 }, { "name": "Универсам", "value": 730.00 }, { "name": "Носочки_Ангелкас", "value": 43.00 },
         { "name": "Латвия", "value": 12.25 }, { "name": "Ось", "value": 9.00 }, { "name": "NATO", "value": 0.50 }
+      ],
+      "2026-09-28 21:55": [
+        { "name": "SPQR", "value": 1539.20 }, { "name": "Универсам", "value": 910.00 }, { "name": "Носочки_Ангелкас", "value": 27.00 },
+        { "name": "Латвия", "value": 12.25 }, { "name": "Ось", "value": 9.00 }, { "name": "NATO", "value": 2.50 }
       ]
     },
     "size": {
@@ -394,6 +452,10 @@ window.DATA = {
       "2026-09-28 10:22": [
         { "name": "SPQR", "value": 78 }, { "name": "NATO", "value": 64 }, { "name": "Универсам", "value": 46 },
         { "name": "Латвия", "value": 23 }, { "name": "Ось", "value": 8 }, { "name": "Носочки_Ангелкас", "value": 2 }
+      ],
+      "2026-09-28 21:55": [
+        { "name": "SPQR", "value": 76 }, { "name": "NATO", "value": 68 }, { "name": "Универсам", "value": 45 },
+        { "name": "Латвия", "value": 20 }, { "name": "Ось", "value": 8 }, { "name": "Носочки_Ангелкас", "value": 2 }
       ]
     },
     "citizens": {
@@ -420,6 +482,10 @@ window.DATA = {
       "2026-09-28 10:22": [
         { "name": "SPQR", "value": 854 }, { "name": "NATO", "value": 631 }, { "name": "Универсам", "value": 491 },
         { "name": "Латвия", "value": 411 }, { "name": "Ось", "value": 147 }, { "name": "Носочки_Ангелкас", "value": 23 }
+      ],
+      "2026-09-28 21:55": [
+        { "name": "SPQR", "value": 860 }, { "name": "NATO", "value": 713 }, { "name": "Универсам", "value": 491 },
+        { "name": "Латвия", "value": 343 }, { "name": "Ось", "value": 147 }, { "name": "Носочки_Ангелкас", "value": 23 }
       ]
     }
   },
