@@ -138,6 +138,20 @@ main{max-width:1100px;margin:0 auto;padding:24px}
 .seller-row:last-child{border-bottom:none}
 .seller-row span{color:var(--text2)}
 .seller-row b{color:var(--accent2);font-weight:800;font-variant-numeric:tabular-nums}
+.event-item{background:var(--bg3);border-radius:10px;padding:16px 20px;margin-bottom:10px;border-left:4px solid var(--accent);transition:all .15s}
+.event-item:hover{transform:translateX(4px);border-left-color:var(--accent2)}
+.event-item.ban{border-left-color:var(--red)}
+.event-item.nation{border-left-color:var(--gold)}
+.event-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.event-title{font-size:15px;font-weight:800;color:var(--text);flex:1;min-width:200px}
+.event-date{font-size:11px;color:var(--text3);letter-spacing:0.5px;font-weight:600}
+.event-badge{padding:2px 10px;border-radius:4px;font-size:10px;font-weight:800;letter-spacing:1px}
+.event-badge.ban{background:rgba(239,68,68,.15);color:var(--red);border:1px solid var(--red)}
+.event-badge.nation{background:rgba(251,191,36,.15);color:var(--gold);border:1px solid var(--gold)}
+.event-badge.info{background:var(--accent-glow);color:var(--accent2);border:1px solid var(--accent)}
+.event-details{margin-top:6px}
+.event-detail{font-size:13px;color:var(--text2);line-height:1.7;padding-left:14px;position:relative}
+.event-detail::before{content:'—';position:absolute;left:0;color:var(--accent2);font-weight:700}
 @media (max-width:820px){.top-item{grid-template-columns:36px 1fr auto}.arrow{display:none}h1{font-size:24px}.version-badge{font-size:10px;padding:3px 10px}.tabs{overflow-x:auto;flex-wrap:nowrap}.top-controls{top:12px;right:12px}.header-inner{padding:0 90px 0 20px}.ads-row{grid-template-columns:1fr}.sec-date-wrap label{display:none}.sec-date{min-width:110px;font-size:11px}.color-grid{grid-template-columns:repeat(2,1fr)}.seller-grid{grid-template-columns:1fr}.chart-wrap svg{height:200px}}
 body.mobile-view .top-item{grid-template-columns:36px 1fr auto}
 body.mobile-view .arrow{display:none}
@@ -186,7 +200,7 @@ footer .tg-note{color:var(--accent2);font-size:13px;line-height:1.7;max-width:78
     <div class="subtitle">статистика timetoplay с помощью просмотра прошлого с помощью разных дат и других разных интересных функций — ttpstats</div>
     <div class="telegram-line">телеграм канал — <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></div>
     <div class="soon-line">скоро будут другие сайты и игры про timetoplay — все анонсы в канале <a href="https://t.me/ttpstats" target="_blank">@ttpstats</a></div>
-    <div class="creator">создатель xxspk · made in arbuzovsk <span style="color:var(--accent2);font-size:11px;margin-left:6px;opacity:0.85">кликни — график · правый клик — редактировать</span></div>
+    <div class="creator">создатель xxspk · made in arbuzovsk</div>
   </div>
 </header>
 
@@ -291,6 +305,8 @@ DATA.nations.citizens = DATA.nations.citizens || {};
 DATA.wars = DATA.wars || {};
 DATA.wars.list = Array.isArray(DATA.wars.list) ? DATA.wars.list : [];
 DATA.seller = DATA.seller || { date: "—", items: [] };
+DATA.events = DATA.events || { list: [] };
+DATA.events.list = Array.isArray(DATA.events.list) ? DATA.events.list : [];
 
 var MAYORS = {
   'рига':'Frasie','рим':'MrRatix','лазурный_стокгольм':'lepepesha228',
@@ -303,8 +319,8 @@ var MAYORS = {
   'германская_империя':'gordon_12356','ворона':'toxic22222',
   'клан_китайцев':'kaba_day','великие_нидерланды':'bechenok',
   'бенилюкс':'toxic22222','бабушкины_ногти':'toxic22222','вдохновение':'zoni_11',
-  'ново-имперск':'voron013',
-  'грызуны':'n1zzyx'
+  'ново-имперск':'voron013','грызуны':'n1zzyx',
+  'израиль':'qilvin','darkhold':'wholespk'
 };
 function getMayor(name){ try { return MAYORS[String(name||'').toLowerCase().trim()] || null; } catch(e){ return null; } }
 
@@ -345,9 +361,10 @@ var NAME_ALIASES = {
   'merrqq':'merqq','merrq':'merqq','merq':'merqq',
   'cartez_ru1':'cartez_ru',
   'vizantiyaez':'gotopot753',
-  'грызуны':'seapure'
+  'грызуны':'seapure',
+  'afarsic':'afarstic'
 };
-var NO_NEW_NAMES = ['gotopot753','el_diablo'];
+var NO_NEW_NAMES = ['gotopot753','el_diablo','afarstic'];
 var DATE_RE = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/;
 
 function normalizeKey(n){
@@ -468,7 +485,8 @@ var TAB_ORDER = [
   { id:'players', label:'Игроки' },
   { id:'nations', label:'Нации' },
   { id:'wars', label:'Масштабные войны вайпа' },
-  { id:'seller', label:'Селлер' }
+  { id:'seller', label:'Селлер' },
+  { id:'events', label:'События' }
 ];
 var sectionState = {
   'cities.balance':{date:null,allTime:false},'cities.population':{date:null,allTime:false},'cities.size':{date:null,allTime:false},
@@ -649,7 +667,37 @@ function renderSeller(){
   return html;
 }
 
-var RENDERERS = { cities: renderCities, players: renderPlayers, nations: renderNations, wars: renderWars, seller: renderSeller };
+function renderEvents(){
+  var events = (DATA.events && DATA.events.list) ? DATA.events.list : [];
+  var html = '<div class="card"><div class="card-head"><div class="card-head-text"><h2>События сервера</h2><div class="card-sub">важные новости и происшествия · ' + events.length + ' ' + (events.length === 1 ? 'событие' : (events.length < 5 ? 'события' : 'событий')) + '</div></div></div>';
+  if (!events.length) { html += '<div class="empty">Нет событий</div></div>'; return html; }
+  events.forEach(function(ev){
+    var typeClass = ev.type || 'info';
+    var badge = '';
+    if (ev.type === 'ban') badge = '<span class="event-badge ban">БАН</span>';
+    else if (ev.type === 'nation') badge = '<span class="event-badge nation">НАЦИЯ</span>';
+    else badge = '<span class="event-badge info">ИНФО</span>';
+    var details = '';
+    if (ev.details && ev.details.length) {
+      details = '<div class="event-details">';
+      ev.details.forEach(function(d){ details += '<div class="event-detail">' + d + '</div>'; });
+      details += '</div>';
+    }
+    html += '<div class="event-item ' + typeClass + '">' +
+      '<div class="event-head">' +
+        badge +
+        '<div class="event-title">' + ev.title + '</div>' +
+        '<div class="event-date">' + ev.date + '</div>' +
+      '</div>' +
+      details +
+    '</div>';
+  });
+  html += '<div class="card-note" style="margin-top:20px;padding-top:14px;border-top:1px dashed var(--border);color:var(--text3);font-size:11px;font-style:italic">всё что было раньше — информация есть, но мы не будем вносить без просьб игроков</div>';
+  html += '</div>';
+  return html;
+}
+
+var RENDERERS = { cities: renderCities, players: renderPlayers, nations: renderNations, wars: renderWars, seller: renderSeller, events: renderEvents };
 
 function renderTabs(){
   var tabsEl = document.getElementById('tabs');
